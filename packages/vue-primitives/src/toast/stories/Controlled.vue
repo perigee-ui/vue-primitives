@@ -13,12 +13,12 @@ const isSubscribed = shallowRef(false)
 const savedCount = shallowRef(0)
 const errorCount = shallowRef(0)
 
-// watchEffect((onCleanup) => {
-//   if (!hasUpgrade.value) {
-//     // const timer = window.setTimeout(() => hasUpgrade.value = true, 10000)
-//     // onCleanup(() => window.clearTimeout(timer))
-//   }
-// })
+watchEffect((onCleanup) => {
+  if (!hasUpgrade.value) {
+    const timer = window.setTimeout(() => hasUpgrade.value = true, 10000)
+    onCleanup(() => window.clearTimeout(timer))
+  }
+})
 
 useToastProvider()
 </script>

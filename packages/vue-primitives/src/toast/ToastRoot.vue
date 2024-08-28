@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
+import { computed, shallowRef, watch, watchEffect } from 'vue'
 import { useControllableState } from '../hooks/index.ts'
 import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import { Primitive } from '../primitive/index.ts'
@@ -106,6 +106,7 @@ function handleClose() {
 function startTimer(duration: number) {
   if (!duration || duration === Infinity)
     return
+  console.error('startTimer')
   window.clearTimeout(closeTimerRef)
   closeTimerStartTimeRef = new Date().getTime()
   closeTimerRef = window.setTimeout(handleClose, duration)
@@ -139,11 +140,12 @@ watch(context.viewport, (viewport, _, onCleanup) => {
 // start timer when toast opens or duration changes.
 // we include `open` in deps because closed !== unmounted when animating
 // so it could reopen before being completely unmounted
-watch(open, (open) => {
-  if (open && !context.isClosePausedRef.current) {
+watchEffect((onCleanup) => {
+  if (open.value && !context.isClosePausedRef.current) {
     startTimer(duration())
+    onCleanup(() => window.clearTimeout(closeTimerRef))
   }
-}, { immediate: true })
+})
 
 const announceTextContent = computed(() => $el.value ? getAnnounceTextContent($el.value) : null)
 

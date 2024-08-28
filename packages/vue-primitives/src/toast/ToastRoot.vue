@@ -90,8 +90,7 @@ let pointerStartRef: { x: number, y: number } | undefined
 let swipeDeltaRef: { x: number, y: number } | undefined
 const duration = () => props.duration || context.duration
 let closeTimerStartTimeRef = 0
-console.warn('let closeTimerStartTimeRef', closeTimerStartTimeRef)
-const closeTimerRemainingTimeRef = duration()
+let closeTimerRemainingTimeRef = duration()
 let closeTimerRef = 0
 const { onToastAdd, onToastRemove } = context
 
@@ -109,30 +108,24 @@ function startTimer(duration: number) {
     return
   window.clearTimeout(closeTimerRef)
   closeTimerStartTimeRef = new Date().getTime()
-  console.error('ROOT:startTimer', closeTimerStartTimeRef)
   closeTimerRef = window.setTimeout(handleClose, duration)
 }
 
 function handleResume() {
-  console.error('ROOT:handleResume', closeTimerRemainingTimeRef)
   startTimer(closeTimerRemainingTimeRef)
   onResume()
 }
 
 function handlePause() {
-  console.warn('ROOT:handlePause', closeTimerStartTimeRef)
-  // const elapsedTime = new Date().getTime() - closeTimerStartTimeRef
-  // console.error('ROOT:handlePause', elapsedTime, new Date().getTime(), closeTimerStartTimeRef)
-  // closeTimerRemainingTimeRef = closeTimerRemainingTimeRef - elapsedTime
-  // window.clearTimeout(closeTimerRef)
-  // onPause()
+  const elapsedTime = new Date().getTime() - closeTimerStartTimeRef
+  closeTimerRemainingTimeRef = closeTimerRemainingTimeRef - elapsedTime
+  window.clearTimeout(closeTimerRef)
+  onPause()
 }
 
 watch(context.viewport, (viewport, _, onCleanup) => {
   if (!viewport)
     return
-
-  console.error('ROOT:viewport', viewport)
 
   viewport.addEventListener(VIEWPORT_PAUSE, handlePause)
   viewport.addEventListener(VIEWPORT_RESUME, handleResume)
@@ -141,14 +134,13 @@ watch(context.viewport, (viewport, _, onCleanup) => {
     viewport.removeEventListener(VIEWPORT_PAUSE, handlePause)
     viewport.removeEventListener(VIEWPORT_RESUME, handleResume)
   })
-})
+}, { immediate: true })
 
 // start timer when toast opens or duration changes.
 // we include `open` in deps because closed !== unmounted when animating
 // so it could reopen before being completely unmounted
 watch(open, (open) => {
   if (open && !context.isClosePausedRef.current) {
-    console.error('ROOT:startTimer::useEffect')
     startTimer(duration())
   }
 }, { immediate: true })
@@ -168,7 +160,6 @@ const isAnnounced = shallowRef(false)
 watch($el, (el, _, onCleanup) => {
   if (!el)
     return
-  console.error('ROOT:onMounted')
   onToastAdd()
 
   // render text content in the next frame to ensure toast is announced in NVDA
@@ -188,7 +179,6 @@ watch($el, (el, _, onCleanup) => {
 })
 
 // onMounted(() => {
-//   console.error('ROOT:onMounted')
 //   onToastAdd()
 
 //   // render text content in the next frame to ensure toast is announced in NVDA
@@ -202,7 +192,6 @@ watch($el, (el, _, onCleanup) => {
 // })
 
 // onBeforeUnmount(() => {
-//   console.error('ROOT:onToastRemove')
 //   onToastRemove()
 //   cliear?.()
 //   window.clearTimeout(timerIsAnnounced)

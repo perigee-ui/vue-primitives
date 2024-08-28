@@ -50,21 +50,17 @@ const hasToasts = () => context.toastCount.value > 0
 
 if (isClient) {
   function handlePause() {
-    console.error('View:handlePause')
     if (!context.isClosePausedRef.current) {
       const pauseEvent = new CustomEvent(VIEWPORT_PAUSE)
       viewportRef?.dispatchEvent(pauseEvent)
-      console.error('View:handlePause::true')
       context.isClosePausedRef.current = true
     }
   }
 
   function handleResume() {
-    console.error('View:handleResume')
     if (context.isClosePausedRef.current) {
       const resumeEvent = new CustomEvent(VIEWPORT_RESUME)
       viewportRef?.dispatchEvent(resumeEvent)
-      console.error('View:handlePause::false')
       context.isClosePausedRef.current = false
     }
   }
@@ -85,7 +81,6 @@ if (isClient) {
     const wrapper = wrapperRef
     if (!hasToasts() || !wrapper || !viewportRef)
       return
-    console.error('wrapper', wrapper, viewportRef, context.toastCount.value)
 
     // Toasts are not in the viewport React tree so we need to bind DOM events
     wrapper.addEventListener('focusin', handlePause)

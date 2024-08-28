@@ -1,8 +1,6 @@
 import { type Ref, shallowRef } from 'vue'
 import { type MutableRefObject, createContext, useRef } from '../hooks/index.ts'
-import { createCollection } from '../collection/Collection.ts'
-
-export const [Collection, useCollection] = createCollection<HTMLButtonElement, undefined>('Accordion')
+import { Collection } from './collection.ts'
 
 export interface ToastProviderProps {
   /**
@@ -47,7 +45,7 @@ export interface ToastProviderContextValue {
 
 export const [provideToastProviderContext, useToastProviderContext] = createContext<ToastProviderContextValue>('Toast')
 
-export function useToastProvider(props: ToastProviderProps) {
+export function useToastProvider(props: ToastProviderProps = {}) {
   const { label = 'Notification', duration = 5000, swipeDirection = 'right', swipeThreshold = 50 } = props
   const viewport = shallowRef<ToastViewportElement>()
   const viewportRef = useRef<ToastViewportElement>()

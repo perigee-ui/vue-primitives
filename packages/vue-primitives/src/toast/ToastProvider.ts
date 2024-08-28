@@ -1,5 +1,8 @@
-import { shallowRef } from 'vue'
-import { createContext, useRef } from '../hooks/index.ts'
+import { type Ref, shallowRef } from 'vue'
+import { type MutableRefObject, createContext, useRef } from '../hooks/index.ts'
+import { createCollection } from '../collection/Collection.ts'
+
+export const [Collection, useCollection] = createCollection<HTMLButtonElement, undefined>('Accordion')
 
 export interface ToastProviderProps {
   /**
@@ -33,13 +36,13 @@ export interface ToastProviderContextValue {
   duration: number
   swipeDirection: SwipeDirection
   swipeThreshold: number
-  toastCount: number
-  viewport: ToastViewportElement | undefined
-  onViewportChange: (viewport: ToastViewportElement) => void
+  toastCount: Ref<number>
+  viewport: Ref<ToastViewportElement | undefined>
+  onViewportChange: (viewport: ToastViewportElement | undefined) => void
   onToastAdd: () => void
   onToastRemove: () => void
-  isFocusedToastEscapeKeyDownRef: React.MutableRefObject<boolean>
-  isClosePausedRef: React.MutableRefObject<boolean>
+  isFocusedToastEscapeKeyDownRef: MutableRefObject<boolean>
+  isClosePausedRef: MutableRefObject<boolean>
 }
 
 export const [provideToastProviderContext, useToastProviderContext] = createContext<ToastProviderContextValue>('Toast')
@@ -47,17 +50,20 @@ export const [provideToastProviderContext, useToastProviderContext] = createCont
 export function useToastProvider(props: ToastProviderProps) {
   const { label = 'Notification', duration = 5000, swipeDirection = 'right', swipeThreshold = 50 } = props
   const viewport = shallowRef<ToastViewportElement>()
+  const viewportRef = useRef<ToastViewportElement>()
   const toastCount = shallowRef(0)
   const isFocusedToastEscapeKeyDownRef = useRef(false)
   const isClosePausedRef = useRef(false)
+
+  Collection.provideCollectionContext(viewportRef)
 
   provideToastProviderContext({
     label,
     duration,
     swipeDirection,
     swipeThreshold,
-    toastCount: toastCount.value,
-    viewport: viewport.value,
+    toastCount,
+    viewport,
     onViewportChange(newViewport) {
       viewport.value = newViewport
     },

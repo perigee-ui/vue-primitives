@@ -2,7 +2,7 @@
 import { shallowRef } from 'vue'
 import { PopperAnchor } from '../popper/index.ts'
 import Primitive from '../primitive/Primitive.vue'
-import { composeEventHandlers, forwardRef } from '../utils/vue.ts'
+import { composeEventHandlers, useComposedElements } from '../utils/vue.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import type { PopoverTriggerEmits, PopoverTriggerProps } from './PopoverTrigger.ts'
 import { getState } from './utilts.ts'
@@ -19,9 +19,10 @@ const emit = defineEmits<PopoverTriggerEmits>()
 const context = usePopoverContext('PopoverTrigger')
 
 const $el = shallowRef<HTMLButtonElement>()
-const farwardedRef = forwardRef($el, [((v) => {
+const composedElements = useComposedElements<HTMLButtonElement>((v) => {
+  $el.value = v
   context.triggerRef.current = v
-})])
+}, v => context.triggerRef.current === v)
 
 const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('click', event)
@@ -35,7 +36,7 @@ defineExpose({
 <template>
   <Primitive
     v-if="context.hasCustomAnchor.value"
-    :ref="farwardedRef"
+    :ref="composedElements"
     :as="as"
     type="button"
     aria-haspopup="dialog"
@@ -49,7 +50,7 @@ defineExpose({
   </Primitive>
   <PopperAnchor v-else as-child>
     <Primitive
-      :ref="farwardedRef"
+      :ref="composedElements"
       :as="as"
       type="button"
       aria-haspopup="dialog"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, shallowRef } from 'vue'
 import { hideOthers } from 'aria-hidden'
-import { composeEventHandlers, forwardRef } from '../utils/vue.ts'
+import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/DismissableLayer.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import PopoverContentImpl from './PopoverContentImpl.vue'
@@ -14,7 +14,7 @@ defineOptions({
 const emit = defineEmits<PopoverContentModalEmits>()
 
 const $el = shallowRef<HTMLElement>()
-const forwardedRef = forwardRef($el)
+const forwardElement = useForwardElement($el)
 
 const context = usePopoverContext('PopoverContentModal')
 let contentRef: HTMLDivElement | undefined
@@ -53,15 +53,11 @@ onBeforeUnmount(() => {
   if (contentRef)
     hideOthers(contentRef)
 })
-
-defineExpose({
-  $el,
-})
 </script>
 
 <template>
   <PopoverContentImpl
-    :ref="forwardedRef"
+    :ref="forwardElement"
     :trap-focus="context.open.value"
     disable-outside-pointer-events
 

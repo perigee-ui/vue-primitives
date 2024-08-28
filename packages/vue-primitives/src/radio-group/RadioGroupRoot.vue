@@ -4,7 +4,7 @@ import { useDirection } from '../direction/index.ts'
 import { useControllableState } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { RovingFocusGroupRoot } from '../roving-focus/index.ts'
-import { forwardRef } from '../utils/vue.ts'
+import { useForwardElement } from '../utils/vue.ts'
 import { type RadioGroupRootEmits, type RadioGroupRootProps, provideRadioGroupContext } from './RadioGroupRoot.ts'
 
 defineOptions({
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<RadioGroupRootProps>(), {
 })
 const emit = defineEmits<RadioGroupRootEmits>()
 const $el = shallowRef<HTMLElement>()
-const forwardedRef = forwardRef($el)
+const forwardElement = useForwardElement($el)
 
 const direction = useDirection(() => props.dir)
 
@@ -54,7 +54,7 @@ defineExpose({
     :loop="loop"
   >
     <Primitive
-      :ref="forwardedRef"
+      :ref="forwardElement"
       role="radiogroup"
       :aria-required="required"
       :aria-orientation="orientation"

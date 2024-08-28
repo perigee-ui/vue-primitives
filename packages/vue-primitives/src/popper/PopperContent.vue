@@ -15,7 +15,7 @@ import {
   useFloating,
 } from '../floating/index.ts'
 import { useSize } from '../hooks/useSize.ts'
-import { forwardRef } from '../utils/vue.ts'
+import { useForwardElement } from '../utils/vue.ts'
 import { Primitive } from '../primitive/index.ts'
 import { usePopperContext } from './PopperRoot.ts'
 import { type Align, type PopperContentEmits, type PopperContentProps, type Side, provideContentContext } from './PopperContent.ts'
@@ -44,7 +44,7 @@ const emit = defineEmits<PopperContentEmits>()
 const context = usePopperContext('PopperContent')
 
 const content = shallowRef<HTMLDivElement>()
-const forwardedRef = forwardRef(content)
+const forwardElement = useForwardElement(content)
 
 const arrow = shallowRef<HTMLSpanElement>()
 
@@ -199,7 +199,7 @@ defineExpose({
     :dir="dir"
   >
     <Primitive
-      :ref="forwardedRef"
+      :ref="forwardElement"
       :data-side="placedSide"
       :data-align="placedAlign"
       v-bind="$attrs"

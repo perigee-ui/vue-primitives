@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, forwardRef } from '../utils/vue.ts'
+import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import { useNodeEventListener } from '../utils/dom.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import type { ScrollAreaScrollbarVisibleEmits, ScrollAreaScrollbarVisibleProps, Sizes } from './ScrollAreaScrollbarVisible.ts'
@@ -23,7 +23,7 @@ const isHorizontal = props.orientation === 'horizontal'
 // VISIBLE
 const context = useScrollAreaContext('ScrollAreaScrollbarVisible')
 
-const forwardedRef = forwardRef(isHorizontal ? context.scrollbarX : context.scrollbarY)
+const forwardElement = useForwardElement(isHorizontal ? context.scrollbarX : context.scrollbarY)
 
 const thumbRef = shallowRef<ScrollAreaThumbElement>()
 let pointerOffset = 0
@@ -254,7 +254,7 @@ function CompStyles() {
 
 <template>
   <Primitive
-    :ref="forwardedRef"
+    :ref="forwardElement"
     :style="CompStyles()"
     data-scrollbarimpl
     :data-orientation="isHorizontal ? 'horizontal' : 'vertical'"

@@ -3,7 +3,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { shallowRef, watchEffect } from 'vue'
 import { useStateMachine } from '../hooks/index.ts'
 import { usePresence } from '../presence/usePresence.ts'
-import { composeEventHandlers, forwardRef } from '../utils/vue.ts'
+import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import type { ScrollAreaScrollbarScrollEmits, ScrollAreaScrollbarScrollProps } from './ScrollAreaScrollbarScroll.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import ScrollAreaScrollbarVisible from './ScrollAreaScrollbarVisible.vue'
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<ScrollAreaScrollbarScrollProps>(), {
 const emit = defineEmits<ScrollAreaScrollbarScrollEmits>()
 
 const $el = shallowRef<HTMLElement>()
-const forwardedRef = forwardRef($el)
+const forwardElement = useForwardElement($el)
 
 const context = useScrollAreaContext('ScrollAreaScrollbarScroll')
 
@@ -96,16 +96,12 @@ const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
 }, () => {
   send('POINTER_LEAVE')
 })
-
-defineExpose({
-  $el,
-})
 </script>
 
 <template>
   <ScrollAreaScrollbarVisible
     v-if="isPresent"
-    :ref="forwardedRef"
+    :ref="forwardElement"
     :orientation="orientation"
     :data-state="state === 'hidden' ? 'hidden' : 'visible'"
     @pointerenter="onPointerenter"

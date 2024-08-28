@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, forwardRef } from '../utils/vue.ts'
+import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import { useEscapeKeydown } from '../hooks/useEscapeKeydown.ts'
 import { type DismissableLayerElement, type DismissableLayerEmits, type DismissableLayerProps, context, originalBodyPointerEvents } from './DismissableLayer.ts'
 import { useFocusOutside, usePointerdownOutside } from './utils.ts'
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<DismissableLayerProps>(), {
 const emit = defineEmits<DismissableLayerEmits>()
 
 const node = shallowRef<DismissableLayerElement>()
-const forwardedRef = forwardRef(node)
+const forwardElement = useForwardElement(node)
 
 const ownerDocument = () => node.value?.ownerDocument ?? globalThis?.document
 
@@ -133,7 +133,7 @@ const onPointerdownCapture = composeEventHandlers<FocusEvent>((event) => {
 
 <template>
   <Primitive
-    :ref="forwardedRef"
+    :ref="forwardElement"
     data-dismissable-layer
     :style="{
       pointerEvents: isBodyPointerEventsDisabled

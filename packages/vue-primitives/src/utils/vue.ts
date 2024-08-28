@@ -1,23 +1,33 @@
-import type { Ref } from 'vue'
+import { type ComponentPublicInstance, type Ref, isRef } from 'vue'
+import type { MutableRefObject } from '../hooks'
 
-type SetRef<T> = (el: T | undefined) => void
+export function useForwardElement<T extends HTMLElement = HTMLElement>(elRef: Ref<T | undefined> | MutableRefObject<T | undefined>) {
+  function setRef(nodeRef: Element | ComponentPublicInstance | null | undefined) {
+    let node: T | undefined = (nodeRef as ComponentPublicInstance)?.$el ?? nodeRef
 
-export function forwardRef<T = HTMLElement>(elRef: Ref<T>, elRefs?: Array<SetRef<T>>) {
-  let rawRef: T | undefined
+    if (node && node.nodeType !== 1)
+      node = undefined
+
+    if (isRef(elRef))
+      elRef.value = node
+    else
+      elRef.current = node
+  }
+
+  return setRef
+}
+
+export function useComposedElements<T extends HTMLElement = HTMLElement>(cb: (el: T | undefined) => void, eq?: (a: T | undefined) => boolean) {
   function setRef(nodeRef: any) {
-    const node = nodeRef ? nodeRef.$el : undefined
+    let node: T | undefined = (nodeRef as ComponentPublicInstance)?.$el ?? nodeRef
 
-    if (node === rawRef)
+    if (node && node.nodeType !== 1)
+      node = undefined
+
+    if (eq && eq(node))
       return
 
-    elRef.value = node
-    rawRef = node
-
-    if (elRefs) {
-      for (const set of elRefs) {
-        set(node)
-      }
-    }
+    cb(node)
   }
 
   return setRef

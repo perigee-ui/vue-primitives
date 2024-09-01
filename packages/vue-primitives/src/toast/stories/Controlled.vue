@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import './styles.css'
 import { shallowRef, watchEffect } from 'vue'
+import { isClient } from '@vueuse/core'
 import { ToastAction, ToastDescription, ToastRoot, ToastViewport, useToastProvider } from '../index.ts'
 import ToastUpgradeAvailable from './ToastUpgradeAvailable.vue'
 import ToastSubscribeSuccess from './ToastSubscribeSuccess.vue'
@@ -10,12 +11,14 @@ const isSubscribed = shallowRef(false)
 const savedCount = shallowRef(0)
 const errorCount = shallowRef(0)
 
-watchEffect((onCleanup) => {
-  if (!hasUpgrade.value) {
-    const timer = window.setTimeout(() => hasUpgrade.value = true, 10000)
-    onCleanup(() => window.clearTimeout(timer))
-  }
-})
+if (isClient) {
+  watchEffect((onCleanup) => {
+    if (!hasUpgrade.value) {
+      const timer = window.setTimeout(() => hasUpgrade.value = true, 10000)
+      onCleanup(() => window.clearTimeout(timer))
+    }
+  })
+}
 
 useToastProvider()
 </script>

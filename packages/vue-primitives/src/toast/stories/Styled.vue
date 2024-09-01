@@ -7,7 +7,7 @@ useToastProvider()
 </script>
 
 <template>
-  <div>
+  <div class="toast_box">
     <input type="text">
 
     <div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef, toValue, watch, watchEffect } from 'vue'
+import { isClient } from '@vueuse/core'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { Primitive } from '../primitive/index.ts'
 import { DismissableLayer } from '../dismissable-layer/index.ts'
@@ -67,7 +68,6 @@ function handleClose() {
 function startTimer(duration: number) {
   if (!duration || duration === Infinity)
     return
-  console.error('startTimer')
   window.clearTimeout(closeTimerRef)
   closeTimerStartTimeRef = new Date().getTime()
   closeTimerRef = window.setTimeout(handleClose, duration)
@@ -101,12 +101,14 @@ watch(context.viewport, (viewport, _, onCleanup) => {
 // start timer when toast opens or duration changes.
 // we include `open` in deps because closed !== unmounted when animating
 // so it could reopen before being completely unmounted
-watchEffect((onCleanup) => {
-  if (props.open && !context.isClosePausedRef.current) {
-    startTimer(duration())
-    onCleanup(() => window.clearTimeout(closeTimerRef))
-  }
-})
+if (isClient) {
+  watchEffect((onCleanup) => {
+    if (props.open && !context.isClosePausedRef.current) {
+      startTimer(duration())
+      onCleanup(() => window.clearTimeout(closeTimerRef))
+    }
+  })
+}
 
 const announceTextContent = computed(() => $el.value ? getAnnounceTextContent($el.value) : null)
 

@@ -32,9 +32,7 @@ useToastProvider({
 
 <template>
   <div>
-    <button
-      @click="onClick"
-    >
+    <button @click="onClick">
       Open
     </button>
     <!-- {/* eslint-disable-next-line jsx-a11y/no-onchange */} -->

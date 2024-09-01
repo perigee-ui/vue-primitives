@@ -1,5 +1,10 @@
+.toast_box {
+  position: relative;
+  min-height: 400px;
+}
+
 .toast_viewportClass {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

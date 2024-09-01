@@ -2,7 +2,7 @@
 import { shallowRef } from 'vue'
 import { CollapsibleTrigger } from '../collapsible/index.ts'
 import { ITEM_DATA_ATTR } from '../collection/Collection.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { Collection, useAccordionContext } from './AccordionRoot.ts'
 import { useAccordionItemContext } from './AccordionItem.ts'
 

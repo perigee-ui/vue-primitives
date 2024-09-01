@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Primitive } from '../primitive/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 
 defineOptions({

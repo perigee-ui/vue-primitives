@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef, watchEffect } from 'vue'
 import { usePresence } from '../presence/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import ScrollAreaScrollbarAuto from './ScrollAreaScrollbarAuto.vue'
 import type { ScrollAreaScrollbarHoverProps } from './ScrollAreaScrollbarHover.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { nextTick, shallowRef, watch, watchEffect } from 'vue'
 import { isClient } from '@vueuse/core'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import {
   AUTOFOCUS_ON_MOUNT,

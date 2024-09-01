@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import PopoverContentImpl from './PopoverContentImpl.vue'
 import type { PopoverContentNonModal } from './PopoverContentNonModal.ts'

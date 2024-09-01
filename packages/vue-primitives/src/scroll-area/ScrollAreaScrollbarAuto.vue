@@ -2,7 +2,7 @@
 import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { shallowRef } from 'vue'
 import { usePresence } from '../presence/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import type { ScrollAreaScrollbarAutoProps } from './ScrollAreaScrollbarAuto.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import ScrollAreaScrollbarVisible from './ScrollAreaScrollbarVisible.vue'

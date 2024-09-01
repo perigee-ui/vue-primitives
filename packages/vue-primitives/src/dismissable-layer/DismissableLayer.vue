@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch } from 'vue'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { useEscapeKeydown } from '../hooks/useEscapeKeydown.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { type DismissableLayerElement, type DismissableLayerEmits, type DismissableLayerProps, context, originalBodyPointerEvents } from './DismissableLayer.ts'
 import { useFocusOutside, usePointerdownOutside } from './utils.ts'
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, shallowRef, toValue, watch, watchEffect } from 'vue'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { Primitive } from '../primitive/index.ts'
 import { DismissableLayer } from '../dismissable-layer/index.ts'
 import { Portal } from '../portal/index.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { type SwipeEvent, TOAST_SWIPE_CANCEL, TOAST_SWIPE_END, TOAST_SWIPE_MOVE, TOAST_SWIPE_START, provideToastInteractiveContext } from './ToastRoot.ts'
 import { useToastProviderContext } from './index.ts'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport.ts'

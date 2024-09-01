@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/index.ts'
-import { useControllableState, useRef } from '../hooks/index.ts'
+import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { ENTRY_FOCUS, EVENT_OPTIONS, focusFirst } from './utils.ts'
 import { Collection, type RovingFocusGroupRootEmits, type RovingFocusGroupRootProps, provideRovingFocusContext, useCollection } from './RovingFocusGroupRoot.ts'
 

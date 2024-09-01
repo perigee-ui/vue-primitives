@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { Arrow } from '../arrow/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { useContentContext } from './PopperContent.ts'
 import { OPPOSITE_SIDE } from './PopperArrow.ts'
 

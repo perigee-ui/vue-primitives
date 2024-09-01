@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { type PropType, computed, watchEffect } from 'vue'
-import { useControllableState, useRef } from '../hooks/index.ts'
+import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
 import { isNumber } from '../utils/is.ts'
 import { clamp, getDecimalCount, roundValue } from '../utils/number.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { useDirection } from '../direction/Direction.ts'
 import { Primitive } from '../primitive/index.ts'
 import { ARROW_KEYS, BACK_KEYS, Collection, PAGE_KEYS, type SliderContext, type SliderRootEmits, type SliderRootProps, provideSliderContext } from './SliderRoot.ts'

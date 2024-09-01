@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePresence } from '../presence/usePresence.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import type { PopoverContentProps } from './PopoverContent.ts'

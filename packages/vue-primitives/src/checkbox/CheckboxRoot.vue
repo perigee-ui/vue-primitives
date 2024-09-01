@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, shallowRef, useAttrs, watchEffect } from 'vue'
-import { useControllableState } from '../hooks/index.ts'
+import { useControllableState, useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { type CheckboxRootEmits, type CheckboxRootProps, type ClickEvent, provideCheckboxContext } from './CheckboxRoot.ts'
 import { getState, isIndeterminate } from './utils.ts'
 import BubbleInput from './BubbleInput.vue'

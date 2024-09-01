@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, shallowRef, watch, watchEffect } from 'vue'
 import { Primitive } from '../primitive/index.ts'
-import { useId } from '../hooks/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { useForwardElement, useId } from '../hooks/index.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { ITEM_DATA_ATTR } from '../collection/Collection.ts'
 import { focusFirst, getFocusIntent, wrapArray } from './utils.ts'
 import { Collection, type ItemData, useCollection, useRovingFocusContext } from './RovingFocusGroupRoot.ts'

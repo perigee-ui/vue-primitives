@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, shallowRef } from 'vue'
 import { RovingFocusGroupItem } from '../roving-focus/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { useRadioGroupContext } from './RadioGroupRoot.ts'
 import { ARROW_KEYS, type RadioGroupItemEmits, type RadioGroupItemProps } from './RadioGroupItem.ts'
 import Radio from './Radio.vue'

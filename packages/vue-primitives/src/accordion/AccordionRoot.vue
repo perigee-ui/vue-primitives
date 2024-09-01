@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends AccordionType">
 import { computed } from 'vue'
 import { useDirection } from '../direction/Direction.ts'
-import { useControllableState, useId, useRef } from '../hooks/index.ts'
+import { useControllableState, useForwardElement, useId, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import { arrayify } from '../utils/array.ts'
 import { ACCORDION_KEYS, type AccordionRootEmits, type AccordionRootProps, type AccordionType, Collection, provideAccordionContext, useCollection } from './AccordionRoot.ts'
 

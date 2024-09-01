@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/index.ts'
-import Primitive from '../primitive/Primitive.vue'
-import { useForwardElement } from '../utils/vue.ts'
+import { Primitive } from '../primitive/index.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import {
   type ScrollAreaElement,
   type ScrollAreaRootProps,

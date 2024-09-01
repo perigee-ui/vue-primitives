@@ -2,7 +2,7 @@
 import { shallowRef } from 'vue'
 import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { useCheckboxContext } from './CheckboxRoot.ts'
 import type { CheckboxIndicatorProps } from './CheckboxIndicator.ts'
 import { getState, isIndeterminate } from './utils.ts'

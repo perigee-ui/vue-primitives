@@ -14,8 +14,7 @@ import {
   size,
   useFloating,
 } from '../floating/index.ts'
-import { useSize } from '../hooks/useSize.ts'
-import { useForwardElement } from '../utils/vue.ts'
+import { useForwardElement, useSize } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { usePopperContext } from './PopperRoot.ts'
 import { type Align, type PopperContentEmits, type PopperContentProps, type Side, provideContentContext } from './PopperContent.ts'

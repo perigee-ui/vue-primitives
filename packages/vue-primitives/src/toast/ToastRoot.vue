@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { useControllableState } from '../hooks/index.ts'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { useControllableState, useForwardElement } from '../hooks/index.ts'
 import { usePresence } from '../presence/index.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import type { SwipeEvent, ToastRootEmits, ToastRootProps } from './ToastRoot.ts'
 import ToastRootImpl from './ToastRootImpl.vue'
 
 defineOptions({
   name: 'ToastRoot',
 })
-
 const props = withDefaults(defineProps<ToastRootProps>(), {
   open: undefined,
   defaultOpen: true,
 })
 const emit = defineEmits<ToastRootEmits>()
-
 const open = useControllableState(props, v => emit('update:open', v), 'open', props.defaultOpen)
 
 const $el = shallowRef<HTMLLIElement>()

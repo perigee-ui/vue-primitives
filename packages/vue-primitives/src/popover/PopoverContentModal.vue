@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onBeforeUnmount, shallowRef } from 'vue'
 import { hideOthers } from 'aria-hidden'
-import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
 import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/DismissableLayer.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import PopoverContentImpl from './PopoverContentImpl.vue'
 import type { PopoverContentModalEmits } from './PopoverContentModal.ts'

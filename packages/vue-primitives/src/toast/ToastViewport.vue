@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, watchEffect } from 'vue'
 import { isClient } from '@vueuse/core'
-import { useComposedElements } from '../utils/vue.ts'
+import { useComposedElements } from '../hooks/index.ts'
 import { DismissableLayerBranch } from '../dismissable-layer/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { VisuallyHidden } from '../visually-hidden/index.ts'

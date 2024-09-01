@@ -1,4 +1,4 @@
-export { useToastProvider, provideToastProviderContext, useToastProviderContext } from './ToastProvider.ts'
+export { useToastProvider, provideToastProviderContext, useToastProviderContext, type ToastProviderProps } from './ToastProvider.ts'
 export { default as ToastViewport } from './ToastViewport.vue'
 export { default as ToastRoot } from './ToastRoot.vue'
 export { default as ToastClose } from './ToastClose.vue'

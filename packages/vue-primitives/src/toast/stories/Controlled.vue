@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import './styles.css'
 import { shallowRef, watchEffect } from 'vue'
-import { useToastProvider } from '../ToastProvider.ts'
-import ToastViewport from '../ToastViewport.vue'
-import ToastRoot from '../ToastRoot.vue'
-import { ToastAction, ToastDescription } from '../index.ts'
+import { ToastAction, ToastDescription, ToastRoot, ToastViewport, useToastProvider } from '../index.ts'
 import ToastUpgradeAvailable from './ToastUpgradeAvailable.vue'
 import ToastSubscribeSuccess from './ToastSubscribeSuccess.vue'
 

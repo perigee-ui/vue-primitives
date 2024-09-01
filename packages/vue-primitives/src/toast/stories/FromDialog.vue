@@ -2,8 +2,7 @@
 import './styles.css'
 import { shallowRef } from 'vue'
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogRoot, DialogTitle, DialogTrigger } from '../../dialog/index.ts'
-import { useToastProvider } from '../ToastProvider.ts'
-import { ToastAction, ToastDescription, ToastRoot, ToastViewport } from '../index.ts'
+import { ToastAction, ToastDescription, ToastRoot, ToastViewport, useToastProvider } from '../index.ts'
 
 const open = shallowRef(false)
 

@@ -1,4 +1,4 @@
-import { type Ref, shallowRef } from 'vue'
+import { type MaybeRef, type MaybeRefOrGetter, type Ref, shallowRef } from 'vue'
 import { type MutableRefObject, createContext, useRef } from '../hooks/index.ts'
 import { Collection } from './collection.ts'
 
@@ -18,12 +18,12 @@ export interface ToastProviderProps {
    * Direction of pointer swipe that should close the toast.
    * @defaultValue 'right'
    */
-  swipeDirection?: SwipeDirection
+  swipeDirection?: MaybeRef<SwipeDirection>
   /**
    * Distance in pixels that the swipe must pass before a close is triggered.
    * @defaultValue 50
    */
-  swipeThreshold?: number
+  swipeThreshold?: MaybeRefOrGetter<number>
 }
 
 export type SwipeDirection = 'up' | 'down' | 'left' | 'right'
@@ -32,8 +32,8 @@ export type ToastViewportElement = HTMLOListElement
 export interface ToastProviderContextValue {
   label: string
   duration: number
-  swipeDirection: SwipeDirection
-  swipeThreshold: number
+  swipeDirection: Ref<SwipeDirection>
+  swipeThreshold: MaybeRefOrGetter<number>
   toastCount: Ref<number>
   viewport: Ref<ToastViewportElement | undefined>
   onViewportChange: (viewport: ToastViewportElement | undefined) => void
@@ -58,7 +58,7 @@ export function useToastProvider(props: ToastProviderProps = {}) {
   provideToastProviderContext({
     label,
     duration,
-    swipeDirection,
+    swipeDirection: shallowRef(swipeDirection),
     swipeThreshold,
     toastCount,
     viewport,

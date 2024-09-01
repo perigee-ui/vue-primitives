@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
 import { Portal } from '../portal/index.ts'
 import { VisuallyHidden } from '../visually-hidden/index.ts'
-import { useToastProviderContext } from './ToastProvider.ts'
+import { useToastProviderContext } from './index.ts'
 import { useNextFrame } from './utils.ts'
 
 defineOptions({

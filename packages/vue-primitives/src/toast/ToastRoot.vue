@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef, watch, watchEffect } from 'vue'
+import { computed, shallowRef, toValue, watch, watchEffect } from 'vue'
 import { useControllableState } from '../hooks/index.ts'
 import { composeEventHandlers, useForwardElement } from '../utils/vue.ts'
 import { Primitive } from '../primitive/index.ts'
@@ -7,7 +7,7 @@ import { DismissableLayer } from '../dismissable-layer/index.ts'
 import { Portal } from '../portal/index.ts'
 import { usePresence } from '../presence/index.ts'
 import { type SwipeEvent, TOAST_SWIPE_CANCEL, TOAST_SWIPE_END, TOAST_SWIPE_MOVE, TOAST_SWIPE_START, type ToastRootEmits, type ToastRootProps, provideToastInteractiveContext } from './ToastRoot.ts'
-import { useToastProviderContext } from './ToastProvider.ts'
+import { useToastProviderContext } from './index.ts'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport.ts'
 import { getAnnounceTextContent, handleAndDispatchCustomEvent, isDeltaInDirection, useNextFrame } from './utils.ts'
 import ToastAnnounce from './ToastAnnounce.vue'
@@ -237,8 +237,8 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
   const x = event.clientX - pointerStartRef.x
   const y = event.clientY - pointerStartRef.y
   const hasSwipeMoveStarted = Boolean(swipeDeltaRef)
-  const isHorizontalSwipe = ['left', 'right'].includes(context.swipeDirection)
-  const clamp = ['left', 'up'].includes(context.swipeDirection)
+  const isHorizontalSwipe = ['left', 'right'].includes(context.swipeDirection.value)
+  const clamp = ['left', 'up'].includes(context.swipeDirection.value)
     ? Math.min
     : Math.max
   const clampedX = isHorizontalSwipe ? clamp(0, x) : 0
@@ -250,7 +250,7 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
     swipeDeltaRef = delta
     handleAndDispatchCustomEvent(TOAST_SWIPE_MOVE, onSwipeMove, eventDetail)
   }
-  else if (isDeltaInDirection(delta, context.swipeDirection, moveStartBuffer)) {
+  else if (isDeltaInDirection(delta, context.swipeDirection.value, moveStartBuffer)) {
     swipeDeltaRef = delta
     handleAndDispatchCustomEvent(TOAST_SWIPE_START, onSwipeStart, eventDetail);
     (event.target as HTMLElement).setPointerCapture(event.pointerId)
@@ -278,7 +278,7 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
 
   const toast = event.currentTarget
   const eventDetail = { originalEvent: event, delta }
-  if (isDeltaInDirection(delta, context.swipeDirection, context.swipeThreshold)) {
+  if (isDeltaInDirection(delta, context.swipeDirection.value, toValue(context.swipeThreshold))) {
     handleAndDispatchCustomEvent(TOAST_SWIPE_END, onSwipeEnd, eventDetail)
   }
   else {
@@ -327,7 +327,7 @@ defineExpose({
           aria-atomic
           tabindex="0"
           :data-state="open ? 'open' : 'closed'"
-          :data-swipe-direction="context.swipeDirection"
+          :data-swipe-direction="context.swipeDirection.value"
           v-bind="$attrs"
           style="user-select: none; touch-action: none;"
           @keydown="onKeydown"

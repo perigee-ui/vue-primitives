@@ -7,7 +7,7 @@ import { Primitive } from '../primitive/index.ts'
 import { VisuallyHidden } from '../visually-hidden/index.ts'
 import { focusFirst, getTabbableCandidates } from './utils.ts'
 import { type ToastViewportProps, VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport.ts'
-import { useToastProviderContext } from './ToastProvider.ts'
+import { useToastProviderContext } from './index.ts'
 import { Collection, useCollection } from './collection.ts'
 
 defineOptions({

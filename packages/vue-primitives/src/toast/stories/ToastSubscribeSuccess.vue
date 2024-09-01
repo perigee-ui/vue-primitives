@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ToastDescription, ToastRoot, ToastTitle } from '../index.ts'
-import ToastClose from '../ToastClose.vue'
+import { ToastClose, ToastDescription, ToastRoot, ToastTitle } from '../index.ts'
 </script>
 
 <template>

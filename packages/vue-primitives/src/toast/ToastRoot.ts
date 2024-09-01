@@ -1,16 +1,6 @@
-import type { DismissableLayerEmits } from '../dismissable-layer/index.ts'
 import { createContext } from '../hooks/index.ts'
-import type { PrimitiveProps } from '../primitive/Primitive.ts'
 
 export interface ToastRootProps {
-  as?: PrimitiveProps['as']
-  type?: 'foreground' | 'background'
-  /**
-   * Time in milliseconds that toast should remain visible for. Overrides value
-   * given to `ToastProvider`.
-   */
-  duration?: number
-
   open?: boolean
   defaultOpen?: boolean
   /**
@@ -28,18 +18,11 @@ export type SwipeEvent = { currentTarget: EventTarget & HTMLLIElement } & Omit<
 // eslint-disable-next-line ts/consistent-type-definitions
 export type ToastRootEmits = {
   'update:open': [open: boolean]
-  'escapeKeydown': DismissableLayerEmits['escapeKeydown']
-  'pause': []
-  'resume': []
+
   'swipeStart': [event: SwipeEvent]
   'swipeMove': [event: SwipeEvent]
   'swipeEnd': [event: SwipeEvent]
   'swipeCancel': [event: SwipeEvent]
-
-  'keydown': [event: KeyboardEvent]
-  'pointerdown': [event: PointerEvent]
-  'pointermove': [event: PointerEvent]
-  'pointerup': [event: PointerEvent]
 }
 
 export const TOAST_SWIPE_START = 'toast.swipeStart'

@@ -21,6 +21,12 @@ Docs: [Nuxt playground](https://vue-primitives-docs.netlify.app/)
 
 Storybook: [Storybook](https://vue-primitives.netlify.app)
 
+## Install
+
+```sh
+pnpm i @perigee/vue-primitives
+```
+
 ---
 
 # TODO
@@ -41,8 +47,8 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled) | ✓      |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)           | ✓      |
 | DropdownMenu                                                                                  | 🚧      |
-| Form                                                                                          | 🚧      |
-| HoverCard                                                                                     | 🚧      |
+| Form                                                                                          | ✖️      |
+| [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)  | ✓      |
 | [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)             | ✓      |
 | Menubar                                                                                       | 🚧      |
 | NavigationMenu                                                                                | 🚧      |

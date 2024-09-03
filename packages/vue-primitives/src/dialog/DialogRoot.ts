@@ -14,7 +14,7 @@ export type DialogRootEmits = {
 
 export type DialogContentElement = HTMLDivElement
 
-interface DialogContextValue {
+export interface DialogContext {
   triggerRef: MutableRefObject<HTMLButtonElement | undefined>
   contentRef: MutableRefObject<DialogContentElement | undefined>
   contentId?: string
@@ -26,4 +26,4 @@ interface DialogContextValue {
   modal: boolean
 }
 
-export const [provideDialogContext, useDialogContext] = createContext<DialogContextValue>('Dialog')
+export const [provideDialogContext, useDialogContext] = createContext<DialogContext>('Dialog')

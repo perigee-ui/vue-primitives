@@ -14,7 +14,6 @@ defineOptions({
 })
 
 defineProps<TooltipTriggerProps>()
-const attrs = useAttrs()
 
 const context = useTooltipContext('TooltipTrigger')
 const providerContext = useTooltipProviderContext('TooltipTrigger')
@@ -100,15 +99,7 @@ defineExpose({
       :aria-describedby="context.open.value ? context.contentId : undefined"
       :data-state="context.stateAttribute()"
       data-grace-area-trigger
-      v-bind="{
-        ...attrs,
-        onPointermove,
-        onPointerleave,
-        onPointerdown,
-        onFocus,
-        onBlur,
-        onClick,
-      }"
+      v-bind="$attrs"
     >
       <slot />
     </Primitive>

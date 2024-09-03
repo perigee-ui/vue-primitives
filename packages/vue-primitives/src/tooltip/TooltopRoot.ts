@@ -26,7 +26,7 @@ export const TOOLTIP_OPEN = 'tooltip.open'
 
 type TooltipTriggerElement = HTMLButtonElement
 
-export interface TooltipContextValue {
+export interface TooltipContext {
   contentId?: string
   open: Ref<boolean>
   stateAttribute: () => 'closed' | 'delayed-open' | 'instant-open'
@@ -39,4 +39,4 @@ export interface TooltipContextValue {
   disableHoverableContent: () => boolean
 }
 
-export const [provideTooltipContext, useTooltipContext] = createContext<TooltipContextValue>('Tooltip')
+export const [provideTooltipContext, useTooltipContext] = createContext<TooltipContext>('Tooltip')

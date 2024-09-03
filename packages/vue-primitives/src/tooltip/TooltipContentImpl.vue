@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, shallowRef, useAttrs, watch } from 'vue'
+import { onBeforeUnmount, onMounted, onUnmounted, shallowRef, useAttrs, watch } from 'vue'
 import DismissableLayer from '../dismissable-layer/DismissableLayer.vue'
 import { PopperContent } from '../popper/index.ts'
 import type { FocusOutsideEvent } from '../dismissable-layer/DismissableLayer.ts'

@@ -20,7 +20,7 @@ export interface TooltipProviderProps {
   disableHoverableContent?: boolean
 }
 
-export interface TooltipProviderContextValue {
+export interface TooltipProviderContext {
   isOpenDelayed: Ref<boolean>
   delayDuration: number
   onOpen: () => void
@@ -30,7 +30,7 @@ export interface TooltipProviderContextValue {
   disableHoverableContent: boolean
 }
 
-export const [provideTooltipProviderContext, useTooltipProviderContext] = createContext<TooltipProviderContextValue>('Tooltip')
+export const [provideTooltipProviderContext, useTooltipProviderContext] = createContext<TooltipProviderContext>('Tooltip')
 
 export function useTooltipProvider({
   delayDuration = 700,
@@ -56,12 +56,9 @@ export function useTooltipProvider({
     },
     onClose() {
       window.clearTimeout(skipDelayTimerRef)
-      skipDelayTimerRef = window.setTimeout(
-        () => {
-          isOpenDelayed.value = true
-        },
-        skipDelayDuration,
-      )
+      skipDelayTimerRef = window.setTimeout(() => {
+        isOpenDelayed.value = true
+      }, skipDelayDuration)
     },
     isPointerInTransitRef,
     onPointerInTransitChange(inTransit: boolean) {

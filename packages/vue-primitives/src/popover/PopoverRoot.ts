@@ -16,7 +16,7 @@ export type PopoverRootEmits = {
   'update:open': [value: boolean]
 }
 
-export interface PopoverContextValue {
+export interface PopoverContext {
   triggerRef: MutableRefObject<HTMLButtonElement | undefined>
   contentId?: string
   open: Ref<boolean>
@@ -28,4 +28,4 @@ export interface PopoverContextValue {
   modal: boolean
 }
 
-export const [providePopoverContext, usePopoverContext] = createContext<PopoverContextValue>('Poppover')
+export const [providePopoverContext, usePopoverContext] = createContext<PopoverContext>('Poppover')

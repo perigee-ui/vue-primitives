@@ -6,6 +6,7 @@ import { Primitive } from '../primitive/index.ts'
 import { DismissableLayer } from '../dismissable-layer/index.ts'
 import { Portal } from '../portal/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
+import { ITEM_DATA_ATTR } from '../collection/Collection.ts'
 import { type SwipeEvent, TOAST_SWIPE_CANCEL, TOAST_SWIPE_END, TOAST_SWIPE_MOVE, TOAST_SWIPE_START, provideToastInteractiveContext } from './ToastRoot.ts'
 import { useToastProviderContext } from './index.ts'
 import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport.ts'
@@ -274,6 +275,7 @@ defineExpose({
           :data-swipe-direction="context.swipeDirection.value"
           v-bind="$attrs"
           style="user-select: none; touch-action: none;"
+          :[ITEM_DATA_ATTR]="true"
           @keydown="onKeydown"
           @pointerdown="onPointerdown"
           @pointermove="onPointermove"

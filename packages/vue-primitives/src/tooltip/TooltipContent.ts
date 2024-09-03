@@ -1,4 +1,4 @@
-import type { DismissableLayerEmits } from '../dismissable-layer/DismissableLayer.ts'
+import type { PopperContentProps } from '../popper/PopperContent.ts'
 import type { TooltipContentImplProps } from './TooltipContentImpl.ts'
 
 export interface TooltipContentProps extends TooltipContentImplProps {
@@ -7,18 +7,6 @@ export interface TooltipContentProps extends TooltipContentImplProps {
    * controlling animation with React animation libraries.
    */
   forceMount?: true
-}
 
-// eslint-disable-next-line ts/consistent-type-definitions
-export type TooltipContentEmits = {
-  /**
-   * Event handler called when the escape key is down.
-   * Can be prevented.
-   */
-  escapeKeydown: DismissableLayerEmits['escapeKeydown']
-  /**
-   * Event handler called when the a `pointerdown` event happens outside of the `Tooltip`.
-   * Can be prevented.
-   */
-  pointerdownOutside: DismissableLayerEmits['pointerdownOutside']
+  side?: PopperContentProps['side']
 }

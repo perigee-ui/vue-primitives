@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { createContext } from '../hooks/index.ts'
 
-export interface TooltipProps {
+export interface TooltipRootProps {
   open?: boolean
   defaultOpen?: boolean
   /**
@@ -18,7 +18,7 @@ export interface TooltipProps {
 }
 
 // eslint-disable-next-line ts/consistent-type-definitions
-export type TooltipEmits = {
+export type TooltipRootEmits = {
   'update:open': [open: boolean]
 }
 
@@ -36,7 +36,7 @@ export interface TooltipContext {
   onTriggerLeave: () => void
   onOpen: () => void
   onClose: () => void
-  disableHoverableContent: () => boolean
+  disableHoverableContent: boolean
 }
 
 export const [provideTooltipContext, useTooltipContext] = createContext<TooltipContext>('Tooltip')

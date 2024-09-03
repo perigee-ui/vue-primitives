@@ -4,26 +4,26 @@ import { tryOnScopeDispose } from '@vueuse/core'
 import { useControllableState } from '../hooks/index.ts'
 import { PopperRoot } from '../popper/index.ts'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
-import { TOOLTIP_OPEN, type TooltipEmits, type TooltipProps, provideTooltipContext } from './TooltopRoot.ts'
+import { TOOLTIP_OPEN, type TooltipRootEmits, type TooltipRootProps, provideTooltipContext } from './TooltipRoot.ts'
 
 defineOptions({
-  name: 'Tooltip',
+  name: 'TooltipRoot',
 })
 
-const props = withDefaults(defineProps<TooltipProps>(), {
+const props = withDefaults(defineProps<TooltipRootProps>(), {
   open: undefined,
   defaultOpen: false,
   delayDuration: undefined,
   disableHoverableContent: undefined,
 })
-const emit = defineEmits<TooltipEmits>()
+const emit = defineEmits<TooltipRootEmits>()
 
 const providerContext = useTooltipProviderContext('Tooltip')
 const trigger = shallowRef<HTMLButtonElement>()
 
 let openTimerRef = 0
 
-const disableHoverableContent = () => props.disableHoverableContent ?? providerContext.disableHoverableContent
+const disableHoverableContent = props.disableHoverableContent ?? providerContext.disableHoverableContent
 const delayDuration = () => props.delayDuration ?? providerContext.delayDuration
 let wasOpenDelayedRef = false
 
@@ -85,7 +85,7 @@ provideTooltipContext({
     else handleOpen()
   },
   onTriggerLeave() {
-    if (disableHoverableContent()) {
+    if (disableHoverableContent) {
       handleClose()
     }
     else {

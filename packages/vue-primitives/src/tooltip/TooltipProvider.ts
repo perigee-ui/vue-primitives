@@ -36,7 +36,7 @@ export function useTooltipProvider({
   delayDuration = 700,
   skipDelayDuration = 300,
   disableHoverableContent = false,
-}: TooltipProviderProps) {
+}: TooltipProviderProps = {}) {
   const isOpenDelayed = shallowRef(true)
   const isPointerInTransitRef = useRef(false)
   let skipDelayTimerRef = 0

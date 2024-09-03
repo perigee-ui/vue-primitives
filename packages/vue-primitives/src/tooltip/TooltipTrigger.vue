@@ -1,27 +1,28 @@
 <script setup lang="ts">
-import { onBeforeUnmount, useAttrs } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { PopperAnchor } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
-import { isFunction } from '../utils/is.ts'
+import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
-import type { TooltipTriggerProps } from './TooltipTrigger'
-import { useTooltipContext } from './TooltopRoot.ts'
+import type { TooltipTriggerEmits, TooltipTriggerProps } from './TooltipTrigger.ts'
+import { useTooltipContext } from './TooltipRoot.ts'
 
 defineOptions({
   name: 'TooltipTrigger',
   inheritAttrs: false,
 })
 
-defineProps<TooltipTriggerProps>()
+withDefaults(defineProps<TooltipTriggerProps>(), {
+  as: 'button',
+})
+
+const emit = defineEmits<TooltipTriggerEmits>()
 
 const context = useTooltipContext('TooltipTrigger')
 const providerContext = useTooltipProviderContext('TooltipTrigger')
 
-function onTriggerChange(nodeRef: any) {
-  const node = nodeRef ? nodeRef.$el : undefined
-  context.onTriggerChange(node)
-}
+const forwardElement = useForwardElement(context.trigger)
 
 let isPointerDownRef = false
 let hasPointerMoveOpenedRef = false
@@ -35,11 +36,11 @@ onBeforeUnmount(() => {
 })
 
 const onPointermove = composeEventHandlers<PointerEvent>((event) => {
-  if (isFunction(attrs.onPointermove))
-    attrs.onPointermove(event)
+  emit('pointermove', event)
 }, (event) => {
   if (event.pointerType === 'touch')
     return
+
   if (
     !hasPointerMoveOpenedRef
     && !providerContext.isPointerInTransitRef.current
@@ -50,39 +51,32 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
 })
 
 const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
-  if (isFunction(attrs.onPointerleave))
-    attrs.onPointerleave(event)
+  emit('pointerleave', event)
 }, () => {
   context.onTriggerLeave()
   hasPointerMoveOpenedRef = false
 })
 
 const onPointerdown = composeEventHandlers<PointerEvent>((event) => {
-  if (isFunction(attrs.onPointerdown))
-    attrs.onPointerdown(event)
+  emit('pointerdown', event)
 }, () => {
   isPointerDownRef = true
   document.addEventListener('pointerup', handlePointerUp, { once: true })
 })
 
-const onFocus = composeEventHandlers((event) => {
-  if (isFunction(attrs.onFocus))
-    attrs.onFocus(event)
+const onFocus = composeEventHandlers<FocusEvent>((event) => {
+  emit('focus', event)
 }, () => {
   if (!isPointerDownRef)
     context.onOpen()
 })
 
-const onBlur = composeEventHandlers((event) => {
-  if (isFunction(attrs.onBlur)) {
-    attrs.onBlur(event)
-  }
+const onBlur = composeEventHandlers<FocusEvent>((event) => {
+  emit('blur', event)
 }, context.onClose)
 
-const onClick = composeEventHandlers((event) => {
-  if (isFunction(attrs.onClick)) {
-    attrs.onClick(event)
-  }
+const onClick = composeEventHandlers<MouseEvent>((event) => {
+  emit('click', event)
 }, context.onClose)
 
 defineExpose({
@@ -93,13 +87,18 @@ defineExpose({
 <template>
   <PopperAnchor as-child>
     <Primitive
-      :ref="onTriggerChange"
+      :ref="forwardElement"
       :as="as"
-      :as-child="asChild"
       :aria-describedby="context.open.value ? context.contentId : undefined"
       :data-state="context.stateAttribute()"
       data-grace-area-trigger
       v-bind="$attrs"
+      @pointermove="onPointermove"
+      @pointerleave="onPointerleave"
+      @pointerdown="onPointerdown"
+      @focus="onFocus"
+      @blur="onBlur"
+      @click="onClick"
     >
       <slot />
     </Primitive>

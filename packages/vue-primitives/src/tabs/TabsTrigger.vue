@@ -73,7 +73,6 @@ defineExpose({
       :id="triggerId"
       :ref="forwardElement"
       :as="as"
-      :as-child="asChild"
       v-bind="$attrs"
       type="button"
       role="tab"

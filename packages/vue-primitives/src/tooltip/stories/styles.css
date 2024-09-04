@@ -56,10 +56,10 @@
     animation: tooltip_scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
   &[data-state="instant-open"] {
-    animation: tooltip_fadeIn 0.2s ease-out;
+    animation: tooltip_fadeIn 0.3s ease-out;
   }
   &[data-state="closed"] {
-    animation: tooltip_fadeOut 0.2s ease-out;
+    animation: tooltip_fadeOut 0.3s ease-out;
   }
 }
 

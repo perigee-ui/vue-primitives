@@ -11,7 +11,7 @@ useTooltipProvider()
     <div
       :style="{
         display: 'flex',
-        width: '100vw',
+        minWidth: '500px',
         height: '100vh',
         alignItems: 'center',
         justifyContent: 'center',

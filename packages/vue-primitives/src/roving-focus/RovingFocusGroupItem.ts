@@ -2,7 +2,7 @@ import type { PrimitiveProps } from '../primitive/index.ts'
 
 export interface RovingFocusGroupItemProps {
   as?: PrimitiveProps['as']
-  tabStopId: string
+  tabStopId?: string
   focusable?: boolean
   active?: boolean
 }

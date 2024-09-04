@@ -86,6 +86,10 @@ if (isClient) {
     })
   })
 }
+
+defineExpose({
+  $el: content,
+})
 </script>
 
 <template>

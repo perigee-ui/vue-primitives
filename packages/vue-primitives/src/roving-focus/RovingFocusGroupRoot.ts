@@ -21,8 +21,8 @@ export interface RovingFocusGroupRootProps {
    */
   loop?: boolean
 
-  currentTabStopId: string | undefined
-  defaultCurrentTabStopId: string
+  currentTabStopId?: string | undefined
+  defaultCurrentTabStopId?: string
   preventScrollOnEntryFocus?: boolean
 }
 

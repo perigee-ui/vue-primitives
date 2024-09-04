@@ -263,7 +263,7 @@ defineExpose({
     </ToastAnnounce>
 
     <Portal :to="context.viewport.value">
-      <DismissableLayer as-child @escape-keydown="onEscapeKeydown">
+      <DismissableLayer as="template" @escape-keydown="onEscapeKeydown">
         <Primitive
           :ref="forwardElement"
           :as="as"

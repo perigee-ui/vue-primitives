@@ -85,7 +85,7 @@ defineExpose({
 </script>
 
 <template>
-  <PopperAnchor as-child>
+  <PopperAnchor as="template">
     <Primitive
       :ref="forwardElement"
       :as="as"

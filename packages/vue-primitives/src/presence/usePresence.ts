@@ -112,7 +112,5 @@ export function usePresence(
     }
   })
 
-  const isPresent = computed(() => ['mounted', 'unmountSuspended'].includes(state.value))
-
-  return isPresent
+  return computed(() => state.value === 'mounted' || state.value === 'unmountSuspended')
 }

@@ -49,7 +49,7 @@ defineExpose({
   >
     <slot />
   </Primitive>
-  <PopperAnchor v-else as-child>
+  <PopperAnchor v-else as="template">
     <Primitive
       :ref="composedElements"
       :as="as"

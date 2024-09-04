@@ -26,7 +26,7 @@ provideToolbarContext({
 
 <template>
   <RovingFocusGroupRoot
-    as-child
+    as="template"
     :orientation="orientation"
     :dir="direction"
     :loop="loop"

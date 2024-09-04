@@ -69,7 +69,7 @@ defineExpose({
 
 <template>
   <DismissableLayer
-    as-child
+    as="template"
     :disable-outside-pointer-events="false"
     @escape-keydown="emit('escapeKeydown', $event)"
     @pointerdown-outside="emit('pointerdownOutside', $event)"

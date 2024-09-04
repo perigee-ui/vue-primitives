@@ -65,7 +65,7 @@ defineExpose({
 
 <template>
   <RovingFocusGroupItem
-    as-child
+    as="template"
     :focusable="!disabled"
     :active="isSelected"
   >

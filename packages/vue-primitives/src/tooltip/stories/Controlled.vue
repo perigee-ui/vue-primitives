@@ -11,7 +11,7 @@ useTooltipProvider()
 <template>
   <div>
     <TooltipRoot v-model:open="open">
-      <TooltipTrigger class="tooltip_triggerClass">
+      <TooltipTrigger class="tooltip_triggerClass" :style="{ margin: '100px' }">
         I'm controlled, look I'm {{ open ? 'open' : 'closed' }}
       </TooltipTrigger>
       <TooltipPortal>

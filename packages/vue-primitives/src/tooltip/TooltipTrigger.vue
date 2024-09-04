@@ -41,13 +41,11 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
   if (event.pointerType === 'touch')
     return
 
-  if (
-    !hasPointerMoveOpenedRef
-    && !providerContext.isPointerInTransitRef.current
-  ) {
-    context.onTriggerEnter()
-    hasPointerMoveOpenedRef = true
-  }
+  if (hasPointerMoveOpenedRef || providerContext.isPointerInTransitRef.current)
+    return
+
+  context.onTriggerEnter()
+  hasPointerMoveOpenedRef = true
 })
 
 const onPointerleave = composeEventHandlers<PointerEvent>((event) => {

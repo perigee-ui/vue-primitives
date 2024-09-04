@@ -30,7 +30,7 @@ defineExpose({
 </script>
 
 <template>
-  <Comp v-if="isPresent" :ref="forwardElement">
+  <Comp v-if="isPresent" :ref="forwardElement" :side="side">
     <slot />
   </Comp>
 </template>

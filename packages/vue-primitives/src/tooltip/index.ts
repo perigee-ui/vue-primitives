@@ -9,6 +9,7 @@ export {
 export { default as TooltipRoot } from './TooltipRoot.vue'
 export { default as TooltipTrigger } from './TooltipTrigger.vue'
 export { default as TooltipContent } from './TooltipContent.vue'
+export { default as TooltipContentAriaLabel } from './TooltipContentAriaLabel.vue'
 export { Portal as TooltipPortal } from '../portal/index.ts'
 export { PopperArrow as TooltipArrow } from '../popper/index.ts'
 

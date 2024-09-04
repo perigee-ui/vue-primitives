@@ -20,11 +20,9 @@ const pointerGraceArea = shallowRef<Polygon>()
 const content = shallowRef<HTMLElement>()
 const forwardElement = useForwardElement(content)
 
-const { onPointerInTransitChange } = providerContext
-
 function handleRemoveGraceArea() {
   pointerGraceArea.value = undefined
-  onPointerInTransitChange(false)
+  providerContext.onPointerInTransitChange(false)
 }
 
 function handleCreateGraceArea(event: PointerEvent, hoverTarget: HTMLElement) {
@@ -35,7 +33,7 @@ function handleCreateGraceArea(event: PointerEvent, hoverTarget: HTMLElement) {
   const hoverTargetPoints = getPointsFromRect(hoverTarget.getBoundingClientRect())
   const graceArea = getHull([...paddedExitPoints, ...hoverTargetPoints])
   pointerGraceArea.value = graceArea
-  onPointerInTransitChange(true)
+  providerContext.onPointerInTransitChange(true)
 }
 
 onBeforeUnmount(() => {

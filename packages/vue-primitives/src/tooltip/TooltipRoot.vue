@@ -80,7 +80,7 @@ provideTooltipContext({
     trigger.value = v
   },
   onTriggerEnter() {
-    if (providerContext.isOpenDelayed)
+    if (providerContext.isOpenDelayed.value)
       handleDelayedOpen()
     else handleOpen()
   },

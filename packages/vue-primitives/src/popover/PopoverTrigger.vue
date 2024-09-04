@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { PopperAnchor } from '../popper/index.ts'
-import Primitive from '../primitive/Primitive.vue'
+import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'

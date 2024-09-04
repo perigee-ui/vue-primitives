@@ -16,7 +16,7 @@ export type TooltipContentImplEmits = {
 }
 
 export interface TooltipContentContext {
-  id?: string
+  id: string
   label: () => string | undefined
 }
 

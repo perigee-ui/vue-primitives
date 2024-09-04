@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { tryOnScopeDispose } from '@vueuse/core'
-import { useControllableState } from '../hooks/index.ts'
+import { useControllableState, useId } from '../hooks/index.ts'
 import { PopperRoot } from '../popper/index.ts'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
 import { TOOLTIP_OPEN, type TooltipRootEmits, type TooltipRootProps, provideTooltipContext } from './TooltipRoot.ts'
@@ -70,7 +70,7 @@ tryOnScopeDispose(() => {
 })
 
 provideTooltipContext({
-  contentId: undefined,
+  contentId: useId(),
   open,
   stateAttribute() {
     return open.value ? (wasOpenDelayedRef ? 'delayed-open' : 'instant-open') : 'closed'

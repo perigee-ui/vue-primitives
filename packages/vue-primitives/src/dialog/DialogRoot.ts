@@ -17,9 +17,9 @@ export type DialogContentElement = HTMLDivElement
 export interface DialogContext {
   triggerRef: MutableRefObject<HTMLButtonElement | undefined>
   contentRef: MutableRefObject<DialogContentElement | undefined>
-  contentId?: string
-  titleId?: string
-  descriptionId?: string
+  contentId: string
+  titleId: string
+  descriptionId: string
   open: Ref<boolean>
   onOpenChange: (open: boolean) => void
   onOpenToggle: () => void

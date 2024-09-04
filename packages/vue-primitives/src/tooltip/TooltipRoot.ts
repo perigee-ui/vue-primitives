@@ -27,7 +27,7 @@ export const TOOLTIP_OPEN = 'tooltip.open'
 type TooltipTriggerElement = HTMLButtonElement
 
 export interface TooltipContext {
-  contentId?: string
+  contentId: string
   open: Ref<boolean>
   stateAttribute: () => 'closed' | 'delayed-open' | 'instant-open'
   trigger: Ref<TooltipTriggerElement | undefined>

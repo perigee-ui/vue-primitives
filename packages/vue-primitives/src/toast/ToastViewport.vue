@@ -4,11 +4,12 @@ import { computed, onBeforeUnmount, onMounted, watchEffect } from 'vue'
 import { DismissableLayerBranch } from '../dismissable-layer/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
+import { focusFirst } from '../utils/focusFirst.ts'
 import { VisuallyHidden } from '../visually-hidden/index.ts'
 import { Collection, useCollection } from './collection.ts'
 import { useToastProviderContext } from './index.ts'
 import { type ToastViewportProps, VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport.ts'
-import { focusFirst, getTabbableCandidates } from './utils.ts'
+import { getTabbableCandidates } from './utils.ts'
 
 defineOptions({
   name: 'ToastViewport',

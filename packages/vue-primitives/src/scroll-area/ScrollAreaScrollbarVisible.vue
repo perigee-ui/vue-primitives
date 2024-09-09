@@ -3,7 +3,6 @@ import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useNodeEventListener } from '../utils/dom.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import { provideScrollbarContext, type ScrollAreaThumbElement } from './ScrollAreaScrollbar.ts'
@@ -151,16 +150,14 @@ function onImplWheelScroll(event: WheelEvent) {
   // AXIS::END
 }
 
-let clearDocumentWheel: () => void
-
 onMounted(() => {
-  clearDocumentWheel = useNodeEventListener(document, 'wheel', onImplWheelScroll, {
+  document.addEventListener('wheel', onImplWheelScroll, {
     passive: false,
   })
 })
 
 onBeforeUnmount(() => {
-  clearDocumentWheel?.()
+  document.removeEventListener('wheel', onImplWheelScroll)
 })
 
 /**

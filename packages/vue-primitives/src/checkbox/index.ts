@@ -10,3 +10,5 @@ export {
   useCheckboxContext,
 } from './CheckboxRoot.ts'
 export { default as CheckboxRoot } from './CheckboxRoot.vue'
+
+export { isIndeterminate } from './utils.ts'

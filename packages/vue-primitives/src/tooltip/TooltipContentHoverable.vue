@@ -2,11 +2,11 @@
 import { isClient } from '@vueuse/core'
 import { onBeforeUnmount, shallowRef, watchEffect } from 'vue'
 import { useForwardElement } from '../hooks/useForwardElement.ts'
+import { isPointInPolygon, type Polygon } from '../utils/isPointInPolygon.ts'
 import TooltipContentImpl from './TooltipContentImpl.vue'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
 import { useTooltipContext } from './TooltipRoot.ts'
-import { getExitSideFromRect, getHull, getPaddedExitPoints, getPointsFromRect, isPointInPolygon } from './utils.ts'
-import type { Polygon } from './TooltipContentHoverable.ts'
+import { getExitSideFromRect, getHull, getPaddedExitPoints, getPointsFromRect } from './utils.ts'
 
 defineOptions({
   name: 'TooltipContentHoverable',

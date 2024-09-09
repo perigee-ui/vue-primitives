@@ -1,6 +1,6 @@
 import { cloneVNode, Comment, defineComponent, shallowRef, type VNode, warn } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { getRawChildren } from '../utils/getRawChildren.ts'
+import { getRawChildren } from '../utils/vue.ts'
 
 export const Slot = defineComponent({
   name: 'Slot',

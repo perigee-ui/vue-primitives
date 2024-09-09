@@ -33,7 +33,7 @@ export interface RovingFocusGroupRootProps {
 // eslint-disable-next-line ts/consistent-type-definitions
 export type RovingFocusGroupRootEmits = {
   'update:currentTabStopId': [tabStopId: string | undefined]
-  'entryFocus': [event: CustomEvent]
+  'entryFocus': [event: Event]
   'mousedown': [event: MouseEvent]
   'focus': [event: FocusEvent]
   'focusout': [event: FocusEvent]
@@ -86,7 +86,7 @@ export interface UseRovingFocusGroupRootEmits {
   onFocus?: (event: FocusEvent) => void
   onFocusout?: (event: FocusEvent) => void
   updateCurrentTabStopId?: (tabStopId: string) => void
-  entryFocus?: (event: CustomEvent) => void
+  entryFocus?: (event: Event) => void
 }
 
 export function useRovingFocusGroupRoot(

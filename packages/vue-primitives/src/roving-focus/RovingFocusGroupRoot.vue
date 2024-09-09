@@ -42,7 +42,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
   updateCurrentTabStopId(tabStopId) {
     emit('update:currentTabStopId', tabStopId)
   },
-  entryFocus(event: CustomEvent) {
+  entryFocus(event) {
     emit('entryFocus', event)
   },
 })

@@ -1,6 +1,6 @@
 import { onBeforeUnmount, onMounted, type Ref } from 'vue'
 import { createCollection } from '../collection/Collection.ts'
-import { createContext, type RefObject, useRef } from '../hooks/index.ts'
+import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'
 import type { Direction } from '../direction/index.ts'
 
 export interface MenuRootProps {
@@ -25,7 +25,7 @@ export const [provedeMenuContext, useMenuContext] = createContext<MenuContext>('
 
 export interface MenuRootContext {
   onClose: () => void
-  isUsingKeyboardRef: RefObject<boolean>
+  isUsingKeyboardRef: MutableRefObject<boolean>
   dir: Ref<Direction>
   modal: boolean
 }

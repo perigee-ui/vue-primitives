@@ -64,7 +64,7 @@ function onInteractOutside(event: PointerdownOutsideEvent | FocusOutsideEvent) {
   }
 }
 
-// DialogContentImpl
+// COMP::DialogContentImpl
 
 // Make sure the whole tree has focus guards as our `Dialog` will be
 // the last element in the DOM (because of the `Portal`)

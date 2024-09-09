@@ -189,7 +189,7 @@ provideSliderContext({
   },
 })
 
-// SliderOrientation
+// COMP::SliderOrientation
 
 const isHorisontal = () => props.orientation === 'horizontal'
 
@@ -273,7 +273,7 @@ const orientationContext = computed(() => {
 
 provideSliderOrientationContext(orientationContext)
 
-// SliderImpl
+// COMP::SliderImpl
 
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   if (props.disabled)

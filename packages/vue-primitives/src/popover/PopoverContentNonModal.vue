@@ -64,7 +64,7 @@ function onInteractOutside(event: PointerdownOutsideEvent | FocusOutsideEvent) {
   }
 }
 
-// PopoverContentImpl
+// COMP::PopoverContentImpl
 
 // Make sure the whole tree has focus guards as our `Popover` may be
 // the last element in the DOM (because of the `Portal`)

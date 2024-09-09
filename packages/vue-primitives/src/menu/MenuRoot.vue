@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/Direction.ts'
-import { PopperRoot } from '../popper/index.ts'
+import { PopperRoot, providePopperContext } from '../popper/index.ts'
 import {
   type MenuRootEmits,
   type MenuRootProps,
@@ -9,6 +9,7 @@ import {
   provideMenuRootContext,
   useIsUsingKeyboard,
 } from './MenuRoot.ts'
+import type { Measurable } from '../popper/index.ts'
 
 defineOptions({
   name: 'MenuRoot',
@@ -45,6 +46,17 @@ provideMenuRootContext({
   isUsingKeyboardRef,
   dir: direction,
   modal: props.modal,
+})
+
+// COMP::PopperRoot
+
+const anchor = shallowRef<Measurable>()
+
+providePopperContext({
+  anchor,
+  onAnchorChange(newAnchor: Measurable | undefined) {
+    anchor.value = newAnchor
+  },
 })
 </script>
 

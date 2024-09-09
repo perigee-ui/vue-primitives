@@ -258,7 +258,7 @@ provideToastInteractiveContext({
   onClose: handleClose,
 })
 
-// DismissableLayer
+// COMP::DismissableLayer
 
 const dismissableLayer = useDismissableLayer(
   $el,

@@ -56,7 +56,7 @@ const onFocusOutside = composeEventHandlers<FocusOutsideEvent>((event) => {
   event.preventDefault()
 })
 
-// DialogContentImpl
+// COMP::DialogContentImpl
 
 // Make sure the whole tree has focus guards as our `Dialog` will be
 // the last element in the DOM (because of the `Portal`)

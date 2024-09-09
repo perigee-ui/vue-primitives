@@ -105,7 +105,7 @@ provideMenuContentContext({
 
 // Hanldlers
 
-// FocusScope
+// COMP::FocusScope
 
 const onMountAutoFocus = composeEventHandlers((event) => {
   emit('openAutoFocus', event)
@@ -120,7 +120,7 @@ function onUnmountAutoFocus(event: Event) {
   emit('closeAutoFocus', event)
 }
 
-// DismissableLayer
+// COMP::DismissableLayer
 
 function onEscapeKeydown(event: KeyboardEvent) {
   emit('escapeKeydown', event)
@@ -142,7 +142,7 @@ function onDismiss() {
   emit('dismiss')
 }
 
-// RovingFocusGroupRoot
+// COMP::RovingFocusGroupRoot
 function onCurrentTabStopIdChange(tabStopId: string | undefined) {
   currentItemId.value = tabStopId
 }
@@ -154,7 +154,7 @@ const onEntryFocus = composeEventHandlers((event) => {
     event.preventDefault()
 })
 
-// PopperRoot
+// COMP::PopperRoot
 
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   emit('keydowm', event)

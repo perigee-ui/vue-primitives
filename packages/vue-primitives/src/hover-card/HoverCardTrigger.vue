@@ -41,7 +41,7 @@ const onTouchstart = composeEventHandlers<TouchEvent>((event) => {
   emit('touchstart', event)
 }, event => event.preventDefault())
 
-// PopperAnchor
+// COMP::PopperAnchor
 
 const popperContext = usePopperContext('PopperAnchor')
 

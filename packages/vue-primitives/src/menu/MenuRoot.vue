@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/Direction.ts'
-import { PopperRoot, providePopperContext } from '../popper/index.ts'
+import { providePopperContext } from '../popper/index.ts'
 import {
   type MenuRootEmits,
   type MenuRootProps,
@@ -61,7 +61,5 @@ providePopperContext({
 </script>
 
 <template>
-  <PopperRoot>
-    <slot />
-  </PopperRoot>
+  <slot />
 </template>

@@ -12,10 +12,10 @@ defineOptions({
 
 const props = defineProps<MenuContentProps>()
 
-const collectionRef = useRef<HTMLElement>()
-const forwardElement = useForwardElement(collectionRef)
+const elRef = useRef<HTMLElement>()
+const forwardElement = useForwardElement(elRef)
 
-Collection.provideCollectionContext(collectionRef)
+Collection.provideCollectionContext(elRef)
 
 const context = useMenuContext('MenuContent')
 const rootContext = useMenuRootContext('MenuContent')

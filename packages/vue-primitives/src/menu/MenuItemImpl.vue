@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, watchEffect } from 'vue'
-import { ITEM_DATA_ATTR } from '../collection/Collection.ts'
+import { DATA_COLLECTION_ITEM } from '../collection/Collection.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { RovingFocusGroupItem } from '../roving-focus/index.ts'
@@ -100,7 +100,7 @@ defineExpose({
       :data-highlighted="isFocused ? '' : undefined"
       :aria-disabled="disabled || undefined"
       :data-disabled="disabled ? '' : undefined"
-      :[ITEM_DATA_ATTR]="true"
+      :[DATA_COLLECTION_ITEM]="true"
       v-bind="$attrs"
       @pointermove="onPointermove"
       @pointerleave="onPointerleave"

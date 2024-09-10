@@ -3,7 +3,6 @@ import type { Ref } from 'vue'
 
 export interface MutableRefObject<T> {
   current: T
-
 }
 
 export interface RefObject<T> {

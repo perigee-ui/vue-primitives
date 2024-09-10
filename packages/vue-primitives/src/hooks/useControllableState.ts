@@ -57,17 +57,17 @@ export function useControllableState<P extends object, K extends keyof P, V = Ex
 }
 
 export function useControllableStateV2<T, V = Exclude<T, undefined>>(
-  prop: () => T,
+  prop?: () => T,
   onChange?: (value: V) => void,
   defaultValue?: V | undefined,
 ): Ref<V> {
   const getValue = (): V => {
-    return (isDef(prop())
-      ? prop()
+    return (isDef(prop?.())
+      ? prop?.()
       : defaultValue) as V
   }
 
-  if (isDef(prop())) {
+  if (isDef(prop?.())) {
     return computed<V>({
       get() {
         return getValue()
@@ -81,21 +81,23 @@ export function useControllableStateV2<T, V = Exclude<T, undefined>>(
   const proxy = shallowRef<V>(getValue())
   let isUpdating = false
 
-  watch(
-    prop,
-    (v) => {
-      if (!isUpdating) {
-        isUpdating = true
-        ; (proxy as any).value = v
-        nextTick(() => isUpdating = false)
-      }
-    },
-  )
+  if (prop) {
+    watch(
+      prop,
+      (v) => {
+        if (!isUpdating) {
+          isUpdating = true
+          ; (proxy as any).value = v
+          nextTick(() => isUpdating = false)
+        }
+      },
+    )
+  }
 
   watch(
     proxy,
     (v) => {
-      if (!isUpdating && (v !== prop()))
+      if (!isUpdating && (v !== prop?.()))
         onChange?.(v)
     },
   )

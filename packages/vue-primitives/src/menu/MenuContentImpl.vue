@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, shallowRef } from 'vue'
-import { DismissableLayer, type FocusOutsideEvent, type PointerdownOutsideEvent } from '../dismissable-layer/index.ts'
+import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/FocusGuards.ts'
-import { FocusScope } from '../focus-scope/index.ts'
-import { useForwardElement, useRef } from '../hooks/index.ts'
+import { useFocusScope } from '../focus-scope/index.ts'
+import { useComposedElements, useRef } from '../hooks/index.ts'
 import { PopperContent } from '../popper/index.ts'
-import { RovingFocusGroupRoot } from '../roving-focus/index.ts'
+import { useRovingFocusGroupRoot } from '../roving-focus/index.ts'
 import { focusFirst } from '../utils/focusFirst.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { provideMenuContentContext } from './MenuContent.ts'
@@ -15,10 +15,9 @@ import type { MenuContentImplEmits, MenuContentImplProps } from './MenuContentIm
 
 defineOptions({
   name: 'MenuContentImpl',
-  inheritAttrs: false,
 })
 
-withDefaults(defineProps<MenuContentImplProps>(), {
+const props = withDefaults(defineProps<MenuContentImplProps>(), {
   loop: false,
 })
 
@@ -28,7 +27,11 @@ const context = useMenuContext('MenuContentImpl')
 const rootContext = useMenuRootContext('MenuContentImpl')
 const getItems = useCollection()
 const currentItemId = shallowRef<string>()
-const forwardElement = useForwardElement<HTMLDivElement>(context.content)
+const elRef = useRef<HTMLDivElement>()
+const forwardElement = useComposedElements<HTMLDivElement>((v) => {
+  elRef.current = v
+  context.content.value = v
+})
 let timerRef = 0
 const searchRef = useRef('')
 const pointerGraceTimerRef = useRef(0)
@@ -105,60 +108,121 @@ provideMenuContentContext({
 
 // Hanldlers
 
-// COMP::FocusScope
-
-const onMountAutoFocus = composeEventHandlers((event) => {
-  emit('openAutoFocus', event)
+const onBlur = composeEventHandlers<FocusEvent>((event) => {
+  emit('blur', event)
 }, (event) => {
-  // when opening, explicitly focus the content area only and leave
-  // `onEntryFocus` in  control of focusing first item
-  event.preventDefault()
-  context.content.value?.focus({ preventScroll: true })
+  // clear search buffer when leaving the menu
+  if (!(event.currentTarget as HTMLElement | null)?.contains(event.target as HTMLElement | null)) {
+    window.clearTimeout(timerRef)
+    searchRef.current = ''
+  }
 })
 
-function onUnmountAutoFocus(event: Event) {
-  emit('closeAutoFocus', event)
-}
+const onPointermove = composeEventHandlers<PointerEvent>((event) => {
+  emit('pointermove', event)
+}, (event) => {
+  if (event.pointerType !== 'mouse')
+    return
+  const target = event.target as HTMLElement
+  const pointerXHasChanged = lastPointerXRef !== event.clientX
+
+  // We don't use `event.movementX` for this check because Safari will
+  // always return `0` on a pointer event.
+  if ((event.currentTarget as HTMLElement | null)?.contains(target) && pointerXHasChanged) {
+    const newDir = event.clientX > lastPointerXRef ? 'right' : 'left'
+    pointerDirRef = newDir
+    lastPointerXRef = event.clientX
+  }
+})
+
+// Inner content
+
+// COMP::FocusScope
+const focusScope = useFocusScope(
+  context.content,
+  {
+    trapped() {
+      return props.trapFocus
+    },
+  },
+  {
+    onMountAutoFocus: composeEventHandlers((event) => {
+      emit('openAutoFocus', event)
+    }, (event) => {
+      // when opening, explicitly focus the content area only and leave
+      // `onEntryFocus` in  control of focusing first item
+      event.preventDefault()
+      context.content.value?.focus({ preventScroll: true })
+    }),
+    onUnmountAutoFocus(event: Event) {
+      emit('closeAutoFocus', event)
+    },
+  },
+)
 
 // COMP::DismissableLayer
 
-function onEscapeKeydown(event: KeyboardEvent) {
-  emit('escapeKeydown', event)
-}
-
-function onPointerDownOutside(event: PointerdownOutsideEvent) {
-  emit('pointerdownOutside', event)
-}
-
-function onFocusOutside(event: FocusOutsideEvent) {
-  emit('focusOutside', event)
-}
-
-function onInteractOutside(event: PointerdownOutsideEvent | FocusOutsideEvent) {
-  emit('interactOutside', event)
-}
-
-function onDismiss() {
-  emit('dismiss')
-}
+const dismissableLayer = useDismissableLayer(context.content, {
+  disableOutsidePointerEvents() {
+    return props.disableOutsidePointerEvents
+  },
+}, {
+  onInteractOutside(event) {
+    emit('interactOutside', event)
+  },
+  onEscapeKeydown(event) {
+    emit('escapeKeydown', event)
+  },
+  onDismiss() {
+    emit('dismiss')
+  },
+  onFocusOutside(event) {
+    emit('focusOutside', event)
+  },
+  onPointerdownOutside(event) {
+    emit('pointerdownOutside', event)
+  },
+})
 
 // COMP::RovingFocusGroupRoot
-function onCurrentTabStopIdChange(tabStopId: string | undefined) {
-  currentItemId.value = tabStopId
-}
-const onEntryFocus = composeEventHandlers((event) => {
-  emit('entryFocus', event)
-}, (event) => {
+
+const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
+  currentTabStopId() {
+    return currentItemId.value
+  },
+  preventScrollOnEntryFocus: true,
+  orientation() {
+    return 'vertical'
+  },
+  loop() {
+    return props.loop
+  },
+  dir: rootContext.dir,
+}, {
+  onMousedown(event) {
+    emit('mousedown', event)
+  },
+  onFocus(event) {
+    emit('focus', event)
+  },
+  onFocusout(event) {
+    emit('focusout', event)
+  },
+  updateCurrentTabStopId(tabStopId) {
+    currentItemId.value = tabStopId
+  },
+  onEntryFocus: composeEventHandlers((event) => {
+    emit('entryFocus', event)
+  }, (event) => {
   // only focus first item when using keyboard
-  if (!rootContext.isUsingKeyboardRef.current)
-    event.preventDefault()
+    if (!rootContext.isUsingKeyboardRef.current)
+      event.preventDefault()
+  }),
 })
 
 // COMP::PopperRoot
 
-const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
-  emit('keydowm', event)
-}, (event) => {
+const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (event) => {
   // submenu key events bubble through portals. We only care about keys in this menu.
   const target = event.target as HTMLElement
   const isKeyDownInside = target.closest('[data-radix-menu-content]') === event.currentTarget
@@ -191,80 +255,29 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   focusFirst(candidateNodes)
 })
 
-const onBlur = composeEventHandlers<FocusEvent>((event) => {
-  emit('blur', event)
-}, (event) => {
-  // clear search buffer when leaving the menu
-  if (!(event.currentTarget as HTMLElement | null)?.contains(event.target as HTMLElement | null)) {
-    window.clearTimeout(timerRef)
-    searchRef.current = ''
-  }
-})
-
-const onPointermove = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointermove', event)
-}, (event) => {
-  if (event.pointerType !== 'mouse')
-    return
-  const target = event.target as HTMLElement
-  const pointerXHasChanged = lastPointerXRef !== event.clientX
-
-  // We don't use `event.movementX` for this check because Safari will
-  // always return `0` on a pointer event.
-  if ((event.currentTarget as HTMLElement | null)?.contains(target) && pointerXHasChanged) {
-    const newDir = event.clientX > lastPointerXRef ? 'right' : 'left'
-    pointerDirRef = newDir
-    lastPointerXRef = event.clientX
-  }
-})
-
 defineExpose({
   $el: context.content,
 })
 </script>
 
 <template>
-  <FocusScope
-    as="template"
-    :trapped="trapFocus"
-    @mount-auto-focus="onMountAutoFocus"
-    @unmount-auto-focus="onUnmountAutoFocus"
+  <PopperContent
+    :ref="forwardElement" role="menu" aria-orientation="vertical"
+    :data-state="getOpenState(context.open())" data-radix-menu-content="" :dir="rootContext.dir.value"
+    :tabindex="rovingFocusGroupRoot.tabindex()" data-orientation="vertical" data-dismissable-layer :style="{
+      outline: 'none',
+      pointerEvents: dismissableLayer.pointerEvents(),
+    }"
+    @keydown="onKeydown"
+    @blur="onBlur"
+    @pointermove="onPointermove"
+    @mousedown="rovingFocusGroupRoot.onMousedown"
+    @focus="rovingFocusGroupRoot.onFocus"
+    @focusout="rovingFocusGroupRoot.onFocusout"
+    @focus.capture="dismissableLayer.onFocusCapture"
+    @blur.capture="dismissableLayer.onBlurCapture"
+    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
   >
-    <DismissableLayer
-      as="template"
-      :disable-outside-pointer-events="disableOutsidePointerEvents"
-      @escape-keydown="onEscapeKeydown"
-      @pointerdown-outside="onPointerDownOutside"
-      @focus-outside="onFocusOutside"
-      @interact-outside="onInteractOutside"
-      @dismiss="onDismiss"
-    >
-      <RovingFocusGroupRoot
-        as="template"
-        :dir="rootContext.dir.value"
-        orientation="vertical"
-        :loop="loop"
-        :current-tab-stop-id="currentItemId"
-        prevent-scroll-on-entry-focus
-        @update:current-tab-stop-id="onCurrentTabStopIdChange"
-        @entry-focus="onEntryFocus"
-      >
-        <PopperContent
-          :ref="forwardElement"
-          role="menu"
-          aria-orientation="vertical"
-          :data-state="getOpenState(context.open())"
-          data-radix-menu-content=""
-          :dir="rootContext.dir.value"
-          style="outline: none"
-          v-bind="$attrs"
-          @keydown="onKeydown"
-          @blur="onBlur"
-          @pointermove="onPointermove"
-        >
-          <slot />
-        </PopperContent>
-      </RovingFocusGroupRoot>
-    </DismissableLayer>
-  </FocusScope>
+    <slot />
+  </PopperContent>
 </template>

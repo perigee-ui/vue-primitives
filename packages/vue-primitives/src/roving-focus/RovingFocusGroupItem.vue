@@ -28,7 +28,7 @@ const rovingFocusGroupItem = useRovingFocusGroupItem(props, {
 })
 
 const forwardElement = useComposedElements((v) => {
-  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData)
+  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, 'fg')
 })
 </script>
 

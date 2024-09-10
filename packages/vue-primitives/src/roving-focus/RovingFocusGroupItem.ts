@@ -54,7 +54,7 @@ export function useRovingFocusGroupItem(
     }
   }, { immediate: true })
 
-  const itemData: ItemData = { id: id.value, focusable: focusable(), active: active() }
+  const itemData: ItemData['fg'] = { id: id.value, focusable: focusable(), active: active() }
 
   watchEffect(() => {
     itemData.active = active()
@@ -91,7 +91,7 @@ export function useRovingFocusGroupItem(
       return
 
     event.preventDefault()
-    let candidateNodes = getItems().filter(item => item.$$rcid.focusable)
+    let candidateNodes = getItems().filter(item => item.$$rcid.fg.focusable)
 
     if (focusIntent === 'last') {
       candidateNodes.reverse()
@@ -115,6 +115,7 @@ export function useRovingFocusGroupItem(
 
   return {
     itemData,
+    key: 'fg' as const,
     useCollectionItem: Collection.useCollectionItem,
     onFocus,
     onMousedown,

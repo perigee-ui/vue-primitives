@@ -9,13 +9,11 @@ export interface MenuContentImplProps {
 
   trapFocus?: FocusScopeProps['trapped']
 
+  /**
+   * Whether keyboard navigation should loop around
+   * @defaultValue false
+   */
   loop?: RovingFocusGroupRootProps['loop']
-
-  // /**
-  //  * Whether keyboard navigation should loop around
-  //  * @defaultValue false
-  //  */
-  // loop?: RovingFocusGroupRootProps['loop']
 }
 
 // eslint-disable-next-line ts/consistent-type-definitions
@@ -44,4 +42,8 @@ export type MenuContentImplEmits = {
   blur: [event: FocusEvent]
 
   pointermove: [event: PointerEvent]
+
+  mousedown: RovingFocusGroupRootEmits['mousedown']
+  focus: RovingFocusGroupRootEmits['focus']
+  focusout: RovingFocusGroupRootEmits['focusout']
 }

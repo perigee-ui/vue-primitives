@@ -155,6 +155,7 @@ onMounted(() => {
     v-if="!virtualRef"
     :id="subContext.triggerId"
     :ref="forwardElement"
+    :disabled="disabled"
     aria-haspopup="menu"
     :aria-expanded="context.open()"
     :aria-controls="subContext.contentId"

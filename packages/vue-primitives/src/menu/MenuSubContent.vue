@@ -57,6 +57,7 @@ const onEscapeKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   // ensure pressing escape in submenu doesn't escape full screen mode
   event.preventDefault()
 })
+
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   emit('keydown', event)
 }, (event) => {

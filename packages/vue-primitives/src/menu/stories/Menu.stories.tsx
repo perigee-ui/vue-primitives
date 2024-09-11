@@ -1,4 +1,5 @@
 import CStyled from './Styled.vue'
+import CSubmenus from './Submenus.vue'
 
 export default {
   title: 'Utilities/Menu',
@@ -7,4 +8,8 @@ export default {
 
 export function Styled() {
   return CStyled
+}
+
+export function Submenus() {
+  return CSubmenus
 }

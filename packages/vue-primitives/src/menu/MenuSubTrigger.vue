@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
-import { PopperAnchor } from '../popper/index.ts'
+import { onBeforeUnmount, onMounted } from 'vue'
+import { useForwardElement, useRef } from '../hooks/index.ts'
+import { usePopperContext } from '../popper/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useMenuContentContext } from './MenuContent.ts'
 import MenuItemImpl from './MenuItemImpl.vue'
@@ -133,22 +134,33 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
     event.preventDefault()
   }
 })
+
+// COMP::PopperAnchor
+
+const popperContext = usePopperContext('MenuSubTrigger')
+
+const $el = useRef<HTMLDivElement>()
+const forwardElement = useForwardElement($el)
+
+onMounted(() => {
+  popperContext.onAnchorChange(props.virtualRef?.current || $el.current)
+})
 </script>
 
 <template>
-  <PopperAnchor as="template">
-    <MenuItemImpl
-      :id="subContext.triggerId"
-      aria-haspopup="menu"
-      :aria-expanded="context.open()"
-      :aria-controls="subContext.contentId"
-      :data-state="getOpenState(context.open())"
-      @click="onClick"
-      @pointermove="onPointermove"
-      @pointerleave="onPointerLeave"
-      @keydown="onKeydown"
-    >
-      <slot />
-    </MenuItemImpl>
-  </PopperAnchor>
+  <MenuItemImpl
+    v-if="!virtualRef"
+    :id="subContext.triggerId"
+    :ref="forwardElement"
+    aria-haspopup="menu"
+    :aria-expanded="context.open()"
+    :aria-controls="subContext.contentId"
+    :data-state="getOpenState(context.open())"
+    @click="onClick"
+    @pointermove="onPointermove"
+    @pointerleave="onPointerLeave"
+    @keydown="onKeydown"
+  >
+    <slot />
+  </MenuItemImpl>
 </template>

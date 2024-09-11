@@ -1,4 +1,6 @@
-export interface MenuSubTriggerProps {
+import type { PopperAnchorProps } from '../popper/index.ts'
+
+export interface MenuSubTriggerProps extends PopperAnchorProps {
   disabled?: boolean
 }
 

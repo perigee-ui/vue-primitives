@@ -90,7 +90,7 @@ const rovingFocusGroupItem = useRovingFocusGroupItem({
 
 const forwardElement = useComposedElements<HTMLButtonElement>((v) => {
   $el.value = v
-  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData)
+  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, rovingFocusGroupItem.collectionKey)
 })
 
 // COMP::Radio

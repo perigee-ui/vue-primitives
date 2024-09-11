@@ -32,8 +32,8 @@ export interface MenuRootContext {
 
 export const [provideMenuRootContext, useMenuRootContext] = createContext<MenuRootContext>('MenuRoot')
 
-export interface ItemData { disabled: boolean, textValue: string }
-export const [Collection, useCollection] = createCollection< HTMLDivElement, ItemData>('Menu')
+export interface ItemData { menu: { disabled: boolean, textValue: string } }
+export const [Collection, useCollection] = createCollection< HTMLDivElement, ItemData, 'menu'>('Menu')
 
 export const SELECTION_KEYS = ['Enter', ' ']
 export const FIRST_KEYS = ['ArrowDown', 'PageUp', 'Home']

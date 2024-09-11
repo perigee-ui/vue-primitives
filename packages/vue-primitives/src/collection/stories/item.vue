@@ -8,7 +8,7 @@ import { Collection, type ItemData } from './utils.ts'
 const attrs = useAttrs()
 
 const composedElements = useComposedElements((v) => {
-  Collection.useCollectionItem(v, attrs as unknown as ItemData)
+  Collection.useCollectionItem(v, attrs as unknown as ItemData['demo'], 'demo')
 })
 </script>
 

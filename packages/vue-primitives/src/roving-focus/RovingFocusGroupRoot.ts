@@ -40,14 +40,14 @@ export type RovingFocusGroupRootEmits = {
 }
 
 export interface ItemData {
-  fg: {
+  rfg: {
     id: string
     focusable: boolean
     active: boolean
   }
 }
 
-export const [Collection, useCollection] = createCollection<HTMLElement, ItemData, 'fg'>('RovingFocusGroup')
+export const [Collection, useCollection] = createCollection<HTMLElement, ItemData, 'rfg'>('RovingFocusGroup')
 
 export interface RovingContext {
   /**
@@ -122,9 +122,9 @@ export function useRovingFocusGroupRoot(
       emits.onEntryFocus?.(entryFocusEvent)
 
       if (!entryFocusEvent.defaultPrevented) {
-        const items = getItems().filter(item => item.$$rcid.fg.focusable)
-        const activeItem = items.find(item => item.$$rcid.fg.active)
-        const currentItem = items.find(item => item.$$rcid.fg.id === currentTabStopId.value)
+        const items = getItems().filter(item => item.$$rcid.rfg.focusable)
+        const activeItem = items.find(item => item.$$rcid.rfg.active)
+        const currentItem = items.find(item => item.$$rcid.rfg.id === currentTabStopId.value)
         const candidateItems = [activeItem, currentItem, ...items].filter(Boolean) as typeof items
         const candidateNodes = candidateItems.map(item => item)
         focusFirst(candidateNodes, props.preventScrollOnEntryFocus ?? false)

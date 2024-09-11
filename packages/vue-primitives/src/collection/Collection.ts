@@ -26,7 +26,7 @@ export function createCollection<ItemElement extends HTMLElement, ItemData = Rec
     return context
   }
 
-  function useCollectionItem(currentElement: K extends keyof ItemElement ? ItemElement[K] : ItemElement | undefined, attrs: ItemData, key?: string) {
+  function useCollectionItem(currentElement: ItemElement | undefined, attrs: K extends keyof ItemData ? ItemData[K] : ItemData, key: K) {
     const unrefElement = currentElement as CollectionItem | undefined
     if (!unrefElement)
       return

@@ -22,14 +22,14 @@ const $el = shallowRef<HTMLDivElement>()
 
 const isFocused = shallowRef(false)
 
-const itemData: ItemData = { disabled: props.disabled, textValue: props.textValue || '' }
+const itemData: ItemData['menu'] = { disabled: props.disabled, textValue: props.textValue || '' }
 watchEffect(() => {
   itemData.disabled = props.disabled
   itemData.textValue = props.textValue ?? $el.value?.textContent ?? ''
 })
 
 const forwardElement = useComposedElements<HTMLDivElement>((v) => {
-  Collection.useCollectionItem(v, itemData)
+  Collection.useCollectionItem(v, itemData, 'menu')
   $el.value = v
 })
 

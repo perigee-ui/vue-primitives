@@ -82,12 +82,6 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
     return true
   },
 }, {
-  onPointerdownCapture(event) {
-    emit('pointerdownCapture', event)
-  },
-  onFocusCapture(event) {
-    emit('focusCapture', event)
-  },
   onInteractOutside(event) {
     emit('interactOutside', event)
   },
@@ -95,9 +89,6 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
     emit('escapeKeydown', event)
   },
   onFocusOutside,
-  onBlurCapture(event) {
-    emit('blurCapture', event)
-  },
   onPointerdownOutside,
   onDismiss() {
     context.onOpenChange(false)
@@ -125,10 +116,6 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
     }"
 
     @keydown="focusScope.onKeydown"
-
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
   >
     <slot />
   </PopperContent>

@@ -122,10 +122,6 @@ let originalBodyUserSelect: string
       },
     }"
 
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
-
     @pointerdown="onPointerdown"
   >
     <slot />

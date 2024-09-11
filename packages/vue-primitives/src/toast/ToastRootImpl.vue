@@ -308,10 +308,6 @@ defineExpose({
           touchAction: 'none',
         }"
 
-        @focus.capture="dismissableLayer.onFocusCapture"
-        @blur.capture="dismissableLayer.onBlurCapture"
-        @pointerdown.capture="dismissableLayer.onPointerdownCapture"
-
         @keydown="onKeydown"
         @pointerdown="onPointerdown"
         @pointermove="onPointermove"

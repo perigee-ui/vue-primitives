@@ -8,6 +8,7 @@ const open1 = shallowRef(false)
 const open2 = shallowRef(false)
 const open3 = shallowRef(false)
 const open4 = shallowRef(false)
+const open5 = shallowRef(false)
 const rtl = shallowRef(false)
 const animated = shallowRef(false)
 
@@ -56,7 +57,7 @@ function alert(name: string) {
         <MenuItem class="menu_itemClass" @select="() => alert('one')">
           One
         </MenuItem>
-        <!-- <Submenu v-model:open="open2" :animated="animated">
+        <Submenu v-model:open="open2" :animated="animated">
           <MenuItem class="menu_itemClass" @select="() => alert('one')">
             One
           </MenuItem>
@@ -86,11 +87,11 @@ function alert(name: string) {
           <MenuItem class="menu_itemClass" @select="() => alert('three')">
             Three
           </MenuItem>
-        </Submenu> -->
+        </Submenu>
         <MenuItem class="menu_itemClass" @select="() => alert('two')">
           Two
         </MenuItem>
-        <!-- <Submenu v-model:open="open4" :animated="animated" disabled>
+        <Submenu v-model:open="open4" :animated="animated" disabled>
           <MenuItem class="menu_itemClass" @select="() => alert('one')">
             One
           </MenuItem>
@@ -100,7 +101,7 @@ function alert(name: string) {
           <MenuItem class="menu_itemClass" @select="() => alert('three')">
             Three
           </MenuItem>
-        </Submenu> -->
+        </Submenu>
         <MenuItem class="menu_itemClass" @select="() => alert('three')">
           Three
         </MenuItem>

@@ -89,10 +89,6 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
       '--radix-tooltip-trigger-width': 'var(--radix-popper-anchor-width)',
       '--radix-tooltip-trigger-height': 'var(--radix-popper-anchor-height)',
     }"
-
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
   >
     <slot />
   </PopperContent>

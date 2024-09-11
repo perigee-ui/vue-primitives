@@ -91,12 +91,6 @@ const dismissableLayer = useDismissableLayer($el, {
     return false
   },
 }, {
-  onPointerdownCapture(event) {
-    emit('pointerdownCapture', event)
-  },
-  onFocusCapture(event) {
-    emit('focusCapture', event)
-  },
   onInteractOutside,
   onEscapeKeydown(event) {
     emit('escapeKeydown', event)
@@ -106,9 +100,6 @@ const dismissableLayer = useDismissableLayer($el, {
   },
   onFocusOutside(event) {
     emit('focusOutside', event)
-  },
-  onBlurCapture(event) {
-    emit('blurCapture', event)
   },
   onPointerdownOutside(event) {
     emit('pointerdownOutside', event)
@@ -132,10 +123,6 @@ const dismissableLayer = useDismissableLayer($el, {
     :data-state="getState(context.open.value)"
 
     @keydown="focusScope.onKeydown"
-
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
   >
     <slot />
   </Primitive>

@@ -9,7 +9,7 @@ import { PopperContent } from '../popper/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import { getState } from './utilts.ts'
-import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/DismissableLayer.ts'
+import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/index.ts'
 import type { PopoverContentModalEmits } from './PopoverContentModal.ts'
 
 defineOptions({

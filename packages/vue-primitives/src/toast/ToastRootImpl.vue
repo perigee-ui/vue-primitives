@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
 import { computed, onBeforeUnmount, onWatcherCleanup, shallowRef, toValue, watch, watchEffect } from 'vue'
-import { DATA_COLLECTION_ITEM } from '../collection/Collection.ts'
+import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
 import { Portal } from '../portal/index.ts'

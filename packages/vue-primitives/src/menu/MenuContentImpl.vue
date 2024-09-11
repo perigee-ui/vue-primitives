@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, shallowRef } from 'vue'
-import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLayer } from '../dismissable-layer/index.ts'
-import { useFocusGuards } from '../focus-guards/FocusGuards.ts'
+import { useDismissableLayer } from '../dismissable-layer/index.ts'
+import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
 import { useComposedElements, useRef } from '../hooks/index.ts'
 import { PopperContent } from '../popper/index.ts'
@@ -47,12 +47,12 @@ let lastPointerXRef = 0
 
 function handleTypeaheadSearch(key: string) {
   const search = searchRef.current + key
-  const items = getItems().filter(item => !item.$$rcid.disabled)
+  const items = getItems().filter(item => !item.$$rcid.menu.disabled)
   const currentItem = document.activeElement
-  const currentMatch = items.find(item => item === currentItem)?.$$rcid.textValue
-  const values = items.map(item => item.$$rcid.textValue)
+  const currentMatch = items.find(item => item === currentItem)?.$$rcid.menu.textValue
+  const values = items.map(item => item.$$rcid.menu.textValue)
   const nextMatch = getNextMatch(values, search, currentMatch)
-  const newItem = items.find(item => item.$$rcid.textValue === nextMatch);
+  const newItem = items.find(item => item.$$rcid.menu.textValue === nextMatch);
 
   // Reset `searchRef` 1 second after it was last updated
   (function updateSearch(value: string) {
@@ -248,35 +248,45 @@ const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (eve
     return
 
   event.preventDefault()
-  const candidateNodes = getItems().filter(item => !item)
+  const candidateNodes = getItems().filter(item => !item.$$rcid.menu.disabled)
 
   if (LAST_KEYS.includes(event.key))
     candidateNodes.reverse()
   focusFirst(candidateNodes)
 })
-
-defineExpose({
-  $el: context.content,
-})
 </script>
 
 <template>
   <PopperContent
-    :ref="forwardElement" role="menu" aria-orientation="vertical"
-    :data-state="getOpenState(context.open())" data-radix-menu-content="" :dir="rootContext.dir.value"
-    :tabindex="rovingFocusGroupRoot.tabindex()" data-orientation="vertical" data-dismissable-layer :style="{
+    :ref="forwardElement"
+    tabindex="-1"
+
+    data-dismissable-layer
+
+    data-orientation="vertical"
+
+    role="menu"
+    aria-orientation="vertical"
+    :data-state="getOpenState(context.open())"
+    :dir="rootContext.dir.value"
+    data-radix-menu-content=""
+
+    :style="{
       outline: 'none',
       pointerEvents: dismissableLayer.pointerEvents(),
     }"
+
     @keydown="onKeydown"
+
+    @focus.capture="dismissableLayer.onFocusCapture"
+    @blur.capture="dismissableLayer.onBlurCapture"
+    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
+
     @blur="onBlur"
     @pointermove="onPointermove"
     @mousedown="rovingFocusGroupRoot.onMousedown"
     @focus="rovingFocusGroupRoot.onFocus"
     @focusout="rovingFocusGroupRoot.onFocusout"
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
   >
     <slot />
   </PopperContent>

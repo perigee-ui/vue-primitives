@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { isIndeterminate } from '../checkbox/utils.ts'
-import { useForwardElement } from '../hooks/useForwardElement.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { type MenuItemIndicatorProps, useItemIndicatorContext } from './MenuItemIndicator.ts'

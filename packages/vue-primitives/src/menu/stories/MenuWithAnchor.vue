@@ -19,17 +19,25 @@ const emit = defineEmits<{
 function change(open: boolean) {
   emit('update:open', open)
 }
+
+function preventDefault(event: Event) {
+  event.preventDefault()
+}
 </script>
 
 <template>
-  <MenuRoot :open="open" :modal="false" @update:open="change">
+  <MenuRoot
+    :open="open"
+    :modal="false"
+    @update:open="change"
+  >
     <MenuAnchor :style="{ display: 'inline-block' }" />
     <MenuPortal>
       <MenuContent
         class="menu_contentClass"
         align="start"
         v-bind="$attrs"
-        @close-auto-focus="(event) => event.preventDefault()"
+        @close-auto-focus="preventDefault"
       >
         <slot />
       </MenuContent>

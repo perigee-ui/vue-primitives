@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { useRef } from '../hooks/index.ts'
 import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useMenuContentContext } from './MenuContent.ts'
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
 })
 const emit = defineEmits<MenuItemEmits>()
 
-const $el = shallowRef<HTMLDivElement>()
+const $el = useRef<HTMLDivElement>()
 const forwardElement = useForwardElement($el)
 const rootContext = useMenuRootContext('MenuItem')
 const contentContext = useMenuContentContext('MenuItem')
@@ -25,7 +25,7 @@ let isPointerDownRef = false
 const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('click', event)
 }, () => {
-  const menuItem = $el.value
+  const menuItem = $el.current
 
   if (props.disabled || !menuItem)
     return
@@ -53,6 +53,7 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
   if (!isPointerDownRef)
     (event.currentTarget as HTMLElement | null)?.click()
 })
+
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   emit('keydown', event)
 }, (event) => {
@@ -71,10 +72,6 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
      */
     event.preventDefault()
   }
-})
-
-defineExpose({
-  $el,
 })
 </script>
 

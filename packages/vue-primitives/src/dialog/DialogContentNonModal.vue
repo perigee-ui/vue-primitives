@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLayer } from '../dismissable-layer/DismissableLayer.ts'
+import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
 import { useForwardElement } from '../hooks/index.ts'

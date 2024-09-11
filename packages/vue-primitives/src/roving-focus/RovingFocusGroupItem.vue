@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATA_COLLECTION_ITEM } from '../collection/Collection.ts'
+import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { type RovingFocusGroupItemEmits, type RovingFocusGroupItemProps, useRovingFocusGroupItem } from './RovingFocusGroupItem.ts'

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { shallowRef, watchEffect } from 'vue'
+import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { RovingFocusGroupItem } from '../roving-focus/index.ts'
+import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useMenuContentContext } from './MenuContent.ts'
 import { Collection, type ItemData } from './MenuRoot.ts'
@@ -26,11 +27,6 @@ const itemData: ItemData['menu'] = { disabled: props.disabled, textValue: props.
 watchEffect(() => {
   itemData.disabled = props.disabled
   itemData.textValue = props.textValue ?? $el.value?.textContent ?? ''
-})
-
-const forwardElement = useComposedElements<HTMLDivElement>((v) => {
-  Collection.useCollectionItem(v, itemData, 'menu')
-  $el.value = v
 })
 
 /**
@@ -74,38 +70,64 @@ const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
   contentContext.onItemLeave(event)
 })
 
-const onFocus = composeEventHandlers<FocusEvent>((event) => {
-  emit('focus', event)
-}, () => {
-  isFocused.value = true
-})
-
 const onBlur = composeEventHandlers<FocusEvent>((event) => {
   emit('blur', event)
 }, () => {
   isFocused.value = false
 })
 
-defineExpose({
-  $el,
+// RovingFocusGroupItem
+
+const rovingFocusGroupItem = useRovingFocusGroupItem({
+  focusable() {
+    return !props.disabled
+  },
+}, {
+  onMousedown(event) {
+    emit('mousedown', event)
+  },
+  onFocus(event) {
+    emit('focus', event)
+  },
+  onKeydown(event) {
+    emit('keydown', event)
+  },
+})
+
+const onFocus = composeEventHandlers<FocusEvent>(rovingFocusGroupItem.onFocus, () => {
+  isFocused.value = true
+})
+
+const forwardElement = useComposedElements<HTMLDivElement>((v) => {
+  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, rovingFocusGroupItem.collectionKey)
+  Collection.useCollectionItem(v, itemData, 'menu')
+  $el.value = v
 })
 </script>
 
 <template>
-  <RovingFocusGroupItem as="template" :focusable="!disabled">
-    <Primitive
-      :ref="forwardElement"
-      role="menuitem"
-      :data-highlighted="isFocused ? '' : undefined"
-      :aria-disabled="disabled || undefined"
-      :data-disabled="disabled ? '' : undefined"
-      v-bind="$attrs"
-      @pointermove="onPointermove"
-      @pointerleave="onPointerleave"
-      @focus="onFocus"
-      @blur="onBlur"
-    >
-      <slot />
-    </Primitive>
-  </RovingFocusGroupItem>
+  <Primitive
+    :ref="forwardElement"
+
+    :[DATA_COLLECTION_ITEM]="true"
+
+    :tabindex="rovingFocusGroupItem.tabindex()"
+    :data-orientation="rovingFocusGroupItem.orientation()"
+
+    role="menuitem"
+    :data-highlighted="isFocused ? '' : undefined"
+    :aria-disabled="disabled || undefined"
+    :data-disabled="disabled ? '' : undefined"
+    v-bind="$attrs"
+
+    @mousedown="rovingFocusGroupItem.onMousedown"
+    @keydown="rovingFocusGroupItem.onKeydown"
+
+    @pointermove="onPointermove"
+    @pointerleave="onPointerleave"
+    @focus="onFocus"
+    @blur="onBlur"
+  >
+    <slot />
+  </Primitive>
 </template>

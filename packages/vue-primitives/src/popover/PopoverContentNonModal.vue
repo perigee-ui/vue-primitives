@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
-import { useForwardElement } from '../hooks/index.ts'
-import { PopperContent } from '../popper/index.ts'
+import { PopperContent, usePopperContext } from '../popper/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import { getState } from './utilts.ts'
 import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/index.ts'
@@ -15,10 +13,8 @@ defineOptions({
 })
 const emit = defineEmits<PopoverContentNonModal>()
 
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
-
 const context = usePopoverContext('PopoverContentNonModal')
+const popperContext = usePopperContext('PopoverContentNonModal')
 let hasInteractedOutsideRef = false
 let hasPointerDownOutsideRef = false
 
@@ -71,7 +67,7 @@ function onInteractOutside(event: PointerdownOutsideEvent | FocusOutsideEvent) {
 useFocusGuards()
 
 const focusScope = useFocusScope(
-  $el,
+  popperContext.content,
   {
     loop: true,
     trapped() {
@@ -86,7 +82,7 @@ const focusScope = useFocusScope(
   },
 )
 
-const dismissableLayer = useDismissableLayer($el, {
+const dismissableLayer = useDismissableLayer(popperContext.content, {
   disableOutsidePointerEvents() {
     return false
   },
@@ -119,7 +115,6 @@ const dismissableLayer = useDismissableLayer($el, {
 <template>
   <PopperContent
     :id="context.contentId"
-    :ref="forwardElement"
 
     tabindex="-1"
 

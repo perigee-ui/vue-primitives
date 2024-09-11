@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { hideOthers } from 'aria-hidden'
-import { onBeforeUnmount, shallowRef } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
-import { useForwardElement } from '../hooks/index.ts'
-import { PopperContent } from '../popper/index.ts'
+import { PopperContent, usePopperContext } from '../popper/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import { getState } from './utilts.ts'
@@ -18,11 +17,8 @@ defineOptions({
 
 const emit = defineEmits<PopoverContentModalEmits>()
 
-const $el = shallowRef<HTMLDivElement>()
-const forwardElement = useForwardElement($el)
-
 const context = usePopoverContext('PopoverContentModal')
-let contentRef: HTMLDivElement | undefined
+const popperContext = usePopperContext('PopoverContentModal')
 let isRightClickOutsideRef = false
 
 const onCloseAutoFocus = composeEventHandlers((event) => {
@@ -55,8 +51,8 @@ const onFocusOutside = composeEventHandlers<FocusOutsideEvent>((event) => {
 }, event => event.preventDefault(), { checkForDefaultPrevented: false })
 
 onBeforeUnmount(() => {
-  if (contentRef)
-    hideOthers(contentRef)
+  if (popperContext.content.value)
+    hideOthers(popperContext.content.value)
 })
 
 // COMP::PopoverContentImpl
@@ -66,7 +62,7 @@ onBeforeUnmount(() => {
 useFocusGuards()
 
 const focusScope = useFocusScope(
-  $el,
+  popperContext.content,
   {
     loop: true,
     trapped() {
@@ -81,7 +77,7 @@ const focusScope = useFocusScope(
   },
 )
 
-const dismissableLayer = useDismissableLayer($el, {
+const dismissableLayer = useDismissableLayer(popperContext.content, {
   disableOutsidePointerEvents() {
     return true
   },
@@ -112,7 +108,6 @@ const dismissableLayer = useDismissableLayer($el, {
 <template>
   <PopperContent
     :id="context.contentId"
-    :ref="forwardElement"
 
     tabindex="-1"
 

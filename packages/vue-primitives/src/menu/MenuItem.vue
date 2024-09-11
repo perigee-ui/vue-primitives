@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import { useRef } from '../hooks/index.ts'
 import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
@@ -16,22 +17,24 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
 })
 const emit = defineEmits<MenuItemEmits>()
 
-const $el = useRef<HTMLDivElement>()
-const forwardElement = useForwardElement($el)
+const elRef = useRef<HTMLDivElement>()
+const forwardElement = useForwardElement(elRef)
 const rootContext = useMenuRootContext('MenuItem')
 const contentContext = useMenuContentContext('MenuItem')
 let isPointerDownRef = false
 
 const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('click', event)
-}, () => {
-  const menuItem = $el.current
-
-  if (props.disabled || !menuItem)
+}, async () => {
+  if (props.disabled || !elRef.current)
     return
 
   const itemSelectEvent = new CustomEvent(ITEM_SELECT, { bubbles: true, cancelable: true })
   emit('select', itemSelectEvent)
+
+  // TODO: nextTick
+  await nextTick()
+
   if (itemSelectEvent.defaultPrevented) {
     isPointerDownRef = false
   }
@@ -46,7 +49,11 @@ function onPointerdown() {
 
 const onPointerup = composeEventHandlers<PointerEvent>((event) => {
   emit('pointerup', event)
-}, (event) => {
+}, async (event) => {
+  // TODO: nextTick
+  await nextTick()
+  if (event.defaultPrevented)
+    return
   // Pointer down can move to a different menu item which should activate it on pointer up.
   // We dispatch a click for selection to allow composition with click based triggers and to
   // prevent Firefox from getting stuck in text selection mode when the menu closes.

@@ -46,7 +46,7 @@ export {
   type MenuRootContext,
   type MenuRootEmits,
   type MenuRootProps,
-  provedeMenuContext,
+  provideMenuContext,
   provideMenuRootContext,
   useMenuContext,
   useMenuRootContext,

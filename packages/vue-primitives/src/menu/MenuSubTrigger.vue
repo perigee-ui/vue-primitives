@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
-import { useForwardElement, useRef } from '../hooks/index.ts'
+import { nextTick, onBeforeUnmount, onMounted } from 'vue'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useMenuContentContext } from './MenuContent.ts'
@@ -22,6 +22,8 @@ const context = useMenuContext('MenuSubTrigger')
 const rootContext = useMenuRootContext('MenuSubTrigger')
 const subContext = useMenuSubContext('MenuSubTrigger')
 const contentContext = useMenuContentContext('MenuSubTrigger')
+const popperContext = usePopperContext('MenuSubTrigger')
+
 let openTimerRef: number | undefined
 
 function clearOpenTimer() {
@@ -38,15 +40,17 @@ onBeforeUnmount(() => {
 })
 
 function onClick(event: MouseEvent) {
-  if (props.disabled || event.defaultPrevented)
+  if (props.disabled || event.defaultPrevented) {
     return
+  }
   /**
    * We manually focus because iOS Safari doesn't always focus on click (e.g. buttons)
    * and we rely heavily on `onFocusOutside` for submenus to close when switching
    * between separate submenus.
    */
-  (event.currentTarget as HTMLElement).focus()
-  if (!context.open)
+
+  ;(event.currentTarget as HTMLElement).focus()
+  if (!context.open())
     context.onOpenChange(true)
 }
 
@@ -61,7 +65,7 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
   if (event.defaultPrevented)
     return
 
-  if (!props.disabled && !context.open && !openTimerRef) {
+  if (!props.disabled && !context.open() && !openTimerRef) {
     contentContext.onPointerGraceIntentChange(undefined)
 
     openTimerRef = window.setTimeout(() => {
@@ -79,10 +83,10 @@ const onPointerLeave = composeEventHandlers<PointerEvent>((event) => {
 
   clearOpenTimer()
 
-  const contentRect = context.content.value?.getBoundingClientRect()
+  const contentRect = popperContext.content.value?.getBoundingClientRect()
   if (contentRect) {
     // TODO: make sure to update this when we change positioning logic
-    const side = context.content.value?.dataset.side as Side
+    const side = popperContext.content.value?.dataset.side as Side
     const rightSide = side === 'right'
     const bleed = rightSide ? -5 : +5
     const contentNearEdge = contentRect[rightSide ? 'left' : 'right']
@@ -119,7 +123,7 @@ const onPointerLeave = composeEventHandlers<PointerEvent>((event) => {
 
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   emit('keydown', event)
-}, (event) => {
+}, async (event) => {
   const isTypingAhead = contentContext.searchRef.current !== ''
 
   if (props.disabled || (isTypingAhead && event.key === ' '))
@@ -127,9 +131,11 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
 
   if (SUB_OPEN_KEYS[rootContext.dir.value].includes(event.key)) {
     context.onOpenChange(true)
+    // TODO: nextTick
+    await nextTick()
     // The trigger may hold focus if opened via pointer interaction
     // so we ensure content is given focus again when switching to keyboard.
-    context.content.value?.focus()
+    popperContext.content.value?.focus()
     // prevent window from scrolling
     event.preventDefault()
   }
@@ -137,13 +143,10 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
 
 // COMP::PopperAnchor
 
-const popperContext = usePopperContext('MenuSubTrigger')
-
-const $el = useRef<HTMLDivElement>()
-const forwardElement = useForwardElement($el)
+const forwardElement = useForwardElement(subContext.trigger)
 
 onMounted(() => {
-  popperContext.onAnchorChange(props.virtualRef?.current || $el.current)
+  popperContext.onAnchorChange(props.virtualRef?.current || subContext.trigger.current)
 })
 </script>
 

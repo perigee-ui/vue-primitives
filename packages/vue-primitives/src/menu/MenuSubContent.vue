@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { useComposedElements, useRef } from '../hooks/index.ts'
+import { usePopperContext } from '../popper/index.ts'
 import { usePresence } from '../presence/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import MenuContentImpl from './MenuContentImpl.vue'
-import { Collection, SUB_CLOSE_KEYS, useMenuContext, useMenuRootContext } from './MenuRoot.ts'
+import { SUB_CLOSE_KEYS, useMenuContext, useMenuRootContext } from './MenuRoot.ts'
 import { useMenuSubContext } from './MenuSub.ts'
 import type { FocusOutsideEvent } from '../dismissable-layer/index.ts'
 import type { MenuSubContentEmits, MenuSubContentProps } from './MenuSubContent.ts'
@@ -19,22 +18,15 @@ const emit = defineEmits<MenuSubContentEmits>()
 const context = useMenuContext('MenuSubContent')
 const rootContext = useMenuRootContext('MenuSubContent')
 const subContext = useMenuSubContext('MenuSubContent')
+const popperContext = usePopperContext('MenuSubContent')
 
-const elRef = useRef<HTMLElement>()
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useComposedElements((v) => {
-  elRef.current = v
-  $el.value = v
-})
-
-Collection.provideCollectionContext(elRef)
-
-const isPresent = usePresence($el, () => props.forceMount || context.open())
+const isPresent = usePresence(popperContext.content, () => props.forceMount || context.open())
 
 function onOpenAutoFocus(event: Event) {
   // when opening a submenu, focus content for keyboard users only
-  if (rootContext.isUsingKeyboardRef.current)
-    elRef.current?.focus()
+  if (rootContext.isUsingKeyboardRef.current) {
+    popperContext.content.value?.focus()
+  }
   event.preventDefault()
 }
 // The menu might close because of focusing another menu item in the parent menu. We
@@ -67,6 +59,7 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   if (isKeyDownInside && isCloseKey) {
     context.onOpenChange(false)
     // We focus manually because we prevented it in `onCloseAutoFocus`
+
     subContext.trigger.value?.focus()
     // prevent window from scrolling
     event.preventDefault()
@@ -78,7 +71,6 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   <MenuContentImpl
     v-if="isPresent"
     :id="subContext.contentId"
-    :ref="forwardElement"
     :aria-labelledby="subContext.triggerId"
     align="start"
     :side="rootContext.dir.value === 'rtl' ? 'left' : 'right'"

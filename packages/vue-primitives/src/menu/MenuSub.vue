@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { shallowRef, watchEffect } from 'vue'
-import { useId } from '../hooks/index.ts'
-import { PopperRoot } from '../popper/index.ts'
-import { provedeMenuContext, useMenuContext } from './MenuRoot.ts'
+import { useId, useRef } from '../hooks/index.ts'
+import { type Measurable, providePopperContext } from '../popper/index.ts'
+import { provideMenuContext, useMenuContext } from './MenuRoot.ts'
 import { type MenuSubEmits, type MenuSubProps, provideMenuSubContext } from './MenuSub.ts'
 
 defineOptions({
@@ -15,8 +15,7 @@ const props = withDefaults(defineProps<MenuSubProps>(), {
 const emit = defineEmits<MenuSubEmits>()
 
 const parentMenuContext = useMenuContext('MenuSub')
-const trigger = shallowRef<HTMLDivElement>()
-const content = shallowRef<HTMLDivElement>()
+const trigger = useRef<HTMLDivElement>()
 
 // Prevent the parent menu from reopening with open submenus.
 watchEffect((onCleanup) => {
@@ -28,16 +27,12 @@ watchEffect((onCleanup) => {
   })
 })
 
-provedeMenuContext({
+provideMenuContext({
   open() {
     return props.open
   },
   onOpenChange(open) {
     emit('update:open', open)
-  },
-  content,
-  onContentChange(el) {
-    content.value = el
   },
 })
 
@@ -46,13 +41,23 @@ provideMenuSubContext({
   triggerId: useId(),
   trigger,
   onTriggerChange(el) {
-    trigger.value = el
+    trigger.current = el
+  },
+})
+
+// COMP::PopperRoot
+
+const anchor = shallowRef<Measurable>()
+
+providePopperContext({
+  content: shallowRef(),
+  anchor,
+  onAnchorChange(newAnchor: Measurable | undefined) {
+    anchor.value = newAnchor
   },
 })
 </script>
 
 <template>
-  <PopperRoot>
-    <slot />
-  </PopperRoot>
+  <slot />
 </template>

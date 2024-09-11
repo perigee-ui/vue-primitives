@@ -10,7 +10,7 @@ export interface CollectionContext {
   collectionRef: MutableRefObject<HTMLElement | undefined>
 }
 
-export function createCollection<ItemElement extends HTMLElement, ItemData = Record<string, any>, K extends keyof ItemData | undefined = undefined >(name: string) {
+export function createCollection<ItemElement extends HTMLElement, ItemData = Record<string, any>>(name: string) {
   const [_provideCollectionContext, useCollectionContext] = createContext<CollectionContext>(`${name}CollectionProvider`)
 
   type CollectionItem = ItemElementWithData<ItemElement, ItemData>
@@ -26,7 +26,7 @@ export function createCollection<ItemElement extends HTMLElement, ItemData = Rec
     return context
   }
 
-  function useCollectionItem(currentElement: ItemElement | undefined, attrs: K extends keyof ItemData ? ItemData[K] : ItemData, key: K) {
+  function useCollectionItem<K extends keyof ItemData>(currentElement: ItemElement | undefined, attrs: ItemData[K], key: K) {
     const unrefElement = currentElement as CollectionItem | undefined
     if (!unrefElement)
       return
@@ -40,7 +40,7 @@ export function createCollection<ItemElement extends HTMLElement, ItemData = Rec
 
     if (key) {
       (unrefElement as any).$$rcid = (unrefElement as any).$$rcid || {}
-      ;(unrefElement as any).$$rcid[key] = attrs
+      ; (unrefElement as any).$$rcid[key] = attrs
     }
     else {
       (unrefElement as any).$$rcid = attrs

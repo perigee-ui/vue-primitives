@@ -53,4 +53,4 @@ export interface SliderContext {
 
 export const [provideSliderContext, useSliderContext] = createContext<SliderContext>('Slider')
 
-export const [Collection, useCollection] = createCollection<HTMLSpanElement, undefined>('Slider')
+export const [Collection, useCollection] = createCollection<HTMLSpanElement>('Slider')

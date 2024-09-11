@@ -47,7 +47,7 @@ export interface ItemData {
   }
 }
 
-export const [Collection, useCollection] = createCollection<HTMLElement, ItemData, 'rfg'>('RovingFocusGroup')
+export const [Collection, useCollection] = createCollection<HTMLElement, ItemData>('RovingFocusGroup')
 
 export interface RovingContext {
   /**

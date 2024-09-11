@@ -5,7 +5,7 @@ import { providePopperContext } from '../popper/index.ts'
 import {
   type MenuRootEmits,
   type MenuRootProps,
-  provedeMenuContext,
+  provideMenuContext,
   provideMenuRootContext,
   useIsUsingKeyboard,
 } from './MenuRoot.ts'
@@ -22,20 +22,15 @@ const props = withDefaults(defineProps<MenuRootProps>(), {
 
 const emit = defineEmits<MenuRootEmits>()
 
-const content = shallowRef<HTMLDivElement>()
 const isUsingKeyboardRef = useIsUsingKeyboard()
 const direction = useDirection(() => props.dir)
 
-provedeMenuContext({
+provideMenuContext({
   open() {
     return props.open
   },
   onOpenChange(open) {
     emit('update:open', open)
-  },
-  content,
-  onContentChange(payload) {
-    content.value = payload
   },
 })
 
@@ -53,6 +48,7 @@ provideMenuRootContext({
 const anchor = shallowRef<Measurable>()
 
 providePopperContext({
+  content: shallowRef(),
   anchor,
   onAnchorChange(newAnchor: Measurable | undefined) {
     anchor.value = newAnchor

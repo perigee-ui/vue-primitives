@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useForwardElement, useRef } from '../hooks/index.ts'
+import { usePopperContext } from '../popper/index.ts'
 import { usePresence } from '../presence/index.ts'
-import { Collection, useMenuContext, useMenuRootContext } from './MenuRoot.ts'
+import { useMenuContext, useMenuRootContext } from './MenuRoot.ts'
 import MenuRootContentModal from './MenuRootContentModal.vue'
 import MenuRootContentNonModal from './MenuRootContentNonModal.vue'
 import type { MenuContentProps } from './MenuContent.ts'
@@ -12,25 +12,17 @@ defineOptions({
 
 const props = defineProps<MenuContentProps>()
 
-const elRef = useRef<HTMLElement>()
-const forwardElement = useForwardElement(elRef)
-
-Collection.provideCollectionContext(elRef)
-
 const context = useMenuContext('MenuContent')
 const rootContext = useMenuRootContext('MenuContent')
+const popperContext = usePopperContext('MenuContent')
 
-const isPresent = usePresence(context.content, () => props.forceMount || context.open())
+const isPresent = usePresence(popperContext.content, () => props.forceMount || context.open())
 
 const Comp = rootContext.modal ? MenuRootContentModal : MenuRootContentNonModal
-
-defineExpose({
-  $el: context.content,
-})
 </script>
 
 <template>
-  <Comp v-if="isPresent" :ref="forwardElement">
+  <Comp v-if="isPresent">
     <slot />
   </Comp>
 </template>

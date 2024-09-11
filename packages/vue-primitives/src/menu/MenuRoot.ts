@@ -17,11 +17,11 @@ export type MenuRootEmits = {
 export interface MenuContext {
   open: () => boolean
   onOpenChange: (open: boolean) => void
-  content: Ref<HTMLDivElement | undefined>
-  onContentChange: (content: HTMLDivElement | undefined) => void
+  // content: Ref<HTMLDivElement | undefined>
+  // onContentChange: (content: HTMLDivElement | undefined) => void
 }
 
-export const [provedeMenuContext, useMenuContext] = createContext<MenuContext>('Menu')
+export const [provideMenuContext, useMenuContext] = createContext<MenuContext>('Menu')
 
 export interface MenuRootContext {
   onClose: () => void
@@ -33,7 +33,7 @@ export interface MenuRootContext {
 export const [provideMenuRootContext, useMenuRootContext] = createContext<MenuRootContext>('MenuRoot')
 
 export interface ItemData { menu: { disabled: boolean, textValue: string } }
-export const [Collection, useCollection] = createCollection< HTMLDivElement, ItemData, 'menu'>('Menu')
+export const [Collection, useCollection] = createCollection< HTMLDivElement, ItemData>('Menu')
 
 export const SELECTION_KEYS = ['Enter', ' ']
 export const FIRST_KEYS = ['ArrowDown', 'PageUp', 'Home']

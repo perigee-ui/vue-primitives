@@ -3,13 +3,13 @@ import { onBeforeUnmount, shallowRef } from 'vue'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
-import { useComposedElements, useRef } from '../hooks/index.ts'
-import { PopperContent } from '../popper/index.ts'
+import { useForwardElement, useRef } from '../hooks/index.ts'
+import { PopperContent, usePopperContext } from '../popper/index.ts'
 import { useRovingFocusGroupRoot } from '../roving-focus/index.ts'
 import { focusFirst } from '../utils/focusFirst.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { provideMenuContentContext } from './MenuContent.ts'
-import { FIRST_LAST_KEYS, LAST_KEYS, useCollection, useMenuContext, useMenuRootContext } from './MenuRoot.ts'
+import { Collection, FIRST_LAST_KEYS, LAST_KEYS, useCollection, useMenuContext, useMenuRootContext } from './MenuRoot.ts'
 import { getNextMatch, getOpenState, type GraceIntent, isPointerInGraceArea, type Side } from './utils.ts'
 import type { MenuContentImplEmits, MenuContentImplProps } from './MenuContentImpl.ts'
 
@@ -25,13 +25,14 @@ const emit = defineEmits<MenuContentImplEmits>()
 
 const context = useMenuContext('MenuContentImpl')
 const rootContext = useMenuRootContext('MenuContentImpl')
-const getItems = useCollection()
+const popperContext = usePopperContext('MenuContentImpl')
+
 const currentItemId = shallowRef<string>()
+
 const elRef = useRef<HTMLDivElement>()
-const forwardElement = useComposedElements<HTMLDivElement>((v) => {
-  elRef.current = v
-  context.content.value = v
-})
+const forwardElement = useForwardElement<HTMLDivElement>(elRef)
+const getItems = useCollection(Collection.provideCollectionContext(elRef))
+
 let timerRef = 0
 const searchRef = useRef('')
 const pointerGraceTimerRef = useRef(0)
@@ -67,7 +68,9 @@ function handleTypeaheadSearch(key: string) {
      * Imperative focus during keydown is risky so we prevent React's batching updates
      * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
      */
-    setTimeout(() => (newItem as HTMLElement).focus())
+    setTimeout(() => {
+      ;(newItem as HTMLElement).focus()
+    })
   }
 }
 
@@ -92,7 +95,7 @@ provideMenuContentContext({
   onItemLeave(event) {
     if (isPointerMovingToSubmenu(event))
       return
-    context.content.value?.focus()
+    elRef.current?.focus()
     currentItemId.value = undefined
   },
   onTriggerLeave(event) {
@@ -139,7 +142,7 @@ const onPointermove = composeEventHandlers<PointerEvent>((event) => {
 
 // COMP::FocusScope
 const focusScope = useFocusScope(
-  context.content,
+  popperContext.content,
   {
     trapped() {
       return props.trapFocus
@@ -152,7 +155,7 @@ const focusScope = useFocusScope(
       // when opening, explicitly focus the content area only and leave
       // `onEntryFocus` in  control of focusing first item
       event.preventDefault()
-      context.content.value?.focus({ preventScroll: true })
+      popperContext.content.value?.focus({ preventScroll: true })
     }),
     onUnmountAutoFocus(event: Event) {
       emit('closeAutoFocus', event)
@@ -162,7 +165,7 @@ const focusScope = useFocusScope(
 
 // COMP::DismissableLayer
 
-const dismissableLayer = useDismissableLayer(context.content, {
+const dismissableLayer = useDismissableLayer(popperContext.content, {
   disableOutsidePointerEvents() {
     return props.disableOutsidePointerEvents
   },
@@ -239,7 +242,7 @@ const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (eve
   }
 
   // focus first/last item based on key pressed
-  const content = context.content.value
+  const content = popperContext.content.value
 
   if (event.target !== content)
     return

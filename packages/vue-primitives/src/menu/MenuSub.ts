@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import { createContext } from '../hooks/index.ts'
+import { createContext, type MutableRefObject } from '../hooks/index.ts'
 
 export interface MenuSubProps {
   open?: boolean
@@ -13,7 +12,7 @@ export type MenuSubEmits = {
 export interface MenuSubContext {
   contentId: string
   triggerId: string
-  trigger: Ref<HTMLDivElement | undefined>
+  trigger: MutableRefObject<HTMLDivElement | undefined>
   onTriggerChange: (trigger: HTMLDivElement | undefined) => void
 }
 

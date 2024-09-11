@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shallowRef, watchEffect } from 'vue'
+import { nextTick, shallowRef, watchEffect } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
@@ -63,7 +63,9 @@ const onPointermove = composeEventHandlers<PointerEvent>(
 
 const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
   emit('pointerleave', event)
-}, (event) => {
+}, async (event) => {
+  // TODO: nextTick
+  await nextTick()
   if (event.pointerType !== 'mouse')
     return
 
@@ -72,7 +74,9 @@ const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
 
 const onBlur = composeEventHandlers<FocusEvent>((event) => {
   emit('blur', event)
-}, () => {
+}, async () => {
+  // TODO: nextTick
+  await nextTick()
   isFocused.value = false
 })
 
@@ -94,9 +98,14 @@ const rovingFocusGroupItem = useRovingFocusGroupItem({
   },
 })
 
-const onFocus = composeEventHandlers<FocusEvent>(rovingFocusGroupItem.onFocus, () => {
-  isFocused.value = true
-})
+const onFocus = composeEventHandlers<FocusEvent>(
+  rovingFocusGroupItem.onFocus,
+  async () => {
+    // TODO: nextTick
+    await nextTick()
+    isFocused.value = true
+  },
+)
 
 const forwardElement = useComposedElements<HTMLDivElement>((v) => {
   rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, rovingFocusGroupItem.collectionKey)

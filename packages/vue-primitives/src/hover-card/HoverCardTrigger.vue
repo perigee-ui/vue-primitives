@@ -45,11 +45,11 @@ const onTouchstart = composeEventHandlers<TouchEvent>((event) => {
 
 const popperContext = usePopperContext('PopperAnchor')
 
-const $el = useRef<HTMLDivElement>()
-const forwardElement = useForwardElement($el)
+const elRef = useRef<HTMLDivElement>()
+const forwardElement = useForwardElement(elRef)
 
 onMounted(() => {
-  popperContext.onAnchorChange(props.virtualRef?.current || $el.current)
+  popperContext.onAnchorChange(props.virtualRef?.current || elRef.current)
 })
 </script>
 

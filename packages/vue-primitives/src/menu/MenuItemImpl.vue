@@ -63,9 +63,9 @@ const onPointermove = composeEventHandlers<PointerEvent>(
 
 const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
   emit('pointerleave', event)
-}, async (event) => {
+}, (event) => {
   // TODO: nextTick
-  await nextTick()
+  // await nextTick()
   if (event.pointerType !== 'mouse')
     return
 
@@ -74,9 +74,9 @@ const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
 
 const onBlur = composeEventHandlers<FocusEvent>((event) => {
   emit('blur', event)
-}, async () => {
+}, () => {
   // TODO: nextTick
-  await nextTick()
+  // await nextTick()
   isFocused.value = false
 })
 
@@ -100,9 +100,10 @@ const rovingFocusGroupItem = useRovingFocusGroupItem({
 
 const onFocus = composeEventHandlers<FocusEvent>(
   rovingFocusGroupItem.onFocus,
-  async () => {
+  () => {
+    console.error('on:Item:1', $el.value)
     // TODO: nextTick
-    await nextTick()
+    // await nextTick()
     isFocused.value = true
   },
 )

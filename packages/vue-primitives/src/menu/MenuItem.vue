@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
 import { useRef } from '../hooks/index.ts'
 import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
@@ -25,7 +24,7 @@ let isPointerDownRef = false
 
 const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('click', event)
-}, async () => {
+}, () => {
   if (props.disabled || !elRef.current)
     return
 
@@ -33,7 +32,7 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('select', itemSelectEvent)
 
   // TODO: nextTick
-  await nextTick()
+  // await nextTick()
 
   if (itemSelectEvent.defaultPrevented) {
     isPointerDownRef = false
@@ -49,9 +48,9 @@ function onPointerdown() {
 
 const onPointerup = composeEventHandlers<PointerEvent>((event) => {
   emit('pointerup', event)
-}, async (event) => {
+}, (event) => {
   // TODO: nextTick
-  await nextTick()
+  // await nextTick()
   if (event.defaultPrevented)
     return
   // Pointer down can move to a different menu item which should activate it on pointer up.

@@ -69,6 +69,7 @@ function handleTypeaheadSearch(key: string) {
      * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
      */
     setTimeout(() => {
+      console.error('f:1', newItem)
       ;(newItem as HTMLElement).focus()
     })
   }
@@ -95,7 +96,8 @@ provideMenuContentContext({
   onItemLeave(event) {
     if (isPointerMovingToSubmenu(event))
       return
-    elRef.current?.focus()
+    console.error('f:2', popperContext.content.value)
+    popperContext.content.value?.focus()
     currentItemId.value = undefined
   },
   onTriggerLeave(event) {
@@ -155,6 +157,7 @@ const focusScope = useFocusScope(
       // when opening, explicitly focus the content area only and leave
       // `onEntryFocus` in  control of focusing first item
       event.preventDefault()
+      console.error('f::_2', popperContext.content.value)
       popperContext.content.value?.focus({ preventScroll: true })
     }),
     onUnmountAutoFocus(event: Event) {
@@ -280,10 +283,6 @@ const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (eve
     }"
 
     @keydown="onKeydown"
-
-    @focus.capture="dismissableLayer.onFocusCapture"
-    @blur.capture="dismissableLayer.onBlurCapture"
-    @pointerdown.capture="dismissableLayer.onPointerdownCapture"
 
     @blur="onBlur"
     @pointermove="onPointermove"

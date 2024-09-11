@@ -121,6 +121,7 @@ export function useRovingFocusGroupItem(
        * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
        */
       setTimeout(() => {
+        console.error('f::rfg:i:', candidateNodes)
         focusFirst(candidateNodes)
       })
     },

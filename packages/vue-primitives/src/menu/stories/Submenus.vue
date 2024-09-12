@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
+import { provideConfigContext } from '../../config/index.ts'
 import { MenuItem, MenuSeparator } from '../index.ts'
 import MenuWithAnchor from './MenuWithAnchor.vue'
 import Submenu from './Submenu.vue'
+import type { Direction } from '../../direction/index.ts'
 
 const open1 = shallowRef(false)
 const open2 = shallowRef(false)
 const open3 = shallowRef(false)
 const open4 = shallowRef(false)
-const open5 = shallowRef(false)
+const dir = shallowRef<Direction>('ltr')
 const rtl = shallowRef(false)
 const animated = shallowRef(false)
 
 function setRtl(value: boolean) {
+  dir.value = value ? 'rtl' : 'ltr'
   rtl.value = value
 }
 
@@ -24,6 +27,10 @@ function alert(name: string) {
   // eslint-disable-next-line no-alert
   window.alert(name)
 }
+
+provideConfigContext({
+  dir,
+})
 </script>
 
 <template>
@@ -35,7 +42,7 @@ function alert(name: string) {
           :checked="rtl"
           @input="(event) => setRtl((event.currentTarget as any).checked)"
         >
-        Right-to-left
+        Right-to-left {{ dir }}
       </label>
       <label>
         <input

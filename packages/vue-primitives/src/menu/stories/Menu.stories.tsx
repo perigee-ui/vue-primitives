@@ -1,5 +1,6 @@
 import CStyled from './Styled.vue'
 import CSubmenus from './Submenus.vue'
+import CTypeahead from './Typeahead.vue'
 import CWithLabels from './WithLabels.vue'
 
 export default {
@@ -17,4 +18,8 @@ export function Submenus() {
 
 export function WithLabels() {
   return CWithLabels
+}
+
+export function Typeahead() {
+  return CTypeahead
 }

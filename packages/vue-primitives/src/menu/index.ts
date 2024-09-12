@@ -49,6 +49,7 @@ export {
   type MenuRootProps,
   provideMenuContext,
   provideMenuRootContext,
+  useIsUsingKeyboard,
   useMenuContext,
   useMenuRootContext,
 } from './MenuRoot.ts'

@@ -1,4 +1,5 @@
 import CCheckboxItems from './CheckboxItems.vue'
+import CRadioItems from './RadioItems.vue'
 import CStyled from './Styled.vue'
 import CSubmenus from './Submenus.vue'
 import CTypeahead from './Typeahead.vue'
@@ -27,4 +28,8 @@ export function Typeahead() {
 
 export function CheckboxItems() {
   return CCheckboxItems
+}
+
+export function RadioItems() {
+  return CRadioItems
 }

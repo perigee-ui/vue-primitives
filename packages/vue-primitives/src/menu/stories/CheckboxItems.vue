@@ -26,9 +26,7 @@ function onChange(option: string) {
     <MenuWithAnchor>
       <MenuCheckboxItem
         class="menu_itemClass"
-        :checked="
-          selection.length === options.length ? true : selection.length ? 'indeterminate' : false
-        "
+        :checked="selection.length === options.length ? true : selection.length ? 'indeterminate' : false"
         @update:checked="handleSelectAll"
       >
         Select all

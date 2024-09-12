@@ -1,3 +1,4 @@
+import CAnimated from './Animated.vue'
 import CCheckboxItems from './CheckboxItems.vue'
 import CRadioItems from './RadioItems.vue'
 import CStyled from './Styled.vue'
@@ -32,4 +33,8 @@ export function CheckboxItems() {
 
 export function RadioItems() {
   return CRadioItems
+}
+
+export function Animated() {
+  return CAnimated
 }

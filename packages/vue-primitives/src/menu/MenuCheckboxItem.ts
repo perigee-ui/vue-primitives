@@ -6,5 +6,5 @@ export interface MenuCheckboxItemProps {
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type MenuCheckboxItemEmits = {
-  'update:checked': [event: CheckedState]
+  'update:checked': [event: boolean]
 }

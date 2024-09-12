@@ -45,6 +45,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)           | ✓      |
 | [Checkbox](https://vue-primitives.netlify.app/?path=/story/components-checkbox--styled)       | ✓      |
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled) | ✓      |
+| Context Menu                                                                                  | 🚧      |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)           | ✓      |
 | DropdownMenu                                                                                  | 🚧      |
 | Form                                                                                          | ✖️      |

@@ -27,6 +27,7 @@ export {
   provideItemIndicatorContext,
   useItemIndicatorContext,
 } from './MenuItemIndicator.ts'
+export { default as MenuItemIndicator } from './MenuItemIndicator.vue'
 export {
   type MenuRadioGroupContext,
   type MenuRadioGroupEmits,

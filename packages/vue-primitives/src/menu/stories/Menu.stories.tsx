@@ -1,3 +1,4 @@
+import CCheckboxItems from './CheckboxItems.vue'
 import CStyled from './Styled.vue'
 import CSubmenus from './Submenus.vue'
 import CTypeahead from './Typeahead.vue'
@@ -22,4 +23,8 @@ export function WithLabels() {
 
 export function Typeahead() {
   return CTypeahead
+}
+
+export function CheckboxItems() {
+  return CCheckboxItems
 }

@@ -31,9 +31,6 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
   const itemSelectEvent = new CustomEvent(ITEM_SELECT, { bubbles: true, cancelable: true })
   emit('select', itemSelectEvent)
 
-  // TODO: nextTick
-  // await nextTick()
-
   if (itemSelectEvent.defaultPrevented) {
     isPointerDownRef = false
   }
@@ -49,8 +46,6 @@ function onPointerdown() {
 const onPointerup = composeEventHandlers<PointerEvent>((event) => {
   emit('pointerup', event)
 }, (event) => {
-  // TODO: nextTick
-  // await nextTick()
   if (event.defaultPrevented)
     return
   // Pointer down can move to a different menu item which should activate it on pointer up.

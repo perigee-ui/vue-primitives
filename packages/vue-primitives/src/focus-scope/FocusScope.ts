@@ -145,10 +145,8 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
         container.addEventListener(AUTOFOCUS_ON_MOUNT, emits.onMountAutoFocus)
         container.dispatchEvent(mountEvent)
         if (!mountEvent.defaultPrevented) {
-          console.error('f::fs:', removeLinks(getTabbableCandidates(container)))
           focusFirst(removeLinks(getTabbableCandidates(container)), { select: true })
           if (document.activeElement === previouslyFocusedElement) {
-            console.error('f::fs:2', container)
             focus(container)
           }
         }

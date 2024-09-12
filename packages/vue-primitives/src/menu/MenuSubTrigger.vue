@@ -48,7 +48,6 @@ function onClick(event: MouseEvent) {
    * and we rely heavily on `onFocusOutside` for submenus to close when switching
    * between separate submenus.
    */
-  console.error('f:3', event.currentTarget)
   ;(event.currentTarget as HTMLElement).focus()
   if (!context.open())
     context.onOpenChange(true)
@@ -131,11 +130,8 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
 
   if (SUB_OPEN_KEYS[rootContext.dir.value].includes(event.key)) {
     context.onOpenChange(true)
-    // TODO: nextTick
-    // await nextTick()
     // The trigger may hold focus if opened via pointer interaction
     // so we ensure content is given focus again when switching to keyboard.
-    console.error('f:4', popperContext.content.value)
     popperContext.content.value?.focus()
     // prevent window from scrolling
     event.preventDefault()

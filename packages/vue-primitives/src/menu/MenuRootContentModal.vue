@@ -29,7 +29,6 @@ function onFocusOutside(event: FocusOutsideEvent) {
 }
 
 function onDismiss() {
-  console.error('c:2')
   context.onOpenChange(false)
 }
 </script>

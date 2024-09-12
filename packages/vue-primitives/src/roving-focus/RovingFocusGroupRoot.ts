@@ -127,7 +127,6 @@ export function useRovingFocusGroupRoot(
         const currentItem = items.find(item => item.$$rcid.rfg.id === currentTabStopId.value)
         const candidateItems = [activeItem, currentItem, ...items].filter(Boolean) as typeof items
         const candidateNodes = candidateItems.map(item => item)
-        console.error('f:rfg:', candidateNodes)
         focusFirst(candidateNodes, props.preventScrollOnEntryFocus ?? false)
       }
     }

@@ -9,7 +9,6 @@ defineOptions({
 const context = useMenuContext('MenuRootContentNonModal')
 
 function onDismiss() {
-  console.error('c:1')
   context.onOpenChange(false)
 }
 </script>

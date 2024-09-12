@@ -105,8 +105,6 @@ export function useDismissableLayer($el: Ref<HTMLElement | undefined>, props: Us
   useFocusOutside((event) => {
     const target = event.target as HTMLElement
 
-    console.error('useFocusOutside::OK', $el.value)
-
     const isFocusInBranch = [...context.branches].some(branch => branch.contains(target))
     if (isFocusInBranch)
       return

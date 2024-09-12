@@ -25,7 +25,6 @@ const isPresent = usePresence(popperContext.content, () => props.forceMount || c
 function onOpenAutoFocus(event: Event) {
   // when opening a submenu, focus content for keyboard users only
   if (rootContext.isUsingKeyboardRef.current) {
-    console.error('f:5', popperContext.content.value)
     popperContext.content.value?.focus()
   }
   event.preventDefault()
@@ -41,7 +40,6 @@ const onFocusOutside = composeEventHandlers<FocusOutsideEvent>((event) => {
   // We prevent closing when the trigger is focused to avoid triggering a re-open animation
   // on pointer interaction.
   if (event.target !== subContext.trigger.current) {
-    console.error('c:3', popperContext.content.value)
     context.onOpenChange(false)
   }
 })
@@ -60,11 +58,9 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
   const isKeyDownInside = (event.currentTarget as HTMLElement).contains(event.target as HTMLElement)
   const isCloseKey = SUB_CLOSE_KEYS[rootContext.dir.value].includes(event.key)
   if (isKeyDownInside && isCloseKey) {
-    console.error('c:4')
     context.onOpenChange(false)
     // We focus manually because we prevented it in `onCloseAutoFocus`
 
-    console.error('f:6', subContext.trigger.current)
     subContext.trigger.current?.focus()
     // prevent window from scrolling
     event.preventDefault()

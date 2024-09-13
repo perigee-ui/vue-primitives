@@ -71,6 +71,8 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
      * - prevents space from scrolling the page.
      * - if keydown causes focus to move, prevents keydown from firing on the new target.
      */
+
+    console.error('MenuItem:preventDefault')
     event.preventDefault()
   }
 })

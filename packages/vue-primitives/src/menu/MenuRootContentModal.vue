@@ -25,6 +25,7 @@ onBeforeUnmount(() => {
 // When focus is trapped, a `focusout` event may still happen.
 // We make sure we don't trigger our `onDismiss` in such case.
 function onFocusOutside(event: FocusOutsideEvent) {
+  console.error('MenuRootContentModal:preventDefault')
   event.preventDefault()
 }
 

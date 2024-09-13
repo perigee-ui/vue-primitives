@@ -84,13 +84,21 @@ useFocusGuards()
 
 function isPointerMovingToSubmenu(event: PointerEvent) {
   const isMovingTowards = pointerDirRef === pointerGraceIntentRef?.side
-  return isMovingTowards && isPointerInGraceArea(event, pointerGraceIntentRef?.area)
+
+  console.error('isMovingTowards:', isMovingTowards, pointerDirRef, pointerGraceIntentRef?.side)
+
+  const d = isPointerInGraceArea(event, pointerGraceIntentRef?.area)
+  console.error('isPointerInGraceArea:', d, event, pointerGraceIntentRef?.area)
+
+  return isMovingTowards && d
 }
 
 provideMenuContentContext({
   onItemEnter(event) {
-    if (isPointerMovingToSubmenu(event))
+    if (isPointerMovingToSubmenu(event)) {
+      console.error('MenuContentImpl:preventDefault')
       event.preventDefault()
+    }
   },
   onItemLeave(event) {
     if (isPointerMovingToSubmenu(event))
@@ -99,8 +107,10 @@ provideMenuContentContext({
     currentItemId.value = undefined
   },
   onTriggerLeave(event) {
-    if (isPointerMovingToSubmenu(event))
+    if (isPointerMovingToSubmenu(event)) {
+      console.error('MenuContentImpl:preventDefault')
       event.preventDefault()
+    }
   },
   searchRef,
   pointerGraceTimerRef,
@@ -154,6 +164,8 @@ const focusScope = useFocusScope(
     }, (event) => {
       // when opening, explicitly focus the content area only and leave
       // `onEntryFocus` in  control of focusing first item
+
+      console.error('MenuContentImpl:preventDefault')
       event.preventDefault()
       popperContext.content.value?.focus({ preventScroll: true })
     }),
@@ -184,7 +196,9 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
     emit('focusOutside', event)
   },
   onPointerdownOutside(event) {
+    console.error('Menu:onPointerdownOutside::1', !event.defaultPrevented)
     emit('pointerdownOutside', event)
+    console.error('Menu:onPointerdownOutside::2', !event.defaultPrevented)
   },
 })
 
@@ -219,8 +233,10 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
     emit('entryFocus', event)
   }, (event) => {
   // only focus first item when using keyboard
-    if (!rootContext.isUsingKeyboardRef.current)
+    if (!rootContext.isUsingKeyboardRef.current) {
+      console.error('MenuContentImpl:preventDefault')
       event.preventDefault()
+    }
   }),
 })
 
@@ -235,8 +251,10 @@ const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (eve
 
   if (isKeyDownInside) {
     // menus should not be navigated using tab key so we prevent it
-    if (event.key === 'Tab')
+    if (event.key === 'Tab') {
+      console.error('MenuContentImpl:preventDefault')
       event.preventDefault()
+    }
 
     if (!isModifierKey && isCharacterKey)
       handleTypeaheadSearch(event.key)
@@ -251,6 +269,7 @@ const onKeydown = composeEventHandlers<KeyboardEvent>(focusScope.onKeydown, (eve
   if (!FIRST_LAST_KEYS.includes(event.key))
     return
 
+  console.error('MenuContentImpl:preventDefault')
   event.preventDefault()
   const candidateNodes = getItems().filter(item => !item.$$rcid.menu.disabled)
 

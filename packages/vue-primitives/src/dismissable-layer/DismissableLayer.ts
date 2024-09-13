@@ -94,11 +94,8 @@ export function useDismissableLayer($el: Ref<HTMLElement | undefined>, props: Us
     if (isPointerdownOnBranch)
       return
 
-    console.error('Dismiss:usePointerdownOutside::1', !event.defaultPrevented)
     emits.onPointerdownOutside?.(event)
-    console.error('Dismiss:usePointerdownOutside::2', !event.defaultPrevented)
     emits.onInteractOutside?.(event)
-    console.error('Dismiss:usePointerdownOutside::3', !event.defaultPrevented)
 
     if (!event.defaultPrevented) {
       emits.onDismiss?.()

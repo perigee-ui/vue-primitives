@@ -72,7 +72,6 @@ const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
      * - if keydown causes focus to move, prevents keydown from firing on the new target.
      */
 
-    console.error('MenuItem:preventDefault')
     event.preventDefault()
   }
 })

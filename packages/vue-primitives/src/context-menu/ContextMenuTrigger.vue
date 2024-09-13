@@ -55,7 +55,6 @@ const onContextmenu = composeEventHandlers<MouseEvent>((event) => {
 }, (event) => {
   if (props.disabled)
     return
-  console.error('ContextMenuTrigger:onContextmenu')
   // clearing the long press here because some platforms already support
   // long press to trigger a `contextmenu` event
   clearLongPress()

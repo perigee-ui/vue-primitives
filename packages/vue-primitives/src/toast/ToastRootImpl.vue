@@ -100,11 +100,14 @@ watch(context.viewport, (viewport) => {
 // we include `open` in deps because closed !== unmounted when animating
 // so it could reopen before being completely unmounted
 if (isClient) {
-  watchEffect((onCleanup) => {
-    if (props.open && !context.isClosePausedRef.current) {
-      startTimer(duration())
-      onCleanup(() => window.clearTimeout(closeTimerRef))
-    }
+  watchEffect(() => {
+    if (!props.open || context.isClosePausedRef.current)
+      return
+
+    startTimer(duration())
+    onWatcherCleanup(() => {
+      window.clearTimeout(closeTimerRef)
+    })
   })
 }
 

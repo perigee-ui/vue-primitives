@@ -22,18 +22,21 @@ const emit = defineEmits<ContextMenuTriggerEmits>()
 
 const context = useContextMenuContext('ContextMenuTrigger')
 const popperContext = usePopperContext('ContextMenuTrigger')
-let pointRef: Point = { x: 0, y: 0 }
+const pointRef: DOMRectInit = { width: 0, height: 0, x: 0, y: 0 }
 const virtualRef = {
-  getBoundingClientRect: () => DOMRect.fromRect({ width: 0, height: 0, ...pointRef }),
+  getBoundingClientRect() {
+    return DOMRect.fromRect(pointRef)
+  },
 }
-const longPressTimerRef = useRef(0)
+let longPressTimerRef = 0
 
 function clearLongPress() {
-  window.clearTimeout(longPressTimerRef.current)
+  window.clearTimeout(longPressTimerRef)
 }
 
 function handleOpen(event: MouseEvent | PointerEvent) {
-  pointRef = { x: event.clientX, y: event.clientY }
+  pointRef.x = event.clientX
+  pointRef.y = event.clientY
   context.onOpenChange(true)
 }
 
@@ -54,6 +57,7 @@ const onContextmenu = composeEventHandlers<MouseEvent>((event) => {
 }, (event) => {
   if (props.disabled)
     return
+  console.error('ContextMenuTrigger:onContextmenu')
   // clearing the long press here because some platforms already support
   // long press to trigger a `contextmenu` event
   clearLongPress()
@@ -72,7 +76,7 @@ const onPointerdown = composeEventHandlers<PointerEvent>(
       return
     // clear the long press here in case there's multiple touch points
     clearLongPress()
-    longPressTimerRef.current = window.setTimeout(() => handleOpen(event), 700)
+    longPressTimerRef = window.setTimeout(() => handleOpen(event), 700)
   },
 )
 
@@ -113,6 +117,12 @@ onBeforeUnmount(() => {
 // COMP::MenuAnchor COMP::PopperAnchor
 
 popperContext.onAnchorChange(virtualRef)
+
+// @contextmenu="onContextmenu"
+// @pointerdown="onPointerdown"
+// @pointermove="onPointermove"
+// @pointercancel="onPointercancel"
+// @pointerup="onPointerup"
 </script>
 
 <template>
@@ -122,10 +132,6 @@ popperContext.onAnchorChange(virtualRef)
     :data-disabled="disabled ? '' : undefined"
     style="-webkit-touch-callout: none"
     @contextmenu="onContextmenu"
-    @pointerdown="onPointerdown"
-    @pointermove="onPointermove"
-    @pointercancel="onPointercancel"
-    @pointerup="onPointerup"
   >
     <slot />
   </Primitive>

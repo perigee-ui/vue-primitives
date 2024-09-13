@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, shallowRef, watchEffect } from 'vue'
+import { computed, onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { useControllableState, useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
@@ -28,17 +28,20 @@ const checked = useControllableState(props, v => emit('update:checked', v), 'che
 
 const initialCheckedStateRef = checked.value
 
-watchEffect((onCleanup) => {
+watchEffect(() => {
   const form = $el.value?.form
-  if (form) {
-    const reset = () => {
-      checked.value = initialCheckedStateRef
-    }
+  if (!form)
+    return
 
-    form.addEventListener('reset', reset)
-
-    onCleanup(() => form.removeEventListener('reset', reset))
+  const reset = () => {
+    checked.value = initialCheckedStateRef
   }
+
+  form.addEventListener('reset', reset)
+
+  onWatcherCleanup(() => {
+    form.removeEventListener('reset', reset)
+  })
 })
 
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {

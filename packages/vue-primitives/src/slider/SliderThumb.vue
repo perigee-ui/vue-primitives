@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SliderThumbEmits, SliderThumbProps } from './SliderThumb.ts'
 import { isClient } from '@vueuse/core'
-import { computed, shallowRef, watchEffect } from 'vue'
+import { computed, onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useForwardElement, useSize } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
@@ -46,12 +46,16 @@ const thumbInBoundsOffset = computed(() => {
 })
 
 if (isClient) {
-  watchEffect((onCleanup) => {
+  watchEffect(() => {
     const thumb = $el.value
-    if (thumb) {
-      context.thumbs.add(thumb)
-      onCleanup(() => context.thumbs.delete(thumb))
-    }
+
+    if (!thumb)
+      return
+    context.thumbs.add(thumb)
+
+    onWatcherCleanup(() => {
+      context.thumbs.delete(thumb)
+    })
   })
 }
 

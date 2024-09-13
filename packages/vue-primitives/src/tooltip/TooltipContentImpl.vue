@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isClient } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted, onWatcherCleanup, watchEffect } from 'vue'
 import { type FocusOutsideEvent, useDismissableLayer } from '../dismissable-layer/index.ts'
 import { PopperContent, usePopperContext } from '../popper/index.ts'
 import { provideTooltipContentContext, type TooltipContentImplEmits, type TooltipContentImplProps } from './TooltipContentImpl.ts'
@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
 
 // Close the tooltip if the trigger is scrolled
 if (isClient) {
-  watchEffect((onCleanup) => {
+  watchEffect(() => {
     const trigger = context.trigger.value
     if (!trigger)
       return
@@ -38,9 +38,9 @@ if (isClient) {
         context.onClose()
     }
 
-    window.addEventListener('scroll', handleScroll, { capture: true })
+    window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
 
-    onCleanup(() => {
+    onWatcherCleanup(() => {
       window.removeEventListener('scroll', handleScroll, { capture: true })
     })
   })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ContextMenuSubEmits, ContextMenuSubProps } from './ContextMenuSub.ts'
-import { shallowRef, watchEffect } from 'vue'
+import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { useControllableState, useId, useRef } from '../hooks/index.ts'
 import { provideMenuContext, provideMenuSubContext, useMenuContext } from '../menu/index.ts'
 import { type Measurable, providePopperContext } from '../popper/index.ts'
@@ -24,11 +24,11 @@ const parentMenuContext = useMenuContext('MenuSub')
 const trigger = useRef<HTMLDivElement>()
 
 // Prevent the parent menu from reopening with open submenus.
-watchEffect((onCleanup) => {
+watchEffect(() => {
   if (parentMenuContext.open() === false)
     open.value = false
 
-  onCleanup(() => {
+  onWatcherCleanup(() => {
     open.value = false
   })
 })

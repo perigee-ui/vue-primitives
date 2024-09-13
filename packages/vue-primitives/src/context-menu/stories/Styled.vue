@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ContextMenuContent from '../ContextMenuContent.vue'
 import {
+  ContextMenuContent,
   ContextMenuItem,
   ContextMenuPortal,
   ContextMenuRoot,

@@ -14,6 +14,7 @@ export {
   type ContextMenuContentEmits,
   type ContextMenuContentProps,
 } from './ContextMenuContent.ts'
+export { default as ContextMenuContent } from './ContextMenuContent.vue'
 export {
   type ContextMenuContextValue,
   type ContextMenuRootEmits,
@@ -22,4 +23,9 @@ export {
   useContextMenuContext,
 } from './ContextMenuRoot.ts'
 export { default as ContextMenuRoot } from './ContextMenuRoot.vue'
+export {
+  type ContextMenuSubEmits,
+  type ContextMenuSubProps,
+} from './ContextMenuSub.ts'
+export { default as ContextMenuSub } from './ContextMenuSub.vue'
 export { default as ContextMenuTrigger } from './ContextMenuTrigger.vue'

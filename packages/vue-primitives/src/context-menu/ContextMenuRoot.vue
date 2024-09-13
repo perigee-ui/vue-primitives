@@ -41,7 +41,7 @@ provideMenuContext({
 
 provideMenuRootContext({
   onClose() {
-    emit('update:open', false)
+    onOpenChange(false)
   },
   isUsingKeyboardRef,
   dir: direction,

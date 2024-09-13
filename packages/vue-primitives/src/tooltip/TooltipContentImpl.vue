@@ -16,35 +16,23 @@ const emit = defineEmits<TooltipContentImplEmits>()
 const context = useTooltipContext('TooltipContentImpl')
 const popperContext = usePopperContext('TooltipContentImpl')
 
+// Close the tooltip if the trigger is scrolled
+function handleScroll(event: Event) {
+  const target = event.target as HTMLElement
+  if (target?.contains(context.trigger.value ?? null))
+    context.onClose()
+}
+
 onMounted(() => {
   // Close this tooltip if another one opens
   document.addEventListener(TOOLTIP_OPEN, context.onClose)
+  window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener(TOOLTIP_OPEN, context.onClose)
+  window.removeEventListener('scroll', handleScroll, { capture: true })
 })
-
-// Close the tooltip if the trigger is scrolled
-if (isClient) {
-  watchEffect(() => {
-    const trigger = context.trigger.value
-    if (!trigger)
-      return
-
-    const handleScroll = (event: Event) => {
-      const target = event.target as HTMLElement
-      if (target?.contains(trigger))
-        context.onClose()
-    }
-
-    window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
-
-    onWatcherCleanup(() => {
-      window.removeEventListener('scroll', handleScroll, { capture: true })
-    })
-  })
-}
 
 function onFocusOutside(event: FocusOutsideEvent) {
   event.preventDefault()

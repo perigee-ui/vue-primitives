@@ -115,7 +115,7 @@ const isAnnounced = shallowRef(false)
 // let timerIsAnnounced: number | undefined
 
 // TODO: render text content in the next frame to ensure toast is announced in NVDA
-// let cliear: () => void
+// let clear: () => void
 
 // if (!context.viewport)
 //   return null
@@ -126,7 +126,7 @@ watch($el, (el) => {
   onToastAdd()
 
   // render text content in the next frame to ensure toast is announced in NVDA
-  const cliear = useNextFrame(() => {
+  const clear = useNextFrame(() => {
     renderAnnounceText.value = true
   })
 
@@ -136,7 +136,7 @@ watch($el, (el) => {
 
   onWatcherCleanup(() => {
     onToastRemove()
-    cliear()
+    clear()
     window.clearTimeout(timerIsAnnounced)
   })
 })

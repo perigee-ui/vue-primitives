@@ -1,4 +1,4 @@
-import { type MaybeRefOrGetter, onWatcherCleanup, shallowRef, toValue, watchEffect } from 'vue'
+import { type MaybeRefOrGetter, onWatcherCleanup, shallowRef, toValue, watch } from 'vue'
 
 interface Size {
   width: number
@@ -8,9 +8,7 @@ interface Size {
 export function useSize(elementRef: MaybeRefOrGetter<HTMLElement | undefined>) {
   const size = shallowRef<Size>()
 
-  watchEffect(() => {
-    const element = toValue(elementRef)
-
+  watch(() => toValue(elementRef), (element) => {
     if (!element) {
     // We only want to reset to `undefined` when the element becomes `null`,
     // not if it changes to another element.

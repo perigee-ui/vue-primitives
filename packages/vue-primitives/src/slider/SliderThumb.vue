@@ -6,7 +6,7 @@ import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useForwardElement, useSize } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
-import BubbleInput from './BubbleInput.vue'
+import SliderBubbleInput from './SliderBubbleInput.vue'
 import { useSliderOrientationContext } from './SliderOrientation.ts'
 import { useCollection, useSliderContext } from './SliderRoot.ts'
 import { convertValueToPercentage, getLabel, getThumbInBoundsOffset } from './utils.ts'
@@ -102,7 +102,7 @@ const onFocus = composeEventHandlers<FocusEvent>((event) => {
       <slot />
     </Primitive>
 
-    <BubbleInput
+    <SliderBubbleInput
       v-if="isFormControl"
       :key="index"
       :name="name ?? (context.name() ? context.name() + (context.values.value.length > 1 ? '[]' : '') : undefined)"

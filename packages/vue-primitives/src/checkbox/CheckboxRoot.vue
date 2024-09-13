@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { computed, onWatcherCleanup, shallowRef, watchEffect } from 'vue'
-import { useControllableState, useForwardElement } from '../hooks/index.ts'
+import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
-import BubbleInput from './BubbleInput.vue'
-import { type CheckboxRootEmits, type CheckboxRootProps, provideCheckboxContext } from './CheckboxRoot.ts'
+import { type CheckboxRootEmits, type CheckboxRootProps, type CheckboxRootSlots, provideCheckboxContext } from './CheckboxRoot.ts'
 import { getState, isIndeterminate } from './utils.ts'
 
 defineOptions({
   name: 'Checkbox',
-  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<CheckboxRootProps>(), {
@@ -18,18 +16,22 @@ const props = withDefaults(defineProps<CheckboxRootProps>(), {
   as: 'button',
 })
 const emit = defineEmits<CheckboxRootEmits>()
-const $el = shallowRef<HTMLButtonElement>()
-const forwardElement = useForwardElement($el)
 
-const hasConsumerStoppedPropagation = shallowRef(false)
+defineSlots<CheckboxRootSlots>()
+
+const control = shallowRef<HTMLButtonElement>()
+// const elRef = useRef<HTMLButtonElement>()
+const forwardElement = useForwardElement<HTMLButtonElement>(control)
+
+const bubbles = useRef(true)
 // We set this to true by default so that events bubble to forms without JS (SSR)
-const isFormControl = computed(() => $el.value ? Boolean($el.value.closest('form')) : true)
+const isFormControl = computed(() => control.value ? Boolean(control.value.closest('form')) : true)
 const checked = useControllableState(props, v => emit('update:checked', v), 'checked', props.defaultChecked)
 
 const initialCheckedStateRef = checked.value
 
 watchEffect(() => {
-  const form = $el.value?.form
+  const form = control.value?.form
   if (!form)
     return
 
@@ -57,11 +59,11 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 }, (event) => {
   checked.value = isIndeterminate(checked.value) ? true : !checked.value
   if (isFormControl.value) {
-    hasConsumerStoppedPropagation.value = event.cancelBubble
+    bubbles.current = !event.cancelBubble
     // if checkbox is in a form, stop propagation from the button so that we only propagate
     // one click event (from the input). We propagate changes from an input so that native
     // form validation works and form events reflect checkbox updates.
-    if (!hasConsumerStoppedPropagation.value)
+    if (bubbles.current)
       event.stopPropagation()
   }
 })
@@ -71,10 +73,6 @@ provideCheckboxContext({
     return props.disabled
   },
   state: checked,
-})
-
-defineExpose({
-  $el,
 })
 </script>
 
@@ -90,21 +88,20 @@ defineExpose({
     :data-disabled="disabled ? '' : undefined"
     :disabled="disabled"
     :value="value"
-    v-bind="$attrs"
     @keydown="onKeydown"
     @click="onClick"
   >
-    <slot />
+    <slot
+      :is-form-control="isFormControl"
+      :input="{
+        control,
+        bubbles,
+        name,
+        value,
+        checked,
+        required,
+        disabled,
+      }"
+    />
   </Primitive>
-
-  <BubbleInput
-    v-if="isFormControl"
-    :control="$el"
-    :bubbles="!hasConsumerStoppedPropagation"
-    :name="name"
-    :value="value"
-    :checked="checked"
-    :required="required"
-    :disabled="disabled"
-  />
 </template>

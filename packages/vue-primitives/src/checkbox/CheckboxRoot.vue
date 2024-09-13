@@ -85,7 +85,7 @@ defineExpose({
     type="button"
     role="checkbox"
     :aria-checked="isIndeterminate(checked) ? 'mixed' : checked"
-    :aria-required="$attrs.required"
+    :aria-required="required"
     :data-state="getState(checked)"
     :data-disabled="disabled ? '' : undefined"
     :disabled="disabled"

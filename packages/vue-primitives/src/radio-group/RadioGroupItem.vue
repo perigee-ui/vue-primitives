@@ -11,7 +11,6 @@ import { useRadioGroupContext } from './RadioGroupRoot.ts'
 
 defineOptions({
   name: 'RadioGroupItem',
-  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<RadioGroupItemProps>(), {
@@ -144,7 +143,6 @@ defineExpose({
     :data-disabled="disabled ? '' : undefined"
     :disabled="disabled"
     :value="value"
-    v-bind="$attrs"
 
     @mousedown="rovingFocusGroupItem.onMousedown"
     @focus="rovingFocusGroupItem.onFocus"

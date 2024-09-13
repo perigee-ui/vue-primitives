@@ -3,12 +3,10 @@ import { computed, shallowRef } from 'vue'
 import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
-import BubbleInput from './SwitchBubbleInput.vue'
 import { getState, provideSwitchContext, type SwitchRootEmits, type SwitchRootProps, type SwitchRootSlots } from './SwitchRoot.ts'
 
 defineOptions({
   name: 'SwitchRoot',
-  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<SwitchRootProps>(), {
@@ -65,7 +63,6 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     :data-disabled="disabled ? '' : undefined"
     :disabled="disabled"
     :value="value"
-    v-bind="$attrs"
     @click="onClick"
   >
     <slot

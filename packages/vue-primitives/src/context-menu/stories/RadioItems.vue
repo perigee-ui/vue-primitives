@@ -7,6 +7,8 @@ import {
   ContextMenuItem,
   ContextMenuItemIndicator,
   ContextMenuPortal,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
   ContextMenuRoot,
   ContextMenuSeparator,
   ContextMenuTrigger,
@@ -19,14 +21,11 @@ function log(v: string) {
   console.log(v)
 }
 
-const checkboxItems = ['Bold', 'Italic', 'Underline']
-const selection = shallowRef<string[]>([])
+const files = ['README.md', 'index.js', 'page.css']
+const file = shallowRef(files[1])
 
-function setSelection(item: string) {
-  const cur = selection.value
-  selection.value = cur.includes(item)
-    ? cur.filter(el => el !== item)
-    : cur.concat(item)
+function setFile(v: string) {
+  file.value = v
 }
 </script>
 
@@ -51,18 +50,19 @@ function setSelection(item: string) {
               Smaller
             </ContextMenuItem>
             <ContextMenuSeparator class="menu_separatorClass" />
-            <ContextMenuCheckboxItem
-              v-for="item in checkboxItems"
-              :key="item"
-              class="menu_itemClass"
-              :checked="selection.includes(item)"
-              @update:checked="setSelection(item)"
-            >
-              {{ item }}
-              <ContextMenuItemIndicator>
-                <TickIcon />
-              </ContextMenuItemIndicator>
-            </ContextMenuCheckboxItem>
+            <ContextMenuRadioGroup :value="file" @update:value="setFile">
+              <ContextMenuRadioItem
+                v-for="item in files"
+                :key="item"
+                class="menu_itemClass"
+                :value="item"
+              >
+                {{ item }}
+                <ContextMenuItemIndicator>
+                  <TickIcon />
+                </ContextMenuItemIndicator>
+              </ContextMenuRadioItem>
+            </ContextMenuRadioGroup>
             <ContextMenuSeparator />
             <ContextMenuCheckboxItem class="menu_itemClass" disabled>
               Strikethrough
@@ -73,6 +73,8 @@ function setSelection(item: string) {
           </ContextMenuContent>
         </ContextMenuPortal>
       </ContextMenuRoot>
+
+      <p>Selected file: {{ file }}</p>
     </div>
   </div>
 </template>

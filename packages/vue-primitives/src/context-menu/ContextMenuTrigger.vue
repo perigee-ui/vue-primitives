@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { Point } from '../utils/isPointInPolygon.ts'
 import type { ContextMenuTriggerEmits, ContextMenuTriggerProps } from './ContextMenuTrigger'
 import { isClient } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, onWatcherCleanup, watchEffect } from 'vue'
-import { useRef } from '../hooks/index.ts'
+import { onBeforeUnmount, onWatcherCleanup, watchEffect } from 'vue'
 import { usePopperContext } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
@@ -117,12 +115,6 @@ onBeforeUnmount(() => {
 // COMP::MenuAnchor COMP::PopperAnchor
 
 popperContext.onAnchorChange(virtualRef)
-
-// @contextmenu="onContextmenu"
-// @pointerdown="onPointerdown"
-// @pointermove="onPointermove"
-// @pointercancel="onPointercancel"
-// @pointerup="onPointerup"
 </script>
 
 <template>
@@ -132,6 +124,10 @@ popperContext.onAnchorChange(virtualRef)
     :data-disabled="disabled ? '' : undefined"
     style="-webkit-touch-callout: none"
     @contextmenu="onContextmenu"
+    @pointerdown="onPointerdown"
+    @pointermove="onPointermove"
+    @pointercancel="onPointercancel"
+    @pointerup="onPointerup"
   >
     <slot />
   </Primitive>

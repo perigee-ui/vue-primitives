@@ -27,7 +27,7 @@ provideContextMenuContext({
   modal: props.modal,
 })
 
-// MenuRoot
+// COMP::MenuRoot
 
 const isUsingKeyboardRef = useIsUsingKeyboard()
 const direction = useDirection(() => props.dir)

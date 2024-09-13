@@ -29,6 +29,7 @@ function onFocusOutside(event: FocusOutsideEvent) {
 }
 
 function onDismiss() {
+  console.error('MenuRootContentModal:onDismiss')
   context.onOpenChange(false)
 }
 </script>

@@ -3,16 +3,16 @@ import { shallowRef } from 'vue'
 import { useDirection } from '../direction/index.ts'
 import { provideMenuContext, provideMenuRootContext, useIsUsingKeyboard } from '../menu/index.ts'
 import { type Measurable, providePopperContext } from '../popper/index.ts'
-import { type ContextMenuEmits, type ContextMenuProps, provideContextMenuContext } from './ContextMenuRoot.ts'
+import { type ContextMenuRootEmits, type ContextMenuRootProps, provideContextMenuContext } from './ContextMenuRoot.ts'
 
 defineOptions({
   name: 'ContextMenuRoot',
 })
 
-const props = withDefaults(defineProps<ContextMenuProps>(), {
-  modal: false,
+const props = withDefaults(defineProps<ContextMenuRootProps>(), {
+  modal: true,
 })
-const emit = defineEmits<ContextMenuEmits>()
+const emit = defineEmits<ContextMenuRootEmits>()
 
 const open = shallowRef(false)
 
@@ -55,7 +55,7 @@ const anchor = shallowRef<Measurable>()
 providePopperContext({
   content: shallowRef(),
   anchor,
-  onAnchorChange(newAnchor: Measurable | undefined) {
+  onAnchorChange(newAnchor) {
     anchor.value = newAnchor
   },
 })

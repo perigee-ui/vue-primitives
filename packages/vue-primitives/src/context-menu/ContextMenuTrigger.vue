@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { useRef } from '../hooks/index.ts'
-import { useContextMenuContext } from './ContextMenuRoot.ts'
 import type { Point } from '../utils/isPointInPolygon.ts'
 import type { ContextMenuTriggerEmits, ContextMenuTriggerProps } from './ContextMenuTrigger'
-import { composeEventHandlers } from '../utils/vue.ts';
-import { Primitive } from '../primitive/index.ts';
+import { isClient } from '@vueuse/core'
+import { onBeforeUnmount, onMounted, onWatcherCleanup, watchEffect } from 'vue'
+import { useRef } from '../hooks/index.ts'
+import { usePopperContext } from '../popper/index.ts'
+import { Primitive } from '../primitive/index.ts'
+import { composeEventHandlers } from '../utils/vue.ts'
+import { useContextMenuContext } from './ContextMenuRoot.ts'
 
 defineOptions({
   name: 'ContextMenuTrigger',
-  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<ContextMenuTriggerProps>(), {
@@ -19,74 +21,98 @@ const props = withDefaults(defineProps<ContextMenuTriggerProps>(), {
 const emit = defineEmits<ContextMenuTriggerEmits>()
 
 const context = useContextMenuContext('ContextMenuTrigger')
-const pointRef = useRef<Point>({ x: 0, y: 0 })
-const virtualRef = useRef({
-  getBoundingClientRect: () => DOMRect.fromRect({ width: 0, height: 0, ...pointRef.current }),
-})
+const popperContext = usePopperContext('ContextMenuTrigger')
+let pointRef: Point = { x: 0, y: 0 }
+const virtualRef = {
+  getBoundingClientRect: () => DOMRect.fromRect({ width: 0, height: 0, ...pointRef }),
+}
 const longPressTimerRef = useRef(0)
 
-const clearLongPress = () => {
-  window.clearTimeout(longPressTimerRef.current),
+function clearLongPress() {
+  window.clearTimeout(longPressTimerRef.current)
 }
 
 function handleOpen(event: MouseEvent | PointerEvent) {
-  pointRef.current = { x: event.clientX, y: event.clientY }
+  pointRef = { x: event.clientX, y: event.clientY }
   context.onOpenChange(true)
 }
 
-// React.useEffect(() => clearLongPress, [clearLongPress])
-// React.useEffect(() => void (disabled && clearLongPress()), [disabled, clearLongPress])
+if (isClient) {
+  watchEffect(() => {
+    if (props.disabled) {
+      clearLongPress()
+    }
 
+    onWatcherCleanup(() => {
+      clearLongPress()
+    })
+  })
+}
 
 const onContextmenu = composeEventHandlers<MouseEvent>((event) => {
   emit('contextmenu', event)
 }, (event) => {
+  if (props.disabled)
+    return
   // clearing the long press here because some platforms already support
   // long press to trigger a `contextmenu` event
-  clearLongPress();
-  handleOpen(event);
-  event.preventDefault();
+  clearLongPress()
+  handleOpen(event)
+  event.preventDefault()
 })
 
 const onPointerdown = composeEventHandlers<PointerEvent>(
   (event) => {
-    emit('pointerdown', event);
+    emit('pointerdown', event)
   },
   (event) => {
-    if (props.disabled) return
-    if (event.pointerType === 'mouse') return
+    if (props.disabled)
+      return
+    if (event.pointerType === 'mouse')
+      return
     // clear the long press here in case there's multiple touch points
-    clearLongPress();
-    longPressTimerRef.current = window.setTimeout(() => handleOpen(event), 700);
-  })
-
+    clearLongPress()
+    longPressTimerRef.current = window.setTimeout(() => handleOpen(event), 700)
+  },
+)
 
 const onPointermove = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointermove', event);
+  emit('pointermove', event)
 }, (event) => {
-
-  if (props.disabled) return
-  if (event.pointerType === 'mouse') return
+  if (props.disabled)
+    return
+  if (event.pointerType === 'mouse')
+    return
   clearLongPress()
 })
 
 const onPointercancel = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointercancel', event);
+  emit('pointercancel', event)
 }, (event) => {
-  if (props.disabled) return
-  if (event.pointerType === 'mouse') return
+  if (props.disabled)
+    return
+  if (event.pointerType === 'mouse')
+    return
   clearLongPress()
 })
 
 const onPointerup = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointerup', event);
+  emit('pointerup', event)
 }, (event) => {
-  if (props.disabled) return
-  if (event.pointerType === 'mouse') return
+  if (props.disabled)
+    return
+  if (event.pointerType === 'mouse')
+    return
   clearLongPress()
 })
 
+onBeforeUnmount(() => {
+  clearLongPress()
+})
 
+// COMP::MenuAnchor COMP::PopperAnchor
+
+popperContext.onAnchorChange(virtualRef)
 </script>
 
 <template>
@@ -95,7 +121,6 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
     :data-state="context.open.value ? 'open' : 'closed'"
     :data-disabled="disabled ? '' : undefined"
     style="-webkit-touch-callout: none"
-    v-bind="$attrs"
     @contextmenu="onContextmenu"
     @pointerdown="onPointerdown"
     @pointermove="onPointermove"

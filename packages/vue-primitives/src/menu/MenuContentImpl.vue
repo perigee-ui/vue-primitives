@@ -177,6 +177,7 @@ const dismissableLayer = useDismissableLayer(popperContext.content, {
     emit('escapeKeydown', event)
   },
   onDismiss() {
+    console.error('MenuContentImpl:onDismiss')
     emit('dismiss')
   },
   onFocusOutside(event) {

@@ -1,4 +1,5 @@
 import CCheckboxItems from './CheckboxItems.vue'
+import CChromatic from './Chromatic.vue'
 import CModality from './Modality.vue'
 import CMultipleItemsAsDialogTriggers from './MultipleItemsAsDialogTriggers.vue'
 import CNestedComposition from './NestedComposition.vue'
@@ -55,3 +56,9 @@ export function PreventClosing() {
 export function WithTooltip() {
   return CWithTooltip
 }
+
+export function Chromatic() {
+  return CChromatic
+}
+
+Chromatic.parameters = { chromatic: { disable: false } }

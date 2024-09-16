@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuTriggerEmits, DropdownMenuTriggerProps } from './DropdownMenuTrigger.ts'
 import { onMounted } from 'vue'
-import { useForwardElement, useRef } from '../hooks/index.ts'
+import { useForwardElement } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'

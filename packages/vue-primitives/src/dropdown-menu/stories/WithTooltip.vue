@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { TooltipContent, TooltipRoot, TooltipTrigger, useTooltipProvider } from '../../tooltip/index.ts'
+import { TooltipContent, TooltipRoot, TooltipTrigger } from '../../tooltip/index.ts'
 import { DropdownMenuArrow, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuRoot, DropdownMenuSeparator, DropdownMenuTrigger } from '../index.ts'
+import TooltipProvider from './TooltipProvider.vue'
 import './style.css'
 import '../../menu/stories/styles.css'
-
-useTooltipProvider()
 
 function log(v: string) {
   // eslint-disable-next-line no-console
@@ -14,16 +13,19 @@ function log(v: string) {
 
 <template>
   <div>
+    <h1>TODO: scoped context</h1>
     <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200vh' }">
       <DropdownMenuRoot>
-        <TooltipRoot>
-          <TooltipTrigger as="template">
-            <DropdownMenuTrigger class="dropdownMenu_triggerClass">
-              Open
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          <TooltipContent>Tooltip content</TooltipContent>
-        </TooltipRoot>
+        <TooltipProvider>
+          <TooltipRoot>
+            <TooltipTrigger as="template">
+              <DropdownMenuTrigger class="dropdownMenu_triggerClass">
+                Open
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Tooltip content</TooltipContent>
+          </TooltipRoot>
+        </TooltipProvider>
         <DropdownMenuPortal>
           <DropdownMenuContent class="menu_contentClass" :side-offset="5">
             <DropdownMenuItem class="menu_itemClass" @select="log('undo')">

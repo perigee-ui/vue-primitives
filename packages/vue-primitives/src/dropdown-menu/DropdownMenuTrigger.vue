@@ -26,10 +26,11 @@ const onPointerdown = composeEventHandlers<PointerEvent>((event) => {
   // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
   // but not when the control key is pressed (avoiding MacOS right click)
   if (!props.disabled && event.button === 0 && event.ctrlKey === false) {
+    const isOpen = context.open()
     context.onOpenToggle()
     // prevent trigger focusing when opening
     // this allows the content to be given focus without competition
-    if (!context.open)
+    if (!isOpen)
       event.preventDefault()
   }
 })

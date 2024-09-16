@@ -18,7 +18,6 @@ function handleSelectAll() {
 }
 
 function preventDefault(e: Event) {
-  console.error('preventDefault')
   e.preventDefault()
 }
 </script>

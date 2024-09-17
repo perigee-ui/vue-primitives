@@ -34,7 +34,7 @@ export interface UseRovingFocusGroupItemEmits {
 
 export function useRovingFocusGroupItem(
   props: UseRovingFocusGroupItemProps,
-  emits: UseRovingFocusGroupItemEmits,
+  emits: UseRovingFocusGroupItemEmits = {},
 ) {
   const focusable = () => isFunction(props.focusable) ? props.focusable() : props.focusable ?? true
   const active = () => isFunction(props.active) ? props.active() : props.active ?? false

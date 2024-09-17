@@ -291,11 +291,10 @@ const SIDES = (SIDE_OPTIONS as any as string[]).filter(side => side !== 'bottom'
       <h1 :style="{ marginTop: '100px', marginBottom: '60px' }">
         With slotted trigger
       </h1>
+      <p>TODO: asChild </p>
       <TooltipRoot open>
-        <TooltipTrigger as="template">
-          <button class="tooltip_triggerClass">
-            open
-          </button>
+        <TooltipTrigger class="tooltip_triggerClass">
+          open
         </TooltipTrigger>
         <TooltipPortal>
           <TooltipContent class="tooltip_contentClass" :side-offset="5">
@@ -308,16 +307,15 @@ const SIDES = (SIDE_OPTIONS as any as string[]).filter(side => side !== 'bottom'
       <h1 :style="{ marginTop: '100px', marginBottom: '60px' }">
         With slotted content
       </h1>
+      <p>TODO: asChild </p>
       <TooltipRoot open>
         <TooltipTrigger class="tooltip_triggerClass">
           Hover or Focus me
         </TooltipTrigger>
         <TooltipPortal>
-          <TooltipContent as="template" :side-offset="5">
-            <div class="tooltip_contentClass">
-              Some content
-              <TooltipArrow class="tooltip_arrowClass" :offset="10" />
-            </div>
+          <TooltipContent class="tooltip_contentClass" :side-offset="5">
+            Some content
+            <TooltipArrow class="tooltip_arrowClass" :offset="10" />
           </TooltipContent>
         </TooltipPortal>
       </TooltipRoot>

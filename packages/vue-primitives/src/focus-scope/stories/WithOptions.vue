@@ -102,10 +102,11 @@ const nextButtonRef = shallowRef<HTMLButtonElement | null>(null)
       previous
     </button>
 
+    <p>TODO: asChild </p>
+
     <FocusScope
       v-if="open"
       key="form"
-      as="template"
       :loop="trapFocus"
       :trapped="trapFocus"
       @mount-auto-focus="(event) => {

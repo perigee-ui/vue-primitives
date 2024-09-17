@@ -6,16 +6,15 @@ import './styles.css'
 
 <template>
   <div :style="{ padding: '50px', display: 'flex', justifyContent: 'center' }">
+    <p>TODO: asChild </p>
     <HoverCardRoot>
       <HoverCardTrigger href="/" class="hoverCard_triggerClass">
         trigger
       </HoverCardTrigger>
       <HoverCardPortal>
-        <HoverCardContent :side-offset="5" as="template">
-          <div class="hoverCard_contentClass">
-            <HoverCardArrow class="hoverCard_arrowClass" :width="20" :height="10" />
-            <CardContentPlaceholder />
-          </div>
+        <HoverCardContent :side-offset="5" class="hoverCard_contentClass">
+          <HoverCardArrow class="hoverCard_arrowClass" :width="20" :height="10" />
+          <CardContentPlaceholder />
         </HoverCardContent>
       </HoverCardPortal>
     </HoverCardRoot>

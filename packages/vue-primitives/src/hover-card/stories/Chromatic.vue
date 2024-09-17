@@ -291,11 +291,10 @@ const SIDES = SIDE_OPTIONS.filter(side => side !== 'bottom').concat(['bottom'])
     <h1 :style="{ marginTop: '100px' }">
       With slotted trigger
     </h1>
+    <p>TODO: asChild </p>
     <HoverCardRoot open>
-      <HoverCardTrigger as="template">
-        <button class="hoverCard_triggerClass">
-          open
-        </button>
+      <HoverCardTrigger class="hoverCard_triggerClass">
+        open
       </HoverCardTrigger>
       <HoverCardPortal>
         <HoverCardContent class="hoverCard_contentClass" :side-offset="5">

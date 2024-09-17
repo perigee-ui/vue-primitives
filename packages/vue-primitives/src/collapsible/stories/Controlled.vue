@@ -8,12 +8,13 @@ const open = shallowRef(false)
 
 <template>
   <div>
+    <p>TODO: asChild </p>
     <CollapsibleRoot v-model:open="open" class="collapsible_root">
       <CollapsibleTrigger class="collapsible_trigger">
         {{ open ? 'close' : 'open' }}
       </CollapsibleTrigger>
-      <CollapsibleContent class="collapsible_content" as="template">
-        <article>Content 1</article>
+      <CollapsibleContent class="collapsible_content">
+        Content 1
       </CollapsibleContent>
     </CollapsibleRoot>
   </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { PopperAnchor, PopperArrow, PopperContent, PopperRoot } from '../index.ts'
+import { PopperAnchor, PopperContent, PopperRoot } from '../index.ts'
 import CustomArrow from './CustomArrow.vue'
 import Scrollable from './Scrollable.vue'
 import './styles.css'
@@ -28,9 +28,7 @@ function closeFn() {
           <button @click="closeFn">
             close
           </button>
-          <PopperArrow class="popper_arrowClass" as="template" :offset="20">
-            <CustomArrow :width="20" :height="10" />
-          </PopperArrow>
+          <CustomArrow class="popper_arrowClass" />
         </PopperContent>
       </PopperRoot>
     </Scrollable>

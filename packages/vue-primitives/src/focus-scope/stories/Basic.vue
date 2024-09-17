@@ -19,7 +19,9 @@ const hasDestroyButton = shallowRef(true)
       <input> <input>
     </div>
 
-    <FocusScope v-if="trapped" as="template" :loop="trapped" :trapped="trapped">
+    <p>TODO: asChild </p>
+
+    <FocusScope v-if="trapped" :loop="trapped" :trapped="trapped">
       <form
         :style="{
           display: 'inline-flex',

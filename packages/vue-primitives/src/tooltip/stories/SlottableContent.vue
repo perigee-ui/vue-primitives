@@ -7,16 +7,15 @@ useTooltipProvider()
 
 <template>
   <div>
+    <p>TODO: asChild </p>
     <TooltipRoot>
       <TooltipTrigger class="tooltip_triggerClass">
         Hover or Focus me
       </TooltipTrigger>
       <TooltipPortal>
-        <TooltipContent as="template" :side-offset="5">
-          <div class="tooltip_contentClass">
-            Nicely done!
-            <TooltipArrow class="tooltip_arrowClas" :offset="10" />
-          </div>
+        <TooltipContent class="tooltip_contentClass" :side-offset="5">
+          Nicely done!
+          <TooltipArrow class="tooltip_arrowClas" :offset="10" />
         </TooltipContent>
       </TooltipPortal>
     </TooltipRoot>

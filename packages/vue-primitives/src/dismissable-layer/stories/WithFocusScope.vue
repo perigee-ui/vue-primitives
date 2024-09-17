@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { FocusScope } from '../../focus-scope/index.ts'
-import { DismissableLayer, type PointerdownOutsideEvent } from '../index.ts'
+import { useForwardElement } from '../../hooks/index.ts'
+import { useDismissableLayer } from '../index.ts'
 
 const open = shallowRef(false)
 const openButtonRef = shallowRef<HTMLElement | null>(null)
@@ -9,21 +10,30 @@ const openButtonRef = shallowRef<HTMLElement | null>(null)
 function toggleOpen() {
   open.value = !open.value
 }
-
-function handlePointerDownOutside(event: PointerdownOutsideEvent) {
-  if (event.target === openButtonRef.value) {
-    event.preventDefault()
-  }
-}
-
-function handleDismiss() {
-  open.value = false
-}
-
 function openAlert() {
   // eslint-disable-next-line no-alert
   window.alert('hey!')
 }
+
+// COMP::DismissableLayer
+
+const $el = shallowRef<HTMLDivElement>()
+const forwardElement = useForwardElement($el)
+
+const dismissableLayer = useDismissableLayer($el, {
+  disableOutsidePointerEvents() {
+    return true
+  },
+}, {
+  onDismiss() {
+    open.value = false
+  },
+  onPointerdownOutside(event) {
+    if (event.target === openButtonRef.value) {
+      event.preventDefault()
+    }
+  },
+})
 </script>
 
 <template>
@@ -35,30 +45,26 @@ function openAlert() {
       </button>
     </div>
 
-    <DismissableLayer
+    <FocusScope
       v-if="open"
-      as="template"
-      disable-outside-pointer-events
-      @pointerdown-outside="handlePointerDownOutside"
-      @dismiss="handleDismiss"
+      :ref="forwardElement"
+      trapped
+      data-dismissable-layer
+      :style="{
+        pointerEvents: dismissableLayer.pointerEvents(),
+        display: 'inline-flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        width: '400px',
+        height: '300px',
+        backgroundColor: 'black',
+        borderRadius: '10px',
+        marginBottom: '20px',
+      }"
     >
-      <FocusScope
-        trapped
-        :style="{
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          verticalAlign: 'middle',
-          width: '400px',
-          height: '300px',
-          backgroundColor: 'black',
-          borderRadius: '10px',
-          marginBottom: '20px',
-        }"
-      >
-        <input type="text">
-      </FocusScope>
-    </DismissableLayer>
+      <input type="text">
+    </FocusScope>
 
     <div :style="{ marginBottom: '20px' }">
       <input type="text" defaultValue="hello" :style="{ marginRight: '20px' }">

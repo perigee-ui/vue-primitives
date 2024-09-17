@@ -6,11 +6,10 @@ import './styles.css'
 
 <template>
   <div>
+    <p>TODO: asChild </p>
     <HoverCardRoot>
-      <HoverCardTrigger as="template">
-        <button class="hoverCard_triggerClass" @click="() => console.log('StyledTrigger click')">
-          trigger
-        </button>
+      <HoverCardTrigger class="hoverCard_triggerClass" @click="() => console.log('StyledTrigger click')">
+        trigger
       </HoverCardTrigger>
       <HoverCardPortal>
         <HoverCardContent class="hoverCard_contentClass" :side-offset="5">

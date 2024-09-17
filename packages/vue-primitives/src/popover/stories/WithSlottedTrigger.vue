@@ -10,11 +10,10 @@ function onClick() {
 
 <template>
   <div>
+    <p>TODO: asChild </p>
     <PopoverRoot>
-      <PopoverTrigger as="template">
-        <button class="popover_triggerClass" @click="onClick">
-          open
-        </button>
+      <PopoverTrigger class="popover_triggerClass" @click="onClick">
+        open
       </PopoverTrigger>
 
       <PopoverPortal>

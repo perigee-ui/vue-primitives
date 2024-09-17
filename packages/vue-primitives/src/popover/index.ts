@@ -5,7 +5,6 @@ export { type PopoverAnchorProps } from './PopoverAnchor.ts'
 export { default as PopoverAnchor } from './PopoverAnchor.vue'
 export {
   type PopoverCloseEmits,
-  type PopoverCloseProps,
 } from './PopoverClose.ts'
 export { default as PopoverClose } from './PopoverClose.vue'
 export {
@@ -24,7 +23,6 @@ export { default as PopoverRoot } from './PopoverRoot.vue'
 
 export {
   type PopoverTriggerEmits,
-  type PopoverTriggerProps,
 } from './PopoverTrigger.ts'
 
 export { default as PopoverTrigger } from './PopoverTrigger.vue'

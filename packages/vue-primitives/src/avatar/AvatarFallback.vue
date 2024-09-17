@@ -2,16 +2,13 @@
 import type { AvatarFallbackProps } from './AvatarFallback.ts'
 import { isClient } from '@vueuse/core'
 import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
-import { Primitive } from '../primitive/index.ts'
 import { useAvatarContext } from './AvatarRoot.ts'
 
 defineOptions({
   name: 'AvatarFallback',
 })
 
-const props = withDefaults(defineProps<AvatarFallbackProps>(), {
-  as: 'span',
-})
+const props = defineProps<AvatarFallbackProps>()
 
 const context = useAvatarContext('AvatarFallback')
 const canRender = shallowRef(props.delayMs === undefined)
@@ -29,7 +26,7 @@ if (isClient) {
 </script>
 
 <template>
-  <Primitive v-if="canRender && context.imageLoadingStatus.value !== 'loaded'" :as="as">
+  <span v-if="canRender && context.imageLoadingStatus.value !== 'loaded'">
     <slot />
-  </Primitive>
+  </span>
 </template>

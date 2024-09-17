@@ -3,7 +3,6 @@ import type { AccordionContentProps } from './AccordionContent.ts'
 import { shallowRef } from 'vue'
 import { useCollapsibleContent } from '../collapsible/CollapsibleContent.ts'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useAccordionItemContext } from './AccordionItem.ts'
 import { useAccordionContext } from './AccordionRoot.ts'
 import { getState } from './utils.ts'
@@ -24,7 +23,7 @@ const collapsibleContent = useCollapsibleContent($el, props)
 </script>
 
 <template>
-  <Primitive
+  <div
     :id="collapsibleContent.context.contentId"
     :ref="forwardElement"
     :data-state="getState(collapsibleContent.context.open.value)"
@@ -43,5 +42,5 @@ const collapsibleContent = useCollapsibleContent($el, props)
     :data-orientation="accordionContext.orientation"
   >
     <slot v-if="collapsibleContent.isOpen.value" />
-  </Primitive>
+  </div>
 </template>

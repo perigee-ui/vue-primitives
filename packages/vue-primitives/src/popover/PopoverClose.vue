@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { PopoverCloseEmits, PopoverCloseProps } from './PopoverClose.ts'
-import { Primitive } from '../primitive/index.ts'
+import type { PopoverCloseEmits } from './PopoverClose.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 
@@ -8,9 +7,6 @@ defineOptions({
   name: 'PopoverClose',
 })
 
-withDefaults(defineProps<PopoverCloseProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<PopoverCloseEmits>()
 
 const context = usePopoverContext('PopoverClose')
@@ -23,11 +19,10 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <button
     type="button"
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

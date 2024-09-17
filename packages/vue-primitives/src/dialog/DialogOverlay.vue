@@ -3,7 +3,6 @@ import type { DialogOverlayProps } from './DialogOverlay.ts'
 import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { useBodyScrollLock, useForwardElement } from '../hooks/index.ts'
 import { usePresence } from '../presence/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useDialogContext } from './DialogRoot.ts'
 import { getState } from './utils.ts'
 
@@ -28,12 +27,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Primitive
+  <div
     v-if="isPresent"
     :ref="forwardElement"
     :data-state="getState(context.open.value)"
     style="pointer-events: auto"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

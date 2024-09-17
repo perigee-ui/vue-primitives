@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import type { TooltipTriggerEmits, TooltipTriggerProps } from './TooltipTrigger.ts'
+import type { TooltipTriggerEmits } from './TooltipTrigger.ts'
 import { onBeforeUnmount, onMounted } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/Primitive.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
 import { useTooltipContext } from './TooltipRoot.ts'
 
 defineOptions({
   name: 'TooltipTrigger',
-})
-
-const props = withDefaults(defineProps<TooltipTriggerProps>(), {
-  as: 'button',
 })
 
 const emit = defineEmits<TooltipTriggerEmits>()
@@ -81,15 +76,13 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 const popperContext = usePopperContext('TooltipTrigger')
 
 onMounted(() => {
-  popperContext.onAnchorChange(props.virtualRef?.current || context.trigger.value)
+  popperContext.onAnchorChange(context.trigger.value)
 })
 </script>
 
 <template>
-  <Primitive
-    v-if="!virtualRef"
+  <button
     :ref="forwardElement"
-    :as="as"
     :aria-describedby="context.open.value ? context.contentId : undefined"
     :data-state="context.stateAttribute()"
     data-grace-area-trigger
@@ -101,5 +94,5 @@ onMounted(() => {
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

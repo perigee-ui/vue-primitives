@@ -4,7 +4,6 @@ export {
 export { default as ToolbarButton } from './ToolbarButton.vue'
 export {
   type ToolbarLinkEmits,
-  type ToolbarLinkProps,
 } from './ToolbarLink.ts'
 export { default as ToolbarLink } from './ToolbarLink.vue'
 export {

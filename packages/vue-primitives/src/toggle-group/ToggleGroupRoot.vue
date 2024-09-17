@@ -1,9 +1,8 @@
 <script setup lang="ts" generic="T extends ToggleGroupType">
 import { computed } from 'vue'
 import { useDirection } from '../direction/Direction.ts'
-import { useControllableState } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
-import { RovingFocusGroupRoot } from '../roving-focus/index.ts'
+import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
+import { useRovingFocusGroupRoot } from '../roving-focus/index.ts'
 import { arrayify } from '../utils/array.ts'
 import { provideToggleGroupContext, type ToggleGroupEmits, type ToggleGroupProps, type ToggleGroupType } from './ToggleGroupRoot.ts'
 
@@ -13,7 +12,6 @@ type Value = T extends 'single' ? SingleValue : MultipleValue
 
 defineOptions({
   name: 'ToggleGroup',
-  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<ToggleGroupProps<T>>(), {
@@ -54,32 +52,74 @@ provideToggleGroupContext({
       value.value = arrayify<SingleValue>(value.value || []).filter(value => value !== itemValue) as Value
     }
   },
-  rovingFocus() {
-    return props.rovingFocus
-  },
+  rovingFocus: props.rovingFocus,
   disabled() {
     return props.disabled
   },
 })
+
+const elRef = useRef<HTMLElement>()
+const forwardElement = useForwardElement(elRef)
+
+let rovingFocusGroupRoot: ReturnType<typeof useRovingFocusGroupRoot> | undefined
+
+if (props.rovingFocus) {
+  rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
+    currentTabStopId: undefined,
+    orientation() {
+      return props.orientation
+    },
+    loop() {
+      return props.loop
+    },
+    dir: direction,
+  }, {
+    onMousedown(event) {
+      emit('mousedown', event)
+    },
+    onFocus(event) {
+      emit('focus', event)
+    },
+    onFocusout(event) {
+      emit('focusout', event)
+    },
+  })
+}
+
+function onMousedown(event: MouseEvent) {
+  emit('mousedown', event)
+}
+
+function onFocus(event: FocusEvent) {
+  emit('focus', event)
+}
+
+function onFocusout(event: FocusEvent) {
+  emit('focusout', event)
+}
+
+function attrs() {
+  if (!rovingFocusGroupRoot) {
+    return {
+      onMousedown,
+      onFocus,
+      onFocusout,
+    }
+  }
+  return {
+    'ref': forwardElement,
+    'tabindex': rovingFocusGroupRoot.tabindex?.(),
+    'data-orientation': props.orientation,
+    'style': 'outline: none;',
+    'onMousedown': rovingFocusGroupRoot.onMousedown,
+    'onFocus': rovingFocusGroupRoot.onFocus,
+    'onFocusout': rovingFocusGroupRoot.onFocusout,
+  }
+}
 </script>
 
 <template>
-  <RovingFocusGroupRoot
-    v-if="rovingFocus"
-    :orientation="orientation"
-    :dir="direction"
-    :loop="loop"
-    role="group"
-    v-bind="$attrs"
-  >
+  <div v-bind="attrs()" role="group" :dir="direction">
     <slot />
-  </RovingFocusGroupRoot>
-  <Primitive
-    v-else
-    v-bind="$attrs"
-    role="group"
-    :dir="direction"
-  >
-    <slot />
-  </Primitive>
+  </div>
 </template>

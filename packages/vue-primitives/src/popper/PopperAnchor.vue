@@ -2,7 +2,6 @@
 import type { PopperAnchorElement, PopperAnchorProps } from './PopperAnchor'
 import { onMounted } from 'vue'
 import { useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { usePopperContext } from './PopperRoot.ts'
 
 defineOptions({
@@ -22,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Primitive v-if="!virtualRef" :ref="forwardElement">
+  <div v-if="!virtualRef" :ref="forwardElement">
     <slot />
-  </Primitive>
+  </div>
 </template>

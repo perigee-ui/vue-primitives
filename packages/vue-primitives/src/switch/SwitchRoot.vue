@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, shallowRef } from 'vue'
 import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { getState, provideSwitchContext, type SwitchRootEmits, type SwitchRootProps, type SwitchRootSlots } from './SwitchRoot.ts'
 
@@ -10,7 +9,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<SwitchRootProps>(), {
-  as: 'button',
   checked: undefined,
   defaultChecked: false,
   value: 'on',
@@ -52,9 +50,8 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :ref="forwardElement"
-    :as="as"
     type="button"
     role="switch"
     :aria-checked="checked"
@@ -77,5 +74,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
         disabled,
       }"
     />
-  </Primitive>
+  </button>
 </template>

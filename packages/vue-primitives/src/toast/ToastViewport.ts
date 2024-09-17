@@ -1,7 +1,4 @@
-import type { PrimitiveProps } from '../primitive/index.ts'
-
 export interface ToastViewportProps {
-  as?: PrimitiveProps['as']
   /**
    * The keys to use as the keyboard shortcut that will move focus to the toast viewport.
    * @defaultValue ['F8']

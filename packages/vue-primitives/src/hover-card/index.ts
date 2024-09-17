@@ -17,7 +17,6 @@ export { default as HoverCardRoot } from './HoverCardRoot.vue'
 
 export {
   type HoverCardTriggerEmits,
-  type HoverCardTriggerProps,
 } from './HoverCardTrigger.ts'
 
 export { default as HoverCardTrigger } from './HoverCardTrigger.vue'

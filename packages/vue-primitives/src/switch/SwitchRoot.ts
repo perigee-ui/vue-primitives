@@ -1,9 +1,7 @@
 import type { Ref } from 'vue'
-import type { PrimitiveProps } from '../primitive/index.ts'
 import { createContext, type MutableRefObject } from '../hooks/index.ts'
 
 export interface SwitchRootProps {
-  as?: PrimitiveProps['as']
   checked?: boolean
   defaultChecked?: boolean
   required?: boolean

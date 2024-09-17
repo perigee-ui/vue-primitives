@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { provideCollapsibleContext } from '../collapsible/index.ts'
 import { useId } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type AccordionItemProps, provideAccordionItemContext } from './AccordionItem.ts'
 import { useAccordionContext } from './AccordionRoot.ts'
 import { getState } from './utils.ts'
@@ -43,12 +42,12 @@ provideCollapsibleContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :data-orientation="context.orientation"
     :data-state="getState(open)"
     :disabled="disabled"
     :data-disabled="disabled ? '' : undefined"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

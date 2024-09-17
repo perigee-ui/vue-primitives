@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PopoverTriggerEmits, PopoverTriggerProps } from './PopoverTrigger.ts'
+import type { PopoverTriggerEmits } from './PopoverTrigger.ts'
+import { shallowRef, watchEffect } from 'vue'
 import { useComposedElements } from '../hooks/index.ts'
-import { PopperAnchor } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
+import { usePopperContext } from '../popper/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 import { getState } from './utilts.ts'
@@ -11,26 +11,33 @@ defineOptions({
   name: 'PopoverTrigger',
 })
 
-withDefaults(defineProps<PopoverTriggerProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<PopoverTriggerEmits>()
 const context = usePopoverContext('PopoverTrigger')
+const popperContext = usePopperContext('PopoverTrigger')
+
+const $el = shallowRef<HTMLButtonElement>()
 
 const composedElements = useComposedElements<HTMLButtonElement>((v) => {
   context.triggerRef.current = v
+  $el.value = v
 })
+
+// COMP::PopperAnchor
 
 const onClick = composeEventHandlers<MouseEvent>((event) => {
   emit('click', event)
 }, context.onOpenToggle)
+
+watchEffect(() => {
+  if (!context.hasCustomAnchor.value && $el.value) {
+    popperContext.onAnchorChange($el.value)
+  }
+})
 </script>
 
 <template>
-  <component
-    :is="context.hasCustomAnchor.value ? Primitive : PopperAnchor"
+  <button
     :ref="composedElements"
-    :as="as"
     type="button"
     aria-haspopup="dialog"
     :aria-expanded="context.open.value"
@@ -39,5 +46,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     @click="onClick"
   >
     <slot />
-  </component>
+  </button>
 </template>

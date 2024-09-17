@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { TabsListEmits, TabsListProps } from './TabsList.ts'
 import { useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupRoot } from '../roving-focus/index.ts'
 import { useTabsContext } from './TabsRoot.ts'
 
@@ -43,7 +42,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
 
     :dir="context.dir.value"
@@ -59,5 +58,5 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
     @focusout="rovingFocusGroupRoot.onFocusout"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import type { LabelEmits, LabelProps } from './Label.ts'
-import { Primitive } from '../primitive/index.ts'
+import type { LabelEmits } from './Label.ts'
 
 defineOptions({
   name: 'RadixLabel',
 })
 
-withDefaults(defineProps<LabelProps>(), {
-  as: 'label',
-})
 const emit = defineEmits<LabelEmits>()
 
 function onMousedown(event: MouseEvent) {
@@ -25,10 +21,7 @@ function onMousedown(event: MouseEvent) {
 </script>
 
 <template>
-  <Primitive
-    :as="as"
-    @mousedown="onMousedown"
-  >
+  <label @mousedown="onMousedown">
     <slot />
-  </Primitive>
+  </label>
 </template>

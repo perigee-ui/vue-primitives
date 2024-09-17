@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'
 import { useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { context } from './DismissableLayer.ts'
 
 defineOptions({
@@ -21,7 +20,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Primitive :ref="forwardElement">
+  <div :ref="forwardElement">
     <slot />
-  </Primitive>
+  </div>
 </template>

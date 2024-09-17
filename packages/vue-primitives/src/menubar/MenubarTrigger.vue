@@ -4,7 +4,6 @@ import { computed, onMounted, shallowRef, watchEffect } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupItem } from '../roving-focus/RovingFocusGroupItem.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useMenubarMenuContext } from './MenubarMenu.ts'
@@ -15,7 +14,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<MenubarTriggerProps>(), {
-  as: 'button',
   disabled: false,
 })
 const emit = defineEmits<MenubarTriggerEmits>()
@@ -121,10 +119,9 @@ const forwardElement = useComposedElements<HTMLButtonElement>((v) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :id="menuContext.triggerId"
     :ref="forwardElement"
-    :as="as"
     type="button"
     role="menuitem"
     aria-haspopup="menu"
@@ -148,5 +145,5 @@ const forwardElement = useComposedElements<HTMLButtonElement>((v) => {
     @keydown="rovingFocusGroupItem.onKeydown"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

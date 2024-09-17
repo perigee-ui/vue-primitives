@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { Primitive } from '../primitive/index.ts'
 import { isNumber } from '../utils/is.ts'
 import { DEFAULT_MAX, defaultGetValueLabel, getProgressState, isValidMaxNumber, isValidValueNumber, type ProgressRootProps, provideProgressContext } from './ProgressRoot.ts'
 
@@ -45,7 +44,7 @@ provideProgressContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :aria-valuemax="max"
     :aria-valuemin="0"
     :aria-valuenow="isNumber(value) ? value : undefined"
@@ -56,5 +55,5 @@ provideProgressContext({
     :data-max="max"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

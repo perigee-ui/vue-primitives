@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
 import { shallowRef } from 'vue'
-import { Primitive } from '../primitive/index.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 
 defineOptions({
@@ -29,7 +28,7 @@ useResizeObserver(context.scrollbarY, () => {
 </script>
 
 <template>
-  <Primitive
+  <div
     v-if="hasSize()"
     :style="{
       width: `${width}px`,
@@ -41,5 +40,5 @@ useResizeObserver(context.scrollbarY, () => {
     }"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

@@ -1,10 +1,5 @@
 import type { Ref } from 'vue'
-import type { PrimitiveProps } from '../primitive/index.ts'
 import { createContext } from '../hooks/index.ts'
-
-export interface AvatarRootProps {
-  as?: PrimitiveProps['as']
-}
 
 export type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error'
 

@@ -3,7 +3,6 @@ import { isClient } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, onWatcherCleanup, watchEffect } from 'vue'
 import { DismissableLayerBranch } from '../dismissable-layer/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { focusFirst } from '../utils/focusFirst.ts'
 import { VisuallyHidden } from '../visually-hidden/index.ts'
 import { Collection, useCollection } from './collection.ts'
@@ -17,7 +16,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<ToastViewportProps>(), {
-  as: 'ol',
   hotkey: () => ['F8'],
   label: 'Notifications ({hotkey})',
 })
@@ -226,14 +224,13 @@ const afterFocusHandler = useFocusProxyHandler(() => {
       style="position: fixed"
       @focus="beforeFocusHandler"
     />
-    <Primitive
+    <ol
       :ref="forwardedRef"
-      :as="as"
       tabindex="-1"
       v-bind="$attrs"
     >
       <slot />
-    </Primitive>
+    </ol>
     <VisuallyHidden
       v-if="hasToasts()"
       :ref="setTailFocusProxyRef"

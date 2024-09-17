@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AvatarImageEmits, AvatarImageProps } from './AvatarImage.ts'
 import { watchEffect } from 'vue'
-import { Primitive } from '../primitive/index.ts'
 import { type ImageLoadingStatus, useAvatarContext } from './AvatarRoot.ts'
 import { useImageLoadingStatus } from './utils.ts'
 
@@ -9,9 +8,7 @@ defineOptions({
   name: 'AvatarImage',
 })
 
-const props = withDefaults(defineProps<AvatarImageProps>(), {
-  as: 'img',
-})
+const props = defineProps<AvatarImageProps>()
 
 const emit = defineEmits<AvatarImageEmits>()
 
@@ -31,7 +28,5 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Primitive :hidden="imageLoadingStatus !== 'loaded'" :as="as" :src="src">
-    <slot />
-  </Primitive>
+  <img :hidden="imageLoadingStatus !== 'loaded'" :src="src">
 </template>

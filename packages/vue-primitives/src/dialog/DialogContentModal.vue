@@ -6,7 +6,6 @@ import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLay
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useDialogContext } from './DialogRoot.ts'
 import { getState } from './utils.ts'
@@ -98,7 +97,7 @@ const dismissableLayer = useDismissableLayer($el, {
 </script>
 
 <template>
-  <Primitive
+  <div
     :id="context.contentId"
     :ref="forwardElement"
 
@@ -115,5 +114,5 @@ const dismissableLayer = useDismissableLayer($el, {
     @keydown="focusScope.onKeydown"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

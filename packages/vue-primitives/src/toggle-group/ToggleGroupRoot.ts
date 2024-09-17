@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { RovingFocusGroupRootProps } from '../roving-focus/index.ts'
+import type { RovingFocusGroupRootEmits, RovingFocusGroupRootProps } from '../roving-focus/index.ts'
 import { createContext } from '../hooks/index.ts'
 
 export type ToggleGroupType = 'single' | 'multiple'
@@ -12,13 +12,12 @@ export interface ToggleGroupProps<T extends ToggleGroupType> extends ToggleGroup
   defaultValue?: T extends 'single' ? ToggleGroupSingleProps['defaultValue'] : ToggleGroupMultipleProps['defaultValue']
 }
 
-// eslint-disable-next-line ts/consistent-type-definitions
 export type ToggleGroupEmits<T extends ToggleGroupType> = {
   /**
    * The callback that fires when the state of the toggle group changes.
    */
   'update:value': [value: T extends 'single' ? NonNullable<ToggleGroupSingleProps['value']> : NonNullable<ToggleGroupMultipleProps['value']>]
-}
+} & Pick<RovingFocusGroupRootEmits, 'mousedown' | 'focus' | 'focusout'>
 
 interface ToggleGroupSingleProps {
   /**
@@ -61,7 +60,7 @@ interface ToggleGroupImplProps {
 }
 
 export interface ToggleGroupContext {
-  rovingFocus: () => boolean
+  rovingFocus: boolean
   disabled: () => boolean
 
   type: () => 'single' | 'multiple'

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { SeparatorProps } from './Separator.ts'
-import { Primitive } from '../primitive/index.ts'
 
 defineOptions({
   name: 'Separator',
@@ -14,7 +13,7 @@ const decorativeAttrs = { role: 'none' }
 </script>
 
 <template>
-  <Primitive
+  <div
     :data-orientation="orientation"
     v-bind="decorative
       ? decorativeAttrs
@@ -25,5 +24,5 @@ const decorativeAttrs = { role: 'none' }
     "
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

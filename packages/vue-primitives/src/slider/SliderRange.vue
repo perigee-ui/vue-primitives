@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import type { SliderRangeProps } from './SliderRange.ts'
 import { computed } from 'vue'
-import { Primitive } from '../primitive/index.ts'
 import { useSliderOrientationContext } from './SliderOrientation.ts'
 import { useSliderContext } from './SliderRoot.ts'
 import { convertValueToPercentage } from './utils.ts'
 
 defineOptions({
   name: 'SliderRange',
-})
-
-withDefaults(defineProps<SliderRangeProps>(), {
-  as: 'span',
 })
 
 const context = useSliderContext('SliderRange')
@@ -24,8 +18,7 @@ const offsetEnd = computed(() => 100 - Math.max(...percentages.value))
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <span
     :data-disabled="context.disabled() ? '' : undefined"
     :data-orientation="context.orientation()"
     :style="{
@@ -34,5 +27,5 @@ const offsetEnd = computed(() => 100 - Math.max(...percentages.value))
     }"
   >
     <slot />
-  </Primitive>
+  </span>
 </template>

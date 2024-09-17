@@ -3,9 +3,6 @@ export {
   type SliderOrientationContext,
   useSliderOrientationContext,
 } from './SliderOrientation.ts'
-export {
-  type SliderRangeProps,
-} from './SliderRange.ts'
 export { default as SliderRange } from './SliderRange.vue'
 export {
   provideSliderContext,
@@ -23,9 +20,5 @@ export {
 } from './SliderThumb.ts'
 
 export { default as SliderThumb } from './SliderThumb.vue'
-
-export {
-  type SliderTrackProps,
-} from './SliderTrack.ts'
 
 export { default as SliderTrack } from './SliderTrack.vue'

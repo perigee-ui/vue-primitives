@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { type CheckboxRootEmits, type CheckboxRootProps, type CheckboxRootSlots, provideCheckboxContext } from './CheckboxRoot.ts'
 import { getState, isIndeterminate } from './utils.ts'
@@ -13,7 +12,6 @@ defineOptions({
 const props = withDefaults(defineProps<CheckboxRootProps>(), {
   checked: undefined,
   value: 'on',
-  as: 'button',
 })
 const emit = defineEmits<CheckboxRootEmits>()
 
@@ -77,9 +75,8 @@ provideCheckboxContext({
 </script>
 
 <template>
-  <Primitive
+  <button
     :ref="forwardElement"
-    :as="as"
     type="button"
     role="checkbox"
     :aria-checked="isIndeterminate(checked) ? 'mixed' : checked"
@@ -103,5 +100,5 @@ provideCheckboxContext({
         disabled,
       }"
     />
-  </Primitive>
+  </button>
 </template>

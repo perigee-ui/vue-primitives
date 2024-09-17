@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 
 defineOptions({
@@ -12,7 +11,7 @@ const forwardedViewportRef = useForwardElement(context.viewport)
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardedViewportRef"
     data-radix-scroll-area-viewport=""
     :style="{
@@ -32,5 +31,5 @@ const forwardedViewportRef = useForwardElement(context.viewport)
     }"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type RovingFocusGroupItemEmits, type RovingFocusGroupItemProps, useRovingFocusGroupItem } from './RovingFocusGroupItem.ts'
 
 defineOptions({
@@ -11,7 +10,6 @@ defineOptions({
 const props = withDefaults(defineProps<RovingFocusGroupItemProps>(), {
   focusable: true,
   active: false,
-  as: 'span',
 })
 const emit = defineEmits<RovingFocusGroupItemEmits>()
 
@@ -33,9 +31,8 @@ const forwardElement = useComposedElements((v) => {
 </script>
 
 <template>
-  <Primitive
+  <span
     :ref="forwardElement"
-    :as="as"
     :[DATA_COLLECTION_ITEM]="true"
 
     :tabindex="rovingFocusGroupItem.tabindex()"
@@ -46,5 +43,5 @@ const forwardElement = useComposedElements((v) => {
     @keydown="rovingFocusGroupItem.onKeydown"
   >
     <slot />
-  </Primitive>
+  </span>
 </template>

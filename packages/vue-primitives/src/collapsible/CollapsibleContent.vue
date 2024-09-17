@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type CollapsibleContentProps, useCollapsibleContent } from './CollapsibleContent.ts'
 import { getState } from './utils.ts'
 
@@ -17,7 +16,7 @@ const collapsibleContent = useCollapsibleContent($el, props)
 </script>
 
 <template>
-  <Primitive
+  <div
     :id="collapsibleContent.context.contentId"
     :ref="forwardElement"
     :data-state="getState(collapsibleContent.context.open.value)"
@@ -30,5 +29,5 @@ const collapsibleContent = useCollapsibleContent($el, props)
     }"
   >
     <slot v-if="collapsibleContent.isOpen.value" />
-  </Primitive>
+  </div>
 </template>

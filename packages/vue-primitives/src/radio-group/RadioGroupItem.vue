@@ -2,7 +2,6 @@
 import { computed, onBeforeUnmount, onMounted, shallowRef } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { getState, provideRadioContext } from './Radio.ts'
@@ -13,9 +12,7 @@ defineOptions({
   name: 'RadioGroupItem',
 })
 
-const props = withDefaults(defineProps<RadioGroupItemProps>(), {
-  as: 'button',
-})
+const props = defineProps<RadioGroupItemProps>()
 const emit = defineEmits<RadioGroupItemEmits>()
 defineSlots<RadioGroupItemSlots>()
 
@@ -128,9 +125,8 @@ defineExpose({
 </script>
 
 <template>
-  <Primitive
+  <button
     :ref="forwardElement"
-    :as="as"
     :[DATA_COLLECTION_ITEM]="true"
 
     :tabindex="rovingFocusGroupItem.tabindex()"
@@ -162,5 +158,5 @@ defineExpose({
         disabled,
       }"
     />
-  </Primitive>
+  </button>
 </template>

@@ -2,7 +2,6 @@
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import {
   provideScrollAreaContext,
   type ScrollAreaElement,
@@ -62,7 +61,7 @@ provideScrollAreaContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     :dir="direction"
     :style="{
@@ -73,5 +72,5 @@ provideScrollAreaContext({
     }"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

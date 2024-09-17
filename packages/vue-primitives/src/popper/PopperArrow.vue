@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Primitive } from '../primitive/index.ts'
 import { OPPOSITE_SIDE, type PopperArrowProps } from './PopperArrow.ts'
 import { useContentContext } from './PopperContent.ts'
 
@@ -9,7 +8,6 @@ defineOptions({
 })
 
 withDefaults(defineProps<PopperArrowProps>(), {
-  as: 'svg',
   width: 10,
   height: 5,
 })
@@ -40,16 +38,15 @@ const contentContext = useContentContext('PopperArrow')
       visibility: contentContext.shouldHideArrow() ? 'hidden' : undefined,
     }"
   >
-    <Primitive
-      :as="as"
+    <svg
       v-bind="$attrs"
       :width="width"
       :height="height"
-      :viewBox="as === 'template' ? undefined : '0 0 30 10'"
-      :preserveAspectRatio="as === 'template' ? undefined : 'none'"
+      viewBox="0 0 30 10"
+      preserveAspectRatio="none"
       style="display: block"
     >
       <slot><polygon points="0,0 30,0 15,10" /></slot>
-    </Primitive>
+    </svg>
   </span>
 </template>

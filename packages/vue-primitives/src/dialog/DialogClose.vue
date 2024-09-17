@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { DialogCloseEmits, DialogCloseProps } from './DialogClose.ts'
-import { Primitive } from '../primitive/index.ts'
+import type { DialogCloseEmits } from './DialogClose.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useDialogContext } from './DialogRoot.ts'
 
@@ -8,9 +7,6 @@ defineOptions({
   name: 'DialogClose',
 })
 
-withDefaults(defineProps<DialogCloseProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<DialogCloseEmits>()
 
 const context = useDialogContext('DialogClose')
@@ -21,7 +17,7 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive :as="as" type="button" @click="onClick">
+  <button type="button" @click="onClick">
     <slot />
-  </Primitive>
+  </button>
 </template>

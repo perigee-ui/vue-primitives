@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { AccordionTriggerEmits, AccordionTriggerProps } from './AccordionTrigger.ts'
+import type { AccordionTriggerEmits } from './AccordionTrigger.ts'
 import { shallowRef } from 'vue'
 import { useCollapsibleContext } from '../collapsible/index.ts'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useAccordionItemContext } from './AccordionItem.ts'
 import { useAccordionContext } from './AccordionRoot.ts'
@@ -14,9 +13,6 @@ defineOptions({
   name: 'AccordionTrigger',
 })
 
-withDefaults(defineProps<AccordionTriggerProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<AccordionTriggerEmits>()
 
 const $el = shallowRef<HTMLButtonElement>()
@@ -33,10 +29,9 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :id="itemContext.triggerId"
     :ref="forwardElement"
-    :as="as"
     :aria-disabled="(itemContext.open.value && !accordionContext.collapsible) || undefined"
     :data-orientation="accordionContext.orientation"
     :[DATA_COLLECTION_ITEM]="true"
@@ -50,5 +45,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

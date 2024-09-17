@@ -4,7 +4,6 @@ import { onBeforeUnmount, onMounted } from 'vue'
 import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { useRef } from '../hooks/useRef.ts'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'
 
 defineOptions({
@@ -31,7 +30,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Primitive v-if="!virtualRef" :ref="forwardElement">
+  <div v-if="!virtualRef" :ref="forwardElement">
     <slot />
-  </Primitive>
+  </div>
 </template>

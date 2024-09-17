@@ -1,4 +1,3 @@
-import type { PrimitiveProps } from '../primitive/index.ts'
 import { computed, onWatcherCleanup, watch, watchEffect } from 'vue'
 import { useId } from '../hooks/index.ts'
 import { wrapArray } from '../utils/array.ts'
@@ -9,7 +8,6 @@ import { Collection, type ItemData, useCollection, useRovingFocusContext } from 
 import { getFocusIntent } from './utils.ts'
 
 export interface RovingFocusGroupItemProps {
-  as?: PrimitiveProps['as']
   tabStopId?: string
   focusable?: boolean
   active?: boolean

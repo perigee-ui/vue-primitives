@@ -3,7 +3,6 @@ import type { ContextMenuTriggerEmits, ContextMenuTriggerProps } from './Context
 import { isClient } from '@vueuse/core'
 import { onBeforeUnmount, onWatcherCleanup, watchEffect } from 'vue'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useContextMenuContext } from './ContextMenuRoot.ts'
 
@@ -12,7 +11,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<ContextMenuTriggerProps>(), {
-  as: 'span',
   disabled: false,
 })
 
@@ -117,8 +115,7 @@ popperContext.onAnchorChange(virtualRef)
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <span
     :data-state="context.open.value ? 'open' : 'closed'"
     :data-disabled="disabled ? '' : undefined"
     style="-webkit-touch-callout: none"
@@ -129,5 +126,5 @@ popperContext.onAnchorChange(virtualRef)
     @pointerup="onPointerup"
   >
     <slot />
-  </Primitive>
+  </span>
 </template>

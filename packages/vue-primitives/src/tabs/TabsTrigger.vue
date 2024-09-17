@@ -3,7 +3,6 @@ import type { TabsTriggerEmits, TabsTriggerProps } from './TabsTrigger.ts'
 import { computed } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useTabsContext } from './TabsRoot.ts'
@@ -14,7 +13,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<TabsTriggerProps>(), {
-  as: 'button',
   disabled: undefined,
 })
 const emit = defineEmits<TabsTriggerEmits>()
@@ -75,10 +73,9 @@ const forwardElement = useComposedElements((v) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :id="triggerId"
     :ref="forwardElement"
-    :as="as"
     :[DATA_COLLECTION_ITEM]="true"
 
     :tabindex="rovingFocusGroupItem.tabindex()"
@@ -97,5 +94,5 @@ const forwardElement = useComposedElements((v) => {
     @keydown="rovingFocusGroupItem.onKeydown"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

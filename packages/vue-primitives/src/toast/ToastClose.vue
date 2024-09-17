@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ToastCloseEmits, ToastCloseProps } from './ToastClose.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useToastInteractiveContext } from './ToastRoot.ts'
 
@@ -8,9 +7,7 @@ defineOptions({
   name: 'ToastClose',
 })
 
-withDefaults(defineProps<ToastCloseProps>(), {
-  as: 'button',
-})
+defineProps<ToastCloseProps>()
 
 const emit = defineEmits<ToastCloseEmits>()
 
@@ -22,13 +19,12 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <button
     type="button"
     data-radix-toast-announce-exclude=""
     :data-radix-toast-announce-alt="altText || undefined"
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

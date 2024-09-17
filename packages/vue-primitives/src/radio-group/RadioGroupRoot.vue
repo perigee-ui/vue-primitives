@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDirection } from '../direction/index.ts'
 import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupRoot } from '../roving-focus/index.ts'
 import { provideRadioGroupContext, type RadioGroupRootEmits, type RadioGroupRootProps } from './RadioGroupRoot.ts'
 
@@ -62,7 +61,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
 
     :dir="direction"
@@ -80,5 +79,5 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
     @focusout="rovingFocusGroupRoot.onFocusout"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

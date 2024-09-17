@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Primitive } from '../primitive/index.ts'
 import { getProgressState, useProgressContext } from './ProgressRoot.ts'
 
 defineOptions({
@@ -10,11 +9,11 @@ const context = useProgressContext('ProgressIndicator')
 </script>
 
 <template>
-  <Primitive
+  <div
     :data-state="getProgressState(context.value(), context.max())"
     :data-value="context.value() ?? undefined"
     :data-max="context.max()"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

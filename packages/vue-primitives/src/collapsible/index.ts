@@ -9,5 +9,5 @@ export {
 } from './CollapsibleRoot.ts'
 
 export { default as CollapsibleRoot } from './CollapsibleRoot.vue'
-export { type CollapsibleTriggerEmits, type CollapsibleTriggerProps } from './CollapsibleTrigger.ts'
+export { type CollapsibleTriggerEmits } from './CollapsibleTrigger.ts'
 export { default as CollapsibleTrigger } from './CollapsibleTrigger.vue'

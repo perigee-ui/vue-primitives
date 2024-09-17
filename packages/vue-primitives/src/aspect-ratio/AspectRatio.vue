@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { AspectRatioProps } from './AspectRatio.ts'
-import { Primitive } from '../primitive/index.ts'
 
 defineOptions({
   name: 'AspectRatio',
@@ -23,7 +22,7 @@ withDefaults(defineProps<AspectRatioProps>(), {
     }"
     data-radix-aspect-ratio-wrapper=""
   >
-    <Primitive
+    <div
       v-bind="$attrs"
       :style="{
         // ensures children expand in ratio
@@ -35,6 +34,6 @@ withDefaults(defineProps<AspectRatioProps>(), {
       }"
     >
       <slot />
-    </Primitive>
+    </div>
   </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import {
   type FocusScopeEmits,
   type FocusScopeProps,
@@ -33,11 +32,11 @@ const focusScope = useFocusScope(
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     tabindex="-1"
     @keydown="focusScope.onKeydown"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

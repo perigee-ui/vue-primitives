@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 
 defineOptions({
@@ -12,10 +11,10 @@ const forwardedContentRef = useForwardElement(context.content)
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardedContentRef"
     style="min-width: 100%; display: table"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

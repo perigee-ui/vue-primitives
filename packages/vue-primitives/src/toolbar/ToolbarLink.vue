@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { ToolbarLinkEmits, ToolbarLinkProps } from './ToolbarLink.ts'
+import type { ToolbarLinkEmits } from './ToolbarLink.ts'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 
@@ -10,9 +9,6 @@ defineOptions({
   name: 'ToolbarLink',
 })
 
-withDefaults(defineProps<ToolbarLinkProps>(), {
-  as: 'a',
-})
 const emit = defineEmits<ToolbarLinkEmits>()
 
 const onKeydown = composeEventHandlers<KeyboardEvent>((event) => {
@@ -41,9 +37,8 @@ const forwardElement = useComposedElements((v) => {
 </script>
 
 <template>
-  <Primitive
+  <a
     :ref="forwardElement"
-    :as="as"
     :[DATA_COLLECTION_ITEM]="true"
 
     :tabindex="rovingFocusGroupItem.tabindex()"
@@ -54,5 +49,5 @@ const forwardElement = useComposedElements((v) => {
     @keydown="rovingFocusGroupItem.onKeydown"
   >
     <slot />
-  </Primitive>
+  </a>
 </template>

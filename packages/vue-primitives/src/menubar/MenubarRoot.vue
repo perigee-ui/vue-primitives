@@ -2,7 +2,6 @@
 import { shallowRef } from 'vue'
 import { useDirection } from '../direction/index.ts'
 import { useComposedElements, useControllableState, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupRoot } from '../roving-focus/RovingFocusGroupRoot.ts'
 import { Collection, type MenubarRootEmits, type MenubarRootProps, provideMenubarContext } from './MenubarRoot.ts'
 
@@ -75,7 +74,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardedRef"
 
     role="menubar"
@@ -90,5 +89,5 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
     @focusout="rovingFocusGroupRoot.onFocusout"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

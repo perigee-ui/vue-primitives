@@ -3,7 +3,6 @@ import type { DropdownMenuTriggerEmits, DropdownMenuTriggerProps } from './Dropd
 import { onMounted } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useDropdownMenuContext } from './DropdownMenuRoot.ts'
 
@@ -12,8 +11,7 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<DropdownMenuTriggerProps>(), {
-  as: 'button',
-  disabled: false,
+  disabled: undefined,
 })
 const emit = defineEmits<DropdownMenuTriggerEmits>()
 
@@ -60,11 +58,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :id="context.triggerId"
     :ref="forwardElement"
     type="button"
-    :as="as"
     aria-haspopup="menu"
     :aria-expanded="context.open()"
     :aria-controls="context.open() ? context.contentId : undefined"
@@ -75,5 +72,5 @@ onMounted(() => {
     @keydown="onKeydown"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

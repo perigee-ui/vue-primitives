@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { DialogTriggerEmits, DialogTriggerProps } from './DialogTrigger.ts'
-import { Primitive } from '../primitive/index.ts'
+import type { DialogTriggerEmits } from './DialogTrigger.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useDialogContext } from './DialogRoot.ts'
 import { getState } from './utils.ts'
@@ -9,9 +8,6 @@ defineOptions({
   name: 'DialogTrigger',
 })
 
-withDefaults(defineProps<DialogTriggerProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<DialogTriggerEmits>()
 
 const context = useDialogContext('DialogTrigger')
@@ -27,9 +23,8 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :ref="triggerRef"
-    :as="as"
     type="button"
     aria-haspopup="dialog"
     :aria-expanded="context.open.value || false"
@@ -38,5 +33,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

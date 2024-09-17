@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import type { HoverCardTriggerEmits, HoverCardTriggerProps } from './HoverCardTrigger.ts'
+import type { HoverCardTriggerEmits } from './HoverCardTrigger.ts'
 import { onMounted } from 'vue'
 import { useForwardElement, useRef } from '../hooks/index.ts'
 import { usePopperContext } from '../popper/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useHoverCardContext } from './HoverCardRoot.ts'
 import { excludeTouch } from './utils.ts'
 
 defineOptions({
   name: 'HoverCardTrigger',
-})
-
-const props = withDefaults(defineProps<HoverCardTriggerProps>(), {
-  as: 'a',
 })
 
 const emit = defineEmits<HoverCardTriggerEmits>()
@@ -49,15 +44,13 @@ const elRef = useRef<HTMLDivElement>()
 const forwardElement = useForwardElement(elRef)
 
 onMounted(() => {
-  popperContext.onAnchorChange(props.virtualRef?.current || elRef.current)
+  popperContext.onAnchorChange(elRef.current)
 })
 </script>
 
 <template>
-  <Primitive
-    v-if="!virtualRef"
+  <a
     :ref="forwardElement"
-    :as="as"
     :data-state="context.open.value ? 'open' : 'closed'"
     @pointerenter="onPointerenter"
     @pointerleave="onPointerleave"
@@ -66,5 +59,5 @@ onMounted(() => {
     @touchstart="onTouchstart"
   >
     <slot />
-  </Primitive>
+  </a>
 </template>

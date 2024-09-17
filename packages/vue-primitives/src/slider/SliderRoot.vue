@@ -2,7 +2,6 @@
 import { computed, type PropType, watchEffect } from 'vue'
 import { useDirection } from '../direction/index.ts'
 import { useControllableState, useForwardElement, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { isNumber } from '../utils/is.ts'
 import { clamp, getDecimalCount, roundValue } from '../utils/number.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
@@ -15,11 +14,6 @@ defineOptions({
 })
 
 const props = defineProps({
-  as: {
-    type: [String, Object] as PropType<SliderRootProps['as']>,
-    required: false,
-    default: 'span',
-  },
   name: {
     type: String,
     required: false,
@@ -339,9 +333,8 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
+  <span
     :ref="forwardElement"
-    :as="as"
     :dir="direction"
     :data-orientation="orientation"
     :aria-disabled="disabled"
@@ -353,5 +346,5 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
     @pointerup="onPointerup"
   >
     <slot />
-  </Primitive>
+  </span>
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ToolbarSeparatorProps } from './ToolbarSeparator.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useToolbarContext } from './ToolbarRoot.ts'
 
 defineOptions({
@@ -29,10 +28,10 @@ function attrs() {
 </script>
 
 <template>
-  <Primitive
+  <div
     :data-orientation="orientation()"
     v-bind="attrs()"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

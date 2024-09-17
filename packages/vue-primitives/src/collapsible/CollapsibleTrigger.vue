@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { CollapsibleTriggerEmits, CollapsibleTriggerProps } from './CollapsibleTrigger.ts'
-import { Primitive } from '../primitive/index.ts'
+import type { CollapsibleTriggerEmits } from './CollapsibleTrigger.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useCollapsibleContext } from './CollapsibleRoot.ts'
 import { getState } from './utils.ts'
@@ -9,9 +8,6 @@ defineOptions({
   name: 'CollapsibleTrigger',
 })
 
-withDefaults(defineProps<CollapsibleTriggerProps>(), {
-  as: 'button',
-})
 const emit = defineEmits<CollapsibleTriggerEmits>()
 
 const context = useCollapsibleContext('CollapsibleTrigger')
@@ -22,8 +18,7 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <button
     type="button"
     :aria-controls="context.contentId"
     :aria-expanded="context.open.value || false"
@@ -33,5 +28,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

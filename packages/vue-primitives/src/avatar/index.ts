@@ -5,7 +5,6 @@ export { type AvatarImageEmits, type AvatarImageProps } from './AvatarImage.ts'
 export { default as AvatarImage } from './AvatarImage.vue'
 export {
   type AvatarContext,
-  type AvatarRootProps,
   type ImageLoadingStatus,
   provideAvatarContext,
   useAvatarContext,

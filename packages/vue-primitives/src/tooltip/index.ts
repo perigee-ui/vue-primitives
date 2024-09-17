@@ -23,6 +23,5 @@ export {
 export { default as TooltipRoot } from './TooltipRoot.vue'
 export {
   type TooltipTriggerEmits,
-  type TooltipTriggerProps,
 } from './TooltipTrigger.ts'
 export { default as TooltipTrigger } from './TooltipTrigger.vue'

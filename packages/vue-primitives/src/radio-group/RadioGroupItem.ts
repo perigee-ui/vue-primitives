@@ -1,8 +1,6 @@
 import type { MutableRefObject } from '../hooks/index.ts'
-import type { PrimitiveProps } from '../primitive/index.ts'
 
 export interface RadioGroupItemProps {
-  as?: PrimitiveProps['as']
   disabled?: boolean
   value: string
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ToggleEmits, ToggleProps } from './Toggle.ts'
 import { useControllableState } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 
 defineOptions({
@@ -10,7 +9,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<ToggleProps>(), {
   pressed: undefined,
-  as: 'button',
   disabled: undefined,
 })
 const emit = defineEmits<ToggleEmits>()
@@ -26,8 +24,7 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
-    :as="as"
+  <button
     type="button"
     :aria-pressed="pressed"
     :data-state="pressed ? 'on' : 'off'"
@@ -36,5 +33,5 @@ const onClick = composeEventHandlers<MouseEvent>((event) => {
     @click="onClick"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

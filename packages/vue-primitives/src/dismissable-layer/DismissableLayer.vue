@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type DismissableLayerEmits, type DismissableLayerProps, useDismissableLayer } from './DismissableLayer.ts'
 
 defineOptions({
@@ -40,11 +39,11 @@ const dismissableLayer = useDismissableLayer($el, {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     data-dismissable-layer
     :style="{ pointerEvents: dismissableLayer.pointerEvents() }"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

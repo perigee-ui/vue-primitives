@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { useDirection } from '../direction/Direction.ts'
 import { useControllableState, useForwardElement, useId, useRef } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { arrayify } from '../utils/array.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { ACCORDION_KEYS, type AccordionRootEmits, type AccordionRootProps, type AccordionType, Collection, provideAccordionContext, useCollection } from './AccordionRoot.ts'
@@ -148,11 +147,11 @@ provideAccordionContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     :data-orientation="orientation"
     @keydown="onKeydown"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

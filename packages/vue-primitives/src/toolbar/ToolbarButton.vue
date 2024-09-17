@@ -2,7 +2,6 @@
 import type { ToolbarButtonEmits, ToolbarButtonProps } from './ToolbarButton.ts'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useComposedElements } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
 
 defineOptions({
@@ -10,7 +9,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<ToolbarButtonProps>(), {
-  as: 'button',
   disabled: undefined,
 })
 
@@ -38,9 +36,8 @@ const forwardElement = useComposedElements((v) => {
 </script>
 
 <template>
-  <Primitive
+  <button
     :ref="forwardElement"
-    :as="as"
     :[DATA_COLLECTION_ITEM]="true"
 
     :tabindex="rovingFocusGroupItem.tabindex()"
@@ -54,5 +51,5 @@ const forwardElement = useComposedElements((v) => {
     @keydown="rovingFocusGroupItem.onKeydown"
   >
     <slot />
-  </Primitive>
+  </button>
 </template>

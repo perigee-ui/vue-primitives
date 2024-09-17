@@ -1,10 +1,3 @@
-import type { PopperAnchorProps } from '../popper/index.ts'
-import type { PrimitiveProps } from '../primitive/index.ts'
-
-export interface TooltipTriggerProps extends PopperAnchorProps {
-  as?: PrimitiveProps['as']
-}
-
 // eslint-disable-next-line ts/consistent-type-definitions
 export type TooltipTriggerEmits = {
   pointermove: [event: PointerEvent]

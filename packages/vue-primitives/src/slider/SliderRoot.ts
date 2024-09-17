@@ -1,6 +1,5 @@
 import type { HTMLAttributes, Ref } from 'vue'
 import type { Direction } from '../direction/index.ts'
-import type { PrimitiveProps } from '../primitive/index.ts'
 import { createCollection } from '../collection/index.ts'
 import { createContext, type MutableRefObject } from '../hooks/index.ts'
 
@@ -16,7 +15,6 @@ export const BACK_KEYS: Record<SlideDirection, string[]> = {
 }
 
 export interface SliderRootProps {
-  as?: PrimitiveProps['as']
   name?: string
   disabled?: boolean
   orientation?: HTMLAttributes['aria-orientation']

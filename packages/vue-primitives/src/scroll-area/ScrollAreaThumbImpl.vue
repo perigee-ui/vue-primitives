@@ -3,7 +3,6 @@ import type { ScrollAreaThumbImplEmits } from './ScrollAreaThumbImpl.ts'
 import { useDebounceFn } from '@vueuse/core'
 import { onWatcherCleanup, watchEffect } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import { useScrollbarContext } from './ScrollAreaScrollbar.ts'
@@ -74,7 +73,7 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     :data-state="scrollbarContext.hasThumb.value ? 'visible' : 'hidden'"
     style="width: var(--radix-scroll-area-thumb-width); height: var(--radix-scroll-area-thumb-height)"
@@ -82,5 +81,5 @@ const onPointerup = composeEventHandlers<PointerEvent>((event) => {
     @pointerup="onPointerup"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

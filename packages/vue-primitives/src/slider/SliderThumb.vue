@@ -4,7 +4,6 @@ import { isClient } from '@vueuse/core'
 import { computed, onWatcherCleanup, shallowRef, watchEffect } from 'vue'
 import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useForwardElement, useSize } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import SliderBubbleInput from './SliderBubbleInput.vue'
 import { useSliderOrientationContext } from './SliderOrientation.ts'
@@ -16,9 +15,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-withDefaults(defineProps<SliderThumbProps>(), {
-  as: 'span',
-})
+defineProps<SliderThumbProps>()
 const emit = defineEmits<SliderThumbEmits>()
 const $el = shallowRef<HTMLSpanElement>()
 const forwardElement = useForwardElement($el)
@@ -74,11 +71,10 @@ const onFocus = composeEventHandlers<FocusEvent>((event) => {
       [orientation.startEdge]: `calc(${percent}% + ${thumbInBoundsOffset}px)`,
     }"
   >
-    <Primitive
+    <span
       :ref="forwardElement"
-      :as="as"
       role="slider"
-      :aria-label="$attrs['aria-label'] || label"
+      :aria-label="ariaLabel || label"
       :aria-valuemin="context.min()"
       :aria-valuenow="value"
       :aria-valuemax="context.max()"
@@ -100,7 +96,7 @@ const onFocus = composeEventHandlers<FocusEvent>((event) => {
       @focus="onFocus"
     >
       <slot />
-    </Primitive>
+    </span>
 
     <SliderBubbleInput
       v-if="isFormControl"

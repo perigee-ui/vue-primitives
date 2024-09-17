@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useControllableState, useId } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type CollapsibleRootEmits, type CollapsibleRootProps, provideCollapsibleContext } from './CollapsibleRoot.ts'
 import { getState } from './utils.ts'
 
@@ -29,10 +28,10 @@ provideCollapsibleContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :data-state="getState(open)"
     :data-disabled="disabled ? '' : undefined"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

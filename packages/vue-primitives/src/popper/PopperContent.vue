@@ -14,7 +14,6 @@ import {
   type UseFloatingCofnig,
 } from '../floating/index.ts'
 import { useForwardElement, useSize } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { type Align, type PopperContentEmits, type PopperContentProps, provideContentContext, type Side } from './PopperContent.ts'
 import { usePopperContext } from './PopperRoot.ts'
 import { getSideAndAlignFromPlacement, isNotNull, transformOrigin } from './utils.ts'
@@ -190,7 +189,7 @@ provideContentContext({
     }"
     :dir="dir"
   >
-    <Primitive
+    <div
       :ref="forwardElement"
       :data-side="placedSide"
       :data-align="placedAlign"
@@ -202,6 +201,6 @@ provideContentContext({
       }"
     >
       <slot />
-    </Primitive>
+    </div>
   </div>
 </template>

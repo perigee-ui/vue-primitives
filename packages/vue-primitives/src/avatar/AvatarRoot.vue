@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { shallowRef } from 'vue'
-import { Primitive } from '../primitive/index.ts'
-import { type AvatarRootProps, type ImageLoadingStatus, provideAvatarContext } from './AvatarRoot.ts'
+import { type ImageLoadingStatus, provideAvatarContext } from './AvatarRoot.ts'
 
 defineOptions({
   name: 'AvatarRoot',
-})
-
-withDefaults(defineProps<AvatarRootProps>(), {
-  as: 'span',
 })
 
 const imageLoadingStatus = shallowRef<ImageLoadingStatus>('idle')
@@ -22,7 +17,7 @@ provideAvatarContext({
 </script>
 
 <template>
-  <Primitive :as="as">
+  <span>
     <slot />
-  </Primitive>
+  </span>
 </template>

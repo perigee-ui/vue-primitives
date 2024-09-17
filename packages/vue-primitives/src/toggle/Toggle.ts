@@ -1,7 +1,4 @@
-import type { PrimitiveProps } from '../primitive/index.ts'
-
 export interface ToggleProps {
-  as?: PrimitiveProps['as']
   /**
    * The controlled state of the toggle.
    */

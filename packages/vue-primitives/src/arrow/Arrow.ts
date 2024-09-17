@@ -1,6 +1,4 @@
-import type { PrimitiveProps } from '../primitive/index.ts'
-
-export interface ArrowProps extends PrimitiveProps {
+export interface ArrowProps {
   /**
    * The width of the arrow in pixels.
    *

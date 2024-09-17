@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<AlertDialogRootProps>(), {
 
 const emit = defineEmits<AlertDialogRootEmits>()
 
+// COMP::DialogRoot
+
 const triggerRef = useRef<HTMLButtonElement>()
 const contentRef = useRef<DialogContentElement>()
 

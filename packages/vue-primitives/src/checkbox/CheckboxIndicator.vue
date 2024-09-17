@@ -3,7 +3,6 @@ import type { CheckboxIndicatorProps } from './CheckboxIndicator.ts'
 import { shallowRef } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
 import { usePresence } from '../presence/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { useCheckboxContext } from './CheckboxRoot.ts'
 import { getState, isIndeterminate } from './utils.ts'
 
@@ -11,9 +10,7 @@ defineOptions({
   name: 'CheckboxIndicator',
 })
 
-const props = withDefaults(defineProps<CheckboxIndicatorProps>(), {
-  as: 'span',
-})
+const props = defineProps<CheckboxIndicatorProps>()
 const $el = shallowRef<HTMLElement>()
 const forwardElement = useForwardElement($el)
 
@@ -23,14 +20,13 @@ const isPresent = usePresence($el, () => props.forceMount || isIndeterminate(con
 </script>
 
 <template>
-  <Primitive
+  <span
     v-if="isPresent"
     :ref="forwardElement"
-    :as="as"
     :data-state="getState(context.state.value)"
     :data-disabled="context.disabled() ? '' : undefined"
     :style="{ pointerEvents: 'none' }"
   >
     <slot />
-  </Primitive>
+  </span>
 </template>

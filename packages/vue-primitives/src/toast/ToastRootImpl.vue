@@ -6,7 +6,6 @@ import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useForwardElement } from '../hooks/index.ts'
 import { Portal } from '../portal/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useToastProviderContext } from './index.ts'
 import ToastAnnounce from './ToastAnnounce.vue'
@@ -20,7 +19,6 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<ToastRootImplProps>(), {
-  as: 'li',
   type: 'foreground',
 })
 const emit = defineEmits<ToastRootImplEmits>()
@@ -290,9 +288,8 @@ defineExpose({
     </ToastAnnounce>
 
     <Portal :to="context.viewport.value">
-      <Primitive
+      <li
         :ref="forwardElement"
-        :as="as"
 
         :[DATA_COLLECTION_ITEM]="true"
 
@@ -317,7 +314,7 @@ defineExpose({
         @pointerup="onPointerup"
       >
         <slot />
-      </Primitive>
+      </li>
     </Portal>
   </template>
 </template>

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { ScrollAreaScrollbarVisibleEmits, ScrollAreaScrollbarVisibleProps, Sizes } from './ScrollAreaScrollbarVisible.ts'
 import { useDebounceFn, useResizeObserver } from '@vueuse/core'
-import { computed, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
+import { computed, type CSSProperties, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { composeEventHandlers } from '../utils/vue.ts'
 import { useScrollAreaContext } from './ScrollAreaRoot.ts'
 import { provideScrollbarContext, type ScrollAreaThumbElement } from './ScrollAreaScrollbar.ts'
@@ -230,7 +229,7 @@ provideScrollbarContext({
 })
 // IMPLEMENTATION::END
 
-function CompStyles() {
+function CompStyles(): CSSProperties {
   return isHorizontal
     ? {
         'position': 'absolute',
@@ -251,7 +250,7 @@ function CompStyles() {
 </script>
 
 <template>
-  <Primitive
+  <div
     :ref="forwardElement"
     :style="CompStyles()"
     data-scrollbarimpl
@@ -261,5 +260,5 @@ function CompStyles() {
     @pointerup="onPointerup"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDirection } from '../direction/index.ts'
 import { useControllableState, useId } from '../hooks/index.ts'
-import { Primitive } from '../primitive/index.ts'
 import { provideTabsContext, type TabsRootEmits, type TabsRootProps } from './TabsRoot.ts'
 
 defineOptions({
@@ -32,10 +31,10 @@ provideTabsContext({
 </script>
 
 <template>
-  <Primitive
+  <div
     :dir="direction"
     :data-orientation="orientation"
   >
     <slot />
-  </Primitive>
+  </div>
 </template>

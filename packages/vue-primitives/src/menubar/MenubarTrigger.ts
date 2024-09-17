@@ -1,7 +1,4 @@
-import type { PrimitiveProps } from '../primitive/index.ts'
-
 export interface MenubarTriggerProps {
-  as?: PrimitiveProps['as']
   disabled?: boolean
 }
 

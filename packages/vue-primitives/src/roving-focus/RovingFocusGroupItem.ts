@@ -1,5 +1,6 @@
 import { computed, onWatcherCleanup, watch, watchEffect } from 'vue'
-import { useId } from '../hooks/index.ts'
+import { DATA_COLLECTION_ITEM } from '../collection/Collection.ts'
+import { type MutableRefObject, useId } from '../hooks/index.ts'
 import { wrapArray } from '../utils/array.ts'
 import { focusFirst } from '../utils/focusFirst.ts'
 import { isFunction } from '../utils/is.ts'
@@ -30,6 +31,10 @@ export interface UseRovingFocusGroupItemEmits {
   onMousedown?: (event: MouseEvent) => void
   onFocus?: (event: FocusEvent) => void
   onKeydown?: (event: KeyboardEvent) => void
+}
+
+export interface UseRovingFocusGroupItemOptions {
+  elRef: MutableRefObject<HTMLElement | undefined>
 }
 
 export function useRovingFocusGroupItem(
@@ -124,17 +129,15 @@ export function useRovingFocusGroupItem(
     },
   )
 
-  return {
-    itemData,
-    collectionKey: 'rfg' as const,
-    useCollectionItem: Collection.useCollectionItem,
-    onFocus,
-    onMousedown,
-    onKeydown,
-    isCurrentTabStop,
-    orientation: context.orientation,
-    tabindex() {
-      return isCurrentTabStop.value ? 0 : -1
+  return () => ({
+    ref: (el: HTMLElement | undefined | any) => {
+      Collection.useCollectionItem(el, itemData, 'rfg')
     },
-  }
+    [DATA_COLLECTION_ITEM]: true,
+    tabindex: isCurrentTabStop.value ? 0 : -1,
+    dataOrientation: context.orientation(),
+    onMousedown,
+    onFocus,
+    onKeydown,
+  })
 }

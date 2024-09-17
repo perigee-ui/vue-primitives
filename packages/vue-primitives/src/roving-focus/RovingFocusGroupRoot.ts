@@ -1,5 +1,5 @@
 import type { Direction } from '../direction/index.ts'
-import { type AriaAttributes, type Ref, shallowRef } from 'vue'
+import { type AriaAttributes, type CSSProperties, type Ref, shallowRef } from 'vue'
 import { createCollection } from '../collection/index.ts'
 import { createContext, type MutableRefObject } from '../hooks/index.ts'
 import { useControllableStateV2 } from '../hooks/index.ts'
@@ -91,14 +91,18 @@ export interface UseRovingFocusGroupRootEmits {
   onEntryFocus?: (event: CustomEvent) => void
 }
 
+export interface UseRovingFocusGroupRootOptions {
+  elRef: MutableRefObject<HTMLElement | undefined>
+}
+
 export function useRovingFocusGroupRoot(
-  elRef: MutableRefObject<HTMLElement | undefined>,
+  options: UseRovingFocusGroupRootOptions,
   props: UseRovingFocusGroupRootProps,
   emits: UseRovingFocusGroupRootEmits,
 ) {
   const currentTabStopId = useControllableStateV2(props.currentTabStopId, emits.updateCurrentTabStopId, props.defaultCurrentTabStopId)
 
-  const collectionContext = Collection.provideCollectionContext(elRef)
+  const collectionContext = Collection.provideCollectionContext(options.el)
   const getItems = useCollection(collectionContext)
   const isTabbingBackOut = shallowRef(false)
   let isClickFocus = false
@@ -157,12 +161,13 @@ export function useRovingFocusGroupRoot(
     },
   })
 
-  return {
+  return () => ({
+    style: <CSSProperties>{
+      outline: 'none',
+    },
     onMousedown,
     onFocus,
     onFocusout,
-    tabindex() {
-      return isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0
-    },
-  }
+    tabindex: isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0,
+  })
 }

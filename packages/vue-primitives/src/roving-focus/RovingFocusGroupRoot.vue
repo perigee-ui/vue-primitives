@@ -16,7 +16,7 @@ const forwardElement = useForwardElement(elRef)
 
 const dir = useDirection(() => props.dir)
 
-const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
+const rovingFocusGroupRoot = useRovingFocusGroupRoot({ elRef }, {
   currentTabStopId: undefined,
   preventScrollOnEntryFocus: props.preventScrollOnEntryFocus,
   orientation() {
@@ -46,18 +46,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
 </script>
 
 <template>
-  <div
-    :ref="forwardElement"
-
-    :dir="dir"
-    :tabindex="rovingFocusGroupRoot.tabindex()"
-    :data-orientation="orientation"
-    style="outline: none;"
-
-    @mousedown="rovingFocusGroupRoot.onMousedown"
-    @focus="rovingFocusGroupRoot.onFocus"
-    @focusout="rovingFocusGroupRoot.onFocusout"
-  >
+  <div :ref="forwardElement" v-bind="rovingFocusGroupRoot()">
     <slot />
   </div>
 </template>

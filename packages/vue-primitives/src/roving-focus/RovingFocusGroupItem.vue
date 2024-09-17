@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
-import { useComposedElements } from '../hooks/index.ts'
 import { type RovingFocusGroupItemEmits, type RovingFocusGroupItemProps, useRovingFocusGroupItem } from './RovingFocusGroupItem.ts'
 
 defineOptions({
@@ -24,24 +22,10 @@ const rovingFocusGroupItem = useRovingFocusGroupItem(props, {
     emit('keydown', event)
   },
 })
-
-const forwardElement = useComposedElements((v) => {
-  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, rovingFocusGroupItem.collectionKey)
-})
 </script>
 
 <template>
-  <span
-    :ref="forwardElement"
-    :[DATA_COLLECTION_ITEM]="true"
-
-    :tabindex="rovingFocusGroupItem.tabindex()"
-    :data-orientation="rovingFocusGroupItem.orientation()"
-
-    @mousedown="rovingFocusGroupItem.onMousedown"
-    @focus="rovingFocusGroupItem.onFocus"
-    @keydown="rovingFocusGroupItem.onKeydown"
-  >
+  <span v-bind="rovingFocusGroupItem()">
     <slot />
   </span>
 </template>

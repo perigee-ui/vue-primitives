@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { LabelEmits, LabelProps } from './Label.ts'
 import { Primitive } from '../primitive/index.ts'
+import { type LabelEmits, type LabelProps, useLabel } from './Label.ts'
 
 defineOptions({
   name: 'RadixLabel',
@@ -11,24 +11,15 @@ withDefaults(defineProps<LabelProps>(), {
 })
 const emit = defineEmits<LabelEmits>()
 
-function onMousedown(event: MouseEvent) {
-  // only prevent text selection if clicking inside the label itself
-  const target = event.target as HTMLElement
-  if (target.closest('button, input, select, textarea'))
-    return
-
-  emit('mousedown', event)
-  // prevent text selection when double clicking label
-  if (!event.defaultPrevented && event.detail > 1)
-    event.preventDefault()
-}
+const label = useLabel({
+  onMousedown(event) {
+    emit('mousedown', event)
+  },
+})
 </script>
 
 <template>
-  <Primitive
-    :as="as"
-    @mousedown="onMousedown"
-  >
+  <Primitive :as="as" v-bind="label">
     <slot />
   </Primitive>
 </template>

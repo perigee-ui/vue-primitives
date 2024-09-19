@@ -3,8 +3,7 @@ import { type AriaAttributes, type Ref, shallowRef } from 'vue'
 import { createCollection } from '../collection/index.ts'
 import { createContext, type MutableRefObject } from '../hooks/index.ts'
 import { useControllableStateV2 } from '../hooks/index.ts'
-import { focusFirst } from '../shared/index.ts'
-import { composeEventHandlers } from '../shared/index.ts'
+import { composeEventHandlers, focusFirst } from '../shared/index.ts'
 import { ENTRY_FOCUS, EVENT_OPTIONS } from './utils.ts'
 
 type Orientation = AriaAttributes['aria-orientation']

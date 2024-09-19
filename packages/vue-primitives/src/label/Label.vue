@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { Primitive } from '../primitive/index.ts'
+import { mergeProps } from '../shared/index.ts'
 import { type LabelEmits, type LabelProps, useLabel } from './Label.ts'
 
 defineOptions({
   name: 'RadixLabel',
+  inheritAttrs: false,
 })
 
 withDefaults(defineProps<LabelProps>(), {
@@ -19,7 +21,7 @@ const label = useLabel({
 </script>
 
 <template>
-  <Primitive :as="as" v-bind="label">
+  <Primitive :as="as" v-bind="label($attrs)">
     <slot />
   </Primitive>
 </template>

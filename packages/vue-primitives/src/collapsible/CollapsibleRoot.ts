@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ConvertEmitsToUseEmits } from '../utils/vue.ts'
+import type { ConvertEmitsToUseEmits } from '../shared/index.ts'
 import { createContext, useControllableStateV2, useId } from '../hooks/index.ts'
 
 export interface CollapsibleRootProps {

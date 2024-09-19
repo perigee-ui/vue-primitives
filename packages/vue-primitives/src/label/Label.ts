@@ -1,5 +1,5 @@
 import type { PrimitiveProps } from '../primitive/index.ts'
-import type { ConvertEmitsToUseEmits } from '../utils/vue.ts'
+import type { ConvertEmitsToUseEmits } from '../shared/index.ts'
 
 export interface LabelProps {
   as?: PrimitiveProps['as']

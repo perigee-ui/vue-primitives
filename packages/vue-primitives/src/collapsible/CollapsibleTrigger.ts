@@ -1,5 +1,5 @@
 import type { PrimitiveProps } from '../primitive/index.ts'
-import { composeEventHandlers, type ConvertEmitsToUseEmits } from '../utils/vue.ts'
+import { composeEventHandlers, type ConvertEmitsToUseEmits } from '../shared/index.ts'
 import { useCollapsibleContext } from './CollapsibleRoot.ts'
 
 export interface CollapsibleTriggerProps {

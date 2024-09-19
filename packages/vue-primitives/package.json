@@ -1,7 +1,7 @@
 {
   "name": "@perigee/vue-primitives",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -134,6 +134,10 @@
     "./separator": {
       "types": "./dist/separator/index.d.ts",
       "import": "./dist/separator/index.js"
+    },
+    "./shared": {
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared/index.js"
     },
     "./slider": {
       "types": "./dist/slider/index.d.ts",

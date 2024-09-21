@@ -2,7 +2,7 @@
 import { shallowRef } from 'vue'
 import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { mergeAttrs } from '../shared/index.ts'
+import { normalizeAttrs } from '../shared/index.ts'
 import { type CollapsibleContentProps, useCollapsibleContent } from './CollapsibleContent.ts'
 
 defineOptions({
@@ -24,7 +24,7 @@ const collapsibleContent = useCollapsibleContent({
 </script>
 
 <template>
-  <Primitive :ref="forwardElement" v-bind="mergeAttrs(collapsibleContent(), $attrs)">
+  <Primitive :ref="forwardElement" v-bind="normalizeAttrs(collapsibleContent(), $attrs)">
     <slot v-if="isOpen" />
   </Primitive>
 </template>

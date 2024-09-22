@@ -77,7 +77,7 @@ export function useRovingFocusGroupItem(props: UseRovingFocusGroupItemProps): Ra
     if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey)
       return
 
-    const focusIntent = getFocusIntent(event, context.orientation(), context.dir.value)
+    const focusIntent = getFocusIntent(event, context.orientation, context.dir.value)
 
     if (!focusIntent)
       return
@@ -117,7 +117,7 @@ export function useRovingFocusGroupItem(props: UseRovingFocusGroupItemProps): Ra
         'ref': setTemplateEl,
         [DATA_COLLECTION_ITEM]: true,
         'tabindex': isCurrentTabStop.value ? 0 : -1,
-        'data-orientation': context.orientation(),
+        'data-orientation': context.orientation,
         onFocus,
         onMousedown,
         onKeydown,

@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useScrollAreaContext } from './ScrollAreaRoot.ts'
+import { normalizeAttrs } from '../shared/mergeProps.ts'
+import { useScrollAreaContent } from './ScrollAreaContent.ts'
 
 defineOptions({
   name: 'ScrollAreaContent',
+  inheritAttrs: false,
 })
 
-const context = useScrollAreaContext('ScrollAreaContent')
-const forwardedContentRef = useForwardElement(context.content)
+const scrollAreaContent = useScrollAreaContent()
 </script>
 
 <template>
-  <Primitive
-    :ref="forwardedContentRef"
-    style="min-width: 100%; display: table"
-  >
+  <Primitive v-bind="normalizeAttrs(scrollAreaContent.attrs(), $attrs)">
     <slot />
   </Primitive>
 </template>

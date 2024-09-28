@@ -23,10 +23,8 @@ function onChange(event: Event) {
       <legend>optional checked: {{ String(data.optional) }}</legend>
       <label>
         <CheckboxRoot v-model:checked="checked" class="checkbox_rootClass" name="optional">
-          <template #default="scope">
-            <CheckboxBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <CheckboxIndicator class="checkbox_indicatorClass" />
-          </template>
+          <CheckboxBubbleInput />
+          <CheckboxIndicator class="checkbox_indicatorClass" />
         </CheckboxRoot>{{ ' ' }}
         with label
       </label>
@@ -49,10 +47,8 @@ function onChange(event: Event) {
     <fieldset>
       <legend>required checked: {{ String(data.required) }}</legend>
       <CheckboxRoot class="checkbox_rootClass" name="required" required>
-        <template #default="scope">
-          <CheckboxBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-          <CheckboxIndicator class="checkbox_indicatorClass" />
-        </template>
+        <CheckboxBubbleInput />
+        <CheckboxIndicator class="checkbox_indicatorClass" />
       </CheckboxRoot>
     </fieldset>
 
@@ -62,10 +58,8 @@ function onChange(event: Event) {
     <fieldset>
       <legend>stop propagation checked: {{ String(data.stopprop) }}</legend>
       <CheckboxRoot class="checkbox_rootClass" name="stopprop" @click="(event: Event) => event.stopPropagation()">
-        <template #default="scope">
-          <CheckboxBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-          <CheckboxIndicator class="checkbox_indicatorClass" />
-        </template>
+        <CheckboxBubbleInput />
+        <CheckboxIndicator class="checkbox_indicatorClass" />
       </CheckboxRoot>
     </fieldset>
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useDirection } from '../direction/index.ts'
-import { useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { normalizeAttrs } from '../shared/mergeProps.ts'
 import { type RovingFocusGroupRootEmits, type RovingFocusGroupRootProps, useRovingFocusGroupRoot } from './RovingFocusGroupRoot.ts'
@@ -14,20 +12,15 @@ const props = withDefaults(defineProps<RovingFocusGroupRootProps>(), {
   preventScrollOnEntryFocus: false,
 })
 const emit = defineEmits<RovingFocusGroupRootEmits>()
-const elRef = useRef<HTMLElement>()
-const forwardElement = useForwardElement(elRef)
-
-const dir = useDirection(() => props.dir)
 
 const rovingFocusGroupRoot = useRovingFocusGroupRoot({
-  elRef,
   currentTabStopId: undefined,
   preventScrollOnEntryFocus: props.preventScrollOnEntryFocus,
   orientation: props.orientation,
-  loop() {
-    return props.loop
+  loop: props.loop,
+  dir() {
+    return props.dir
   },
-  dir,
   onUpdateCurrentTabStopId(tabStopId) {
     emit('update:currentTabStopId', tabStopId)
   },
@@ -38,7 +31,7 @@ const rovingFocusGroupRoot = useRovingFocusGroupRoot({
 </script>
 
 <template>
-  <Primitive v-bind="normalizeAttrs(rovingFocusGroupRoot.attrs(), $attrs, { ref: forwardElement })">
+  <Primitive v-bind="normalizeAttrs(rovingFocusGroupRoot.attrs(), $attrs)">
     <slot />
   </Primitive>
 </template>

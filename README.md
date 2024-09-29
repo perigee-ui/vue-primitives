@@ -85,7 +85,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [RadioGroup](https://vue-primitives.netlify.app/?path=/story/components-radiogroup--styled)     | ✓      | ✓    |
 | [ScrollArea](https://vue-primitives.netlify.app/?path=/story/components-scrollarea--basic)      | ✓      | ✓    |
 | Select                                                                                          | 🚧      | 🚧    |
-| [Separator](https://vue-primitives.netlify.app/?path=/story/components-separator--styled)       | ✓      | 🚧    |
+| [Separator](https://vue-primitives.netlify.app/?path=/story/components-separator--styled)       | ✓      | ✓    |
 | [Slider](https://vue-primitives.netlify.app/?path=/story/components-slider--styled)             | ✓      | 🚧    |
 | [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    |
 | [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    |

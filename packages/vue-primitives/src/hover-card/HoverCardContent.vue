@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HoverCardContentEmits, HoverCardContentProps } from './HoverCardContent'
 import { usePopperContext } from '../popper/index.ts'
-import { usePresence } from '../presence/usePresence.ts'
+import { usePresence } from '../presence/index.ts'
 import { composeEventHandlers } from '../shared/index.ts'
 import HoverCardContentImpl from './HoverCardContentImpl.vue'
 import { useHoverCardContext } from './HoverCardRoot.ts'

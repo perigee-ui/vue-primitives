@@ -241,8 +241,9 @@ export function useAccordionRoot<T extends AccordionType>(props: UseAccordionRoo
         'onKeydown': isDisabled ? NOOP : onKeydown,
       }
 
-      if (extraAttrs)
+      if (extraAttrs && extraAttrs.length > 0) {
         mergeHooksAttrs(attrs, extraAttrs)
+      }
 
       return attrs
     },

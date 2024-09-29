@@ -23,22 +23,16 @@ function setData(callback: (prevData: typeof data.value) => typeof data.value) {
       <legend>optional value: {{ data.optional }}</legend>
       <RadioGroupRoot class="radioGroup_rootClass" name="optional">
         <RadioGroupItem class="radioGroup_itemClass" value="1">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem class="radioGroup_itemClass" value="2">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem class="radioGroup_itemClass" value="3">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
       </RadioGroupRoot>
     </fieldset>
@@ -50,22 +44,16 @@ function setData(callback: (prevData: typeof data.value) => typeof data.value) {
       <legend>required value: {{ data.required }}</legend>
       <RadioGroupRoot class="radioGroup_rootClass" name="required" required>
         <RadioGroupItem class="radioGroup_itemClass" value="1">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem class="radioGroup_itemClass" value="2">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem class="radioGroup_itemClass" value="3">
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
       </RadioGroupRoot>
     </fieldset>
@@ -81,30 +69,24 @@ function setData(callback: (prevData: typeof data.value) => typeof data.value) {
           value="1"
           @click="(event: Event) => event.stopPropagation()"
         >
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem
           class="radioGroup_itemClass"
           value="2"
           @click="(event: Event) => event.stopPropagation()"
         >
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
         <RadioGroupItem
           class="radioGroup_itemClass"
           value="3"
           @click="(event: Event) => event.stopPropagation()"
         >
-          <template #default="scope">
-            <RadioGroupBubbleInput v-if="scope.isFormControl" v-bind="scope.input" />
-            <RadioGroupIndicator class="radioGroup_indicatorClass" />
-          </template>
+          <RadioGroupBubbleInput />
+          <RadioGroupIndicator class="radioGroup_indicatorClass" />
         </RadioGroupItem>
       </RadioGroupRoot>
     </fieldset>

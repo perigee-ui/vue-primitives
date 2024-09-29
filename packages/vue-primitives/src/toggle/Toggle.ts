@@ -35,7 +35,9 @@ export interface UseToggleProps extends EmitsToHookProps<ToggleEmits> {
 export function useToggle(props: UseToggleProps): RadixPrimitiveReturns {
   const pressed = useControllableStateV2(props.pressed, props.onUpdatePressed, props.defaultPressed)
 
-  function onClick() {
+  function onClick(event: MouseEvent) {
+    if (event.defaultPrevented)
+      return
     pressed.value = !pressed.value
   }
 
@@ -51,8 +53,9 @@ export function useToggle(props: UseToggleProps): RadixPrimitiveReturns {
         onClick,
       }
 
-      if (extraAttrs)
+      if (extraAttrs && extraAttrs.length > 0) {
         mergeHooksAttrs(attrs, extraAttrs)
+      }
 
       return attrs
     },

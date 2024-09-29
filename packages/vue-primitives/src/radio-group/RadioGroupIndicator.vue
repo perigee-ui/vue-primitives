@@ -1,33 +1,27 @@
 <script setup lang="ts">
-import type { RadioGroupIndicatorProps } from './RadioGroupIndicator.ts'
-import { shallowRef } from 'vue'
-import { useForwardElement } from '../hooks/index.ts'
-import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { getState, useRadioContext } from './Radio.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { type RadioGroupIndicatorProps, useRadioGroupIndicator } from './RadioGroupIndicator.ts'
 
 defineOptions({
   name: 'RadioGroupIndicator',
+  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<RadioGroupIndicatorProps>(), {
   as: 'span',
 })
-const $el = shallowRef<HTMLSpanElement>()
-const forwardElement = useForwardElement($el)
 
-const context = useRadioContext('RadioGroupIndicator')
-
-const isPresent = usePresence($el, () => props.forceMount || context.checked())
+const radioGroupIndicator = useRadioGroupIndicator({
+  forceMount: props.forceMount,
+})
 </script>
 
 <template>
   <Primitive
-    v-if="isPresent"
-    :ref="forwardElement"
+    v-if="radioGroupIndicator.isPresent.value"
     :as="as"
-    :data-state="getState(context.checked())"
-    :data-disabled="context.disabled() ? '' : undefined"
+    v-bind="normalizeAttrs(radioGroupIndicator.attrs(), $attrs)"
   >
     <slot />
   </Primitive>

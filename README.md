@@ -100,7 +100,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | Utilites                                                                                              | Status | Hook |
 | ----------------------------------------------------------------------------------------------------- | ------ | ---- |
 | [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓/🚧  |
-| [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | 🚧    |
+| [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  |
 | [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓    |
 | [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | 🚧    |
 | [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | 🚧    |

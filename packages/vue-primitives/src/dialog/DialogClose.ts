@@ -1,10 +1,32 @@
 import type { PrimitiveProps } from '../primitive/index.ts'
+import type { RadixPrimitiveReturns } from '../shared/typeUtils.ts'
+import { mergeHooksAttrs } from '../shared/mergeProps.ts'
+import { useDialogContext } from './DialogRoot.ts'
 
 export interface DialogCloseProps {
   as?: PrimitiveProps['as']
 }
 
-// eslint-disable-next-line ts/consistent-type-definitions
-export type DialogCloseEmits = {
-  click: [event: MouseEvent]
+export function useDialogClose(): RadixPrimitiveReturns {
+  const context = useDialogContext('DialogClose')
+
+  function onClick(event: MouseEvent) {
+    if (event.defaultPrevented)
+      return
+    context.onOpenChange(false)
+  }
+
+  return {
+    attrs(extraAttrs) {
+      const attrs = {
+        onClick,
+      }
+
+      if (extraAttrs) {
+        mergeHooksAttrs(attrs, extraAttrs)
+      }
+
+      return attrs
+    },
+  }
 }

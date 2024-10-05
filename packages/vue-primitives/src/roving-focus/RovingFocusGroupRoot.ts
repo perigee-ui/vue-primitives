@@ -3,7 +3,7 @@ import { createCollection } from '../collection/index.ts'
 import { type Direction, useDirection } from '../direction/index.ts'
 import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'
 import { useControllableStateV2 } from '../hooks/index.ts'
-import { type EmitsToHookProps, focusFirst, mergeHooksAttrs, type RadixPrimitiveReturns } from '../shared/index.ts'
+import { type EmitsToHookProps, focusFirst, mergePrimitiveAttrs, type RadixPrimitiveReturns } from '../shared/index.ts'
 import { ENTRY_FOCUS, EVENT_OPTIONS } from './utils.ts'
 
 type Orientation = AriaAttributes['aria-orientation']
@@ -156,7 +156,7 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
   return {
     attrs(extraAttrs) {
       const attrs = {
-        'ref': setTemplateEl,
+        'elRef': setTemplateEl,
         'dir': dir.value,
         'focusableItemsCount': focusableItemsCount.value,
         'tabindex': isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0,
@@ -168,7 +168,7 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
       }
 
       if (extraAttrs && extraAttrs.length > 0) {
-        mergeHooksAttrs(attrs, extraAttrs)
+        mergePrimitiveAttrs(attrs, extraAttrs)
       }
 
       return attrs

@@ -1,7 +1,7 @@
 import type { PrimitiveProps } from '../primitive/index.ts'
 import type { EmitsToHookProps, RadixPrimitiveReturns } from '../shared/typeUtils.ts'
 import { clamp } from '@floating-ui/utils'
-import { computed, type HTMLAttributes, type MaybeRefOrGetter, type Ref, type UnwrapRef, watchEffect } from 'vue'
+import { computed, type HTMLAttributes, type MaybeRefOrGetter, type Ref, type UnwrapRef } from 'vue'
 import { createCollection } from '../collection/index.ts'
 import { type Direction, useDirection } from '../direction/index.ts'
 import { createContext, type MutableRefObject, useControllableStateV2, useRef, type useSize } from '../hooks/index.ts'
@@ -49,7 +49,7 @@ export interface SliderContext {
   values: Ref<number[]>
   valueIndexToChangeRef: MutableRefObject<number>
   thumbs: Set<HTMLElement>
-  orientation: () => SliderRootProps['orientation']
+  orientation: NonNullable<SliderRootProps['orientation']>
 }
 
 export const [provideSliderContext, useSliderContext] = createContext<SliderContext>('Slider')
@@ -73,7 +73,7 @@ export interface UseSliderRootProps extends EmitsToHookProps<SliderRootEmits> {
   defaultValue?: number[]
   name?: () => string | undefined
   disabled?: () => boolean | undefined
-  orientation?: () => HTMLAttributes['aria-orientation']
+  orientation?: HTMLAttributes['aria-orientation']
   dir?: MaybeRefOrGetter<Direction | undefined>
   min?: () => number
   max?: () => number
@@ -89,7 +89,7 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
     max = () => 100,
     step = () => 1,
     disabled = () => false,
-    orientation = () => 'horizontal',
+    orientation = 'horizontal',
     minStepsBetweenThumbs = () => 0,
   } = props
 
@@ -188,7 +188,7 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
 
   // COMP::SliderOrientation
 
-  const isHorisontal = () => orientation() === 'horizontal'
+  const isHorisontal = orientation === 'horizontal'
 
   interface OrientationLocalState {
     readonly reactSise: 'width' | 'height'
@@ -198,24 +198,19 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
     readonly slideDirectionEts: 'from-right' | 'from-top'
   }
 
-  let orientationLocalState: OrientationLocalState
-
-  watchEffect(() => {
-    const _isHorisontal = isHorisontal()
-    orientationLocalState = {
-      reactSise: _isHorisontal ? 'width' : 'height',
-      rectStartEdge: _isHorisontal ? 'left' : 'top',
-      clientEdge: _isHorisontal ? 'x' : 'y',
-      slideDirectionSte: _isHorisontal ? 'from-left' : 'from-bottom',
-      slideDirectionEts: _isHorisontal ? 'from-right' : 'from-top',
-    }
-  })
+  const orientationLocalState: OrientationLocalState = {
+    reactSise: isHorisontal ? 'width' : 'height',
+    rectStartEdge: isHorisontal ? 'left' : 'top',
+    clientEdge: isHorisontal ? 'x' : 'y',
+    slideDirectionSte: isHorisontal ? 'from-left' : 'from-bottom',
+    slideDirectionEts: isHorisontal ? 'from-right' : 'from-top',
+  }
 
   let rectRef: DOMRect | undefined
   const direction = useDirection(props.dir)
 
   const isSlidingFromStart = computed(() => {
-    if (isHorisontal()) {
+    if (isHorisontal) {
       const isLtr = direction.value === 'ltr'
       return (isLtr && !props.inverted?.()) || (!isLtr && props.inverted?.())
     }
@@ -226,7 +221,7 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
   function getValueFromPointer(pointerPosition: number) {
     const rect = rectRef || el.value!.getBoundingClientRect()
     const input: [number, number] = [0, rect[orientationLocalState.reactSise]]
-    const output: [number, number] = isSlidingFromStart.value === isHorisontal() ? [min(), max()] : [max(), min()]
+    const output: [number, number] = isSlidingFromStart.value === isHorisontal ? [min(), max()] : [max(), min()]
     const value = linearScale(input, output)
 
     rectRef = rect
@@ -256,14 +251,13 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
   }
 
   const orientationContext = computed(() => {
-    const _isHorisontal = isHorisontal()
-    const _startEdge = _isHorisontal ? 'left' : 'bottom'
-    const _endEdge = _isHorisontal ? 'right' : 'top'
+    const _startEdge = isHorisontal ? 'left' : 'bottom'
+    const _endEdge = isHorisontal ? 'right' : 'top'
 
     const startEdge = isSlidingFromStart.value ? _startEdge : _endEdge
     const endEdge = isSlidingFromStart.value ? _endEdge : _startEdge
     const direction = isSlidingFromStart.value ? 1 : -1
-    const size = _isHorisontal ? 'width' : 'height'
+    const size = isHorisontal ? 'width' : 'height'
 
     return { startEdge, endEdge, direction, size } as const
   })
@@ -344,10 +338,10 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
       const attrs = {
         'elRef': setTemplateEl,
         'dir': direction.value,
-        'data-orientation': orientation(),
+        'data-orientation': orientation,
         'aria-disabled': _disabled,
         'data-disabled': _disabled ? '' : undefined,
-        'style': orientation() === 'horizontal' ? '--radix-slider-thumb-transform: translateX(-50%)' : '--radix-slider-thumb-transform: translateY(50%)',
+        'style': orientation === 'horizontal' ? '--radix-slider-thumb-transform: translateX(-50%)' : '--radix-slider-thumb-transform: translateY(50%)',
         onKeydown,
         onPointerdown,
         onPointermove,

@@ -19,7 +19,7 @@ export interface UseRovingFocusGroupItemProps {
   active?: () => boolean
 }
 
-export function useRovingFocusGroupItem(props: UseRovingFocusGroupItemProps): RadixPrimitiveReturns {
+export function useRovingFocusGroupItem(props: UseRovingFocusGroupItemProps = {}): RadixPrimitiveReturns {
   const {
     focusable = () => true,
     active = () => false,

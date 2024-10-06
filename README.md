@@ -92,7 +92,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | ✓    |
 | [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    |
 | [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓    |
-| [Toolbar](https://vue-primitives.netlify.app/?path=/story/components-toolbar--styled)           | ✓      | 🚧    |
+| [Toolbar](https://vue-primitives.netlify.app/?path=/story/components-toolbar--styled)           | ✓      | ✓    |
 | [Tooltip](https://vue-primitives.netlify.app/?path=/story/components-tooltip--styled)           | ✓      | 🚧    |
 
 ## Utilites
@@ -108,5 +108,5 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    |
 | Primitives                                                                                            | ✓      | 🚧    |
 | [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | 🚧    |
-| Slot                                                                                                  | ✓      | ✓    |
+| Slot                                                                                                  | ✓      | ✖️    |
 | [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️    |

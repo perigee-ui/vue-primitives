@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PopoverTriggerEmits, PopoverTriggerProps } from './PopoverTrigger.ts'
+import type { PopoverTriggerProps } from './PopoverTrigger.ts'
 import { useComposedElements } from '../hooks/index.ts'
 import { PopperAnchor } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
@@ -14,7 +14,7 @@ defineOptions({
 withDefaults(defineProps<PopoverTriggerProps>(), {
   as: 'button',
 })
-const emit = defineEmits<PopoverTriggerEmits>()
+// const emit = defineEmits<PopoverTriggerEmits>()
 const context = usePopoverContext('PopoverTrigger')
 
 const composedElements = useComposedElements<HTMLButtonElement>((v) => {
@@ -22,7 +22,7 @@ const composedElements = useComposedElements<HTMLButtonElement>((v) => {
 })
 
 const onClick = composeEventHandlers<MouseEvent>((event) => {
-  emit('click', event)
+  // emit('click', event)
 }, context.onOpenToggle)
 </script>
 

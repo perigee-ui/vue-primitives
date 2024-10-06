@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PopoverAnchorProps } from './PopoverAnchor.ts'
 import { onBeforeUnmount, onMounted } from 'vue'
-import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { useRef } from '../hooks/index.ts'
+import { useForwardElement } from '../hooks/useForwardElement.ts'
 import { usePopperContext } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
 import { usePopoverContext } from './PopoverRoot.ts'

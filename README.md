@@ -67,13 +67,13 @@ Enter the component you want most in the components, leave the emojis and follow
 | Component                                                                                       | Status | Hook |
 | ----------------------------------------------------------------------------------------------- | ------ | ---- |
 | [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓    |
-| [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | ✓    |
+| [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | 🚧    |
 | [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | 🚧    |
 | [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | 🚧    |
 | [Checkbox](https://vue-primitives.netlify.app/?path=/story/components-checkbox--styled)         | ✓      | ✓    |
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓    |
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | 🚧    |
-| [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | 🚧    |
+| [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓    |
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | 🚧    |
 | Form                                                                                            | ✖️      | 🚧    |
 | [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | 🚧    |
@@ -97,16 +97,16 @@ Enter the component you want most in the components, leave the emojis and follow
 
 ## Utilites
 
-| Utilites                                                                                              | Status | Hook |
-| ----------------------------------------------------------------------------------------------------- | ------ | ---- |
-| [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓/🚧  |
-| [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  |
-| [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓    |
-| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | 🚧    |
-| [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | 🚧    |
-| [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧    |
-| [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    |
-| Primitives                                                                                            | ✓      | 🚧    |
-| [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | 🚧    |
-| Slot                                                                                                  | ✓      | ✖️    |
-| [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️    |
+| Utilites                                                                                              | Status | Hook       |
+| ----------------------------------------------------------------------------------------------------- | ------ | ---------- |
+| [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓/🚧        |
+| [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧        |
+| [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓          |
+| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | 🚧          |
+| [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓/🚧(arrow) |
+| [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧          |
+| [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓          |
+| Primitives                                                                                            | ✓      | 🚧          |
+| [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | 🚧          |
+| Slot                                                                                                  | ✓      | ✖️          |
+| [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️          |

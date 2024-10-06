@@ -6,6 +6,7 @@ import { useControllableState, useId, useRef } from '../hooks/index.ts'
 
 defineOptions({
   name: 'AlertDialogRoot',
+  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<AlertDialogRootProps>(), {

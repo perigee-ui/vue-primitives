@@ -17,8 +17,6 @@ export function useTooltipTrigger(): RadixPrimitiveReturns {
     context.trigger.value = v
   }
 
-  // const forwardElement = useForwardElement(context.trigger)
-
   let isPointerDownRef = false
   let hasPointerMoveOpenedRef = false
 
@@ -79,15 +77,6 @@ export function useTooltipTrigger(): RadixPrimitiveReturns {
     }
     context.onClose()
   }
-
-  // COMP::PopperAnchor
-
-  // const popperContext = usePopperContext('TooltipTrigger')
-
-  // TODO: Remove
-  // onMounted(() => {
-  // popperContext.onAnchorChange(context.trigger.value)
-  // })
 
   return {
     attrs(extraAttrs) {

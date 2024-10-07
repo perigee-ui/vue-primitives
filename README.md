@@ -70,14 +70,14 @@ Enter the component you want most in the components, leave the emojis and follow
 | ----------------------------------------------------------------------------------------------- | ------ | ---- |
 | [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓    |
 | [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | 🚧    |
-| [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | 🚧    |
+| [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | ✓    |
 | [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | 🚧    |
 | [Checkbox](https://vue-primitives.netlify.app/?path=/story/components-checkbox--styled)         | ✓      | ✓    |
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓    |
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | 🚧    |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓    |
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | 🚧    |
-| Form                                                                                            | ✖️      | 🚧    |
+| Form                                                                                            | ✖️      | ✖️    |
 | [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | 🚧    |
 | [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓    |
 | [Menubar](https://vue-primitives.netlify.app/?path=/story/components-menubar--styled)           | ✓      | 🚧    |
@@ -88,7 +88,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [ScrollArea](https://vue-primitives.netlify.app/?path=/story/components-scrollarea--basic)      | ✓      | ✓    |
 | Select                                                                                          | 🚧      | 🚧    |
 | [Separator](https://vue-primitives.netlify.app/?path=/story/components-separator--styled)       | ✓      | ✓    |
-| [Slider](https://vue-primitives.netlify.app/?path=/story/components-slider--styled)             | ✓      | 🚧    |
+| [Slider](https://vue-primitives.netlify.app/?path=/story/components-slider--styled)             | ✓      | ✓    |
 | [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    |
 | [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    |
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | ✓    |
@@ -108,7 +108,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓/🚧(arrow) |
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧          |
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓          |
-| Primitives                                                                                            | ✓      | 🚧          |
+| Primitives                                                                                            | ✓      | ✖️          |
 | [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | 🚧          |
 | Slot                                                                                                  | ✓      | ✖️          |
 | [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️          |

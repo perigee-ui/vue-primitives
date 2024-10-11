@@ -79,7 +79,9 @@ export function useTooltipContentImpl(props: UseTooltipContentImplProps): Return
 
   const dismissableLayer = useDismissableLayer({
     el: popperContext.content,
-    disableOutsidePointerEvents: false,
+    disableOutsidePointerEvents() {
+      return false
+    },
     onEscapeKeydown: props.onEscapeKeydown,
     onDismiss: context.onClose,
     onFocusOutside(event) {

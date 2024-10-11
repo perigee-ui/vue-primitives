@@ -1,8 +1,8 @@
 import type { DismissableLayerEmits } from '../dismissable-layer/index.ts'
-import type { MenuContentImplEmits } from '../menu/MenuContentImpl.ts'
+import type { MenuContentImplSharedEmits } from '../menu/MenuContentImpl.ts'
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type DropdownMenuContentEmits = {
-  closeAutoFocus: MenuContentImplEmits['closeAutoFocus']
+  closeAutoFocus: MenuContentImplSharedEmits['closeAutoFocus']
   interactOutside: DismissableLayerEmits['interactOutside']
 }

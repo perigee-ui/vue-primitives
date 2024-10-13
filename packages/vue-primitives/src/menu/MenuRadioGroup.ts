@@ -1,8 +1,8 @@
+import type { EmitsToHookProps } from '../shared/typeUtils.ts'
 import { createContext } from '../hooks/index.ts'
 
 export interface MenuRadioGroupProps {
   value?: string
-  onValueChange?: (value: string) => void
 }
 
 // eslint-disable-next-line ts/consistent-type-definitions
@@ -25,3 +25,14 @@ export const [providRadioGroupContext, useRadioGroupContext] = createContext<Men
     onValueChange() { },
   },
 )
+
+export interface UseMenuRadioGroupProps extends EmitsToHookProps<MenuRadioGroupEmits> {
+  value?: () => string | undefined
+}
+
+export function useMenuRadioGroup(props: UseMenuRadioGroupProps): void {
+  providRadioGroupContext({
+    value: props.value ?? (() => undefined),
+    onValueChange: props.onUpdateValue ?? (() => { }),
+  })
+}

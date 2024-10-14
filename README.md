@@ -76,7 +76,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓                               |
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | 🚧                               |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓                               |
-| [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | 🚧                               |
+| [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | ✓                               |
 | Form                                                                                            | ✖️      | ✖️                               |
 | [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | ✓/🚧 (TODO: poligon, fix: close) |
 | [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓                               |
@@ -104,7 +104,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓/🚧        |
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧        |
 | [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓          |
-| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | 🚧          |
+| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓          |
 | [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓/🚧(arrow) |
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧          |
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓          |

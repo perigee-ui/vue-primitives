@@ -27,8 +27,7 @@ export interface TabsRootProps {
   activationMode?: 'automatic' | 'manual'
 }
 
-export const TabsRootDefaltProps = {
-} satisfies PrimitiveDefaultProps<TabsRootProps>
+export const TabsRootDefaltProps = {} satisfies PrimitiveDefaultProps<TabsRootProps>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type TabsRootEmits = {

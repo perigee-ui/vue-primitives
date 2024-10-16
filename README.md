@@ -92,7 +92,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    |       | TODO: input               |
 | [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    | ✓     |                           |
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | ✓    |       |                           |
-| [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    |       |                           |
+| [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    | ✓     |                           |
 | [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓    | ✓     |                           |
 | [Toolbar](https://vue-primitives.netlify.app/?path=/story/components-toolbar--styled)           | ✓      | ✓    |       |                           |
 | [Tooltip](https://vue-primitives.netlify.app/?path=/story/components-tooltip--styled)           | ✓      | ✓    |       |                           |

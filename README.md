@@ -68,12 +68,12 @@ Enter the component you want most in the components, leave the emojis and follow
 
 | Component                                                                                       | Status | Hook | Props | Note                      |
 | ----------------------------------------------------------------------------------------------- | ------ | ---- | ----- | ------------------------- |
-| [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓    |       |                           |
+| [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓    | ✓     |                           |
 | [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | 🚧    |       |                           |
 | [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | ✓    |       |                           |
 | [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | 🚧    |       | TODO: PR from Radix       |
 | [Checkbox](https://vue-primitives.netlify.app/?path=/story/components-checkbox--styled)         | ✓      | ✓    |       | TODO: input               |
-| [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓    |       |                           |
+| [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓    | ✓     |                           |
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | ✓    |       |                           |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓    |       |                           |
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | ✓    |       |                           |
@@ -89,8 +89,8 @@ Enter the component you want most in the components, leave the emojis and follow
 | Select                                                                                          | 🚧      | 🚧    |       |                           |
 | [Separator](https://vue-primitives.netlify.app/?path=/story/components-separator--styled)       | ✓      | ✓    | ✓     |                           |
 | [Slider](https://vue-primitives.netlify.app/?path=/story/components-slider--styled)             | ✓      | ✓    |       |                           |
-| [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    | ✓     | TODO: input               |
-| [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    |       |                           |
+| [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    |       | TODO: input               |
+| [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    | ✓     |                           |
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | ✓    |       |                           |
 | [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    |       |                           |
 | [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓    |       |                           |

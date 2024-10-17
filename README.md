@@ -101,7 +101,7 @@ Enter the component you want most in the components, leave the emojis and follow
 
 | Utilites                                                                                              | Status | Hook | Props | Note                            |
 | ----------------------------------------------------------------------------------------------------- | ------ | ---- | ----- | ------------------------------- |
-| [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓    |       | TODO: array Items               |
+| [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓    | ✖️     | TODO: array Items               |
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  | ✓     |                                 |
 | [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓    | ✓     |                                 |
 | [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓    |       |                                 |

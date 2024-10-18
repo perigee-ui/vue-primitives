@@ -110,5 +110,5 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    | ✖️     |                                 |
 | Primitives                                                                                            | ✓      | ✖️    | ✖️     |                                 |
 | [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | ✓    | ✓     |                                 |
-| Slot                                                                                                  | ✓      | ✖️    |       | TODO: remove VDom               |
+| Slot                                                                                                  | ✓      | ✖️    | ✖️     | TODO: remove VDom               |
 | [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️    | ✖️     |                                 |

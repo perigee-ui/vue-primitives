@@ -1,4 +1,4 @@
-import type { EmitsToHookProps } from '../shared/index.ts'
+import type { EmitsToHookProps, PrimitiveDefaultProps } from '../shared/index.ts'
 import { onBeforeUnmount, type Ref } from 'vue'
 import { createContext, type MutableRefObject, useControllableStateV2, useRef } from '../hooks/index.ts'
 import { usePooperRoot } from '../popper/index.ts'
@@ -9,6 +9,11 @@ export interface HoverCardRootProps {
   openDelay?: number
   closeDelay?: number
 }
+
+export const DEFAULT_HOVER_CARD_ROOT_PROPS = {
+  open: undefined,
+  defaultOpen: undefined,
+} satisfies PrimitiveDefaultProps<HoverCardRootProps>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type HoverCardRootEmits = {
@@ -35,6 +40,10 @@ export interface UseHoverCardRootProps extends EmitsToHookProps<HoverCardRootEmi
 }
 
 export function useHoverCardRoot(props: UseHoverCardRootProps = {}) {
+  const {
+    openDelay = 700,
+    closeDelay = 300,
+  } = props
   const open = useControllableStateV2(props.open, props.onUpdateOpen, props.defaultOpen ?? false)
 
   let openTimerRef = 0
@@ -61,7 +70,7 @@ export function useHoverCardRoot(props: UseHoverCardRootProps = {}) {
       openTimerRef = window.setTimeout(() => {
         open.value = true
         openTimerRef = 0
-      }, props.openDelay)
+      }, openDelay)
     },
     onClose() {
       if (openTimerRef)
@@ -73,7 +82,7 @@ export function useHoverCardRoot(props: UseHoverCardRootProps = {}) {
       closeTimerRef = window.setTimeout(() => {
         open.value = false
         closeTimerRef = 0
-      }, props.closeDelay)
+      }, closeDelay)
     },
     onDismiss() {
       open.value = false

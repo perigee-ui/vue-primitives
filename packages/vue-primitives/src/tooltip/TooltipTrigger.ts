@@ -1,6 +1,6 @@
 import type { PopperAnchorProps } from '../popper/index.ts'
 import type { PrimitiveProps } from '../primitive/index.ts'
-import type { RadixPrimitiveReturns } from '../shared/typeUtils.ts'
+import type { PrimitiveDefaultProps, RadixPrimitiveReturns } from '../shared/typeUtils.ts'
 import { mergePrimitiveAttrs } from '../shared/mergeProps.ts'
 import { useTooltipProviderContext } from './TooltipProvider.ts'
 import { useTooltipContext } from './TooltipRoot.ts'
@@ -8,6 +8,10 @@ import { useTooltipContext } from './TooltipRoot.ts'
 export interface TooltipTriggerProps extends PopperAnchorProps {
   as?: PrimitiveProps['as']
 }
+
+export const DEFAULT_TOOLTIP_TRIGGER_PROPS = {
+  as: 'button',
+} satisfies PrimitiveDefaultProps<TooltipTriggerProps>
 
 export function useTooltipTrigger(): RadixPrimitiveReturns {
   const context = useTooltipContext('TooltipTrigger')

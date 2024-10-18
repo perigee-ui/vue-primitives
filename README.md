@@ -78,11 +78,11 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓    | ✓     |                           |
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | ✓    |       |                           |
 | Form                                                                                            | ✖️      | ✖️    |       |                           |
-| [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | ✓    |       | TODO: poligon; Fix: close |
+| [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | ✓    | ✓     | TODO: poligon; Fix: close |
 | [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓    | ✓     |                           |
 | [Menubar](https://vue-primitives.netlify.app/?path=/story/components-menubar--styled)           | ✓      | 🚧    |       |                           |
 | NavigationMenu                                                                                  | 🚧      | 🚧    |       |                           |
-| [Popover](https://vue-primitives.netlify.app/?path=/story/components-popover--styled)           | ✓      | ✓    |       |                           |
+| [Popover](https://vue-primitives.netlify.app/?path=/story/components-popover--styled)           | ✓      | ✓    | ✓     |                           |
 | [Progress](https://vue-primitives.netlify.app/?path=/story/components-progress--styled)         | ✓      | ✓    | ✓     |                           |
 | [RadioGroup](https://vue-primitives.netlify.app/?path=/story/components-radiogroup--styled)     | ✓      | ✓    |       | TODO: input               |
 | [ScrollArea](https://vue-primitives.netlify.app/?path=/story/components-scrollarea--basic)      | ✓      | ✓    | ✓     |                           |
@@ -95,7 +95,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    | ✓     |                           |
 | [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓    | ✓     |                           |
 | [Toolbar](https://vue-primitives.netlify.app/?path=/story/components-toolbar--styled)           | ✓      | ✓    | ✓     | TODO: focus on MouseDown  |
-| [Tooltip](https://vue-primitives.netlify.app/?path=/story/components-tooltip--styled)           | ✓      | ✓    |       |                           |
+| [Tooltip](https://vue-primitives.netlify.app/?path=/story/components-tooltip--styled)           | ✓      | ✓    | ✓     |                           |
 
 ## Utilites
 
@@ -105,7 +105,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  | ✓     |                                 |
 | [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓    | ✓     |                                 |
 | [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓    |       |                                 |
-| [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓    |       | Arrow                           |
+| [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓    | ✓     | Arrow                           |
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧    |       | TODO: Dismissable like Solid.js |
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    |       |                                 |
 | Primitives                                                                                            | ✓      | ✖️    |       |                                 |

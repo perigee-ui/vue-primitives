@@ -79,7 +79,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | ✓    |       |                           |
 | Form                                                                                            | ✖️      | ✖️    |       |                           |
 | [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | ✓    |       | TODO: poligon; Fix: close |
-| [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓    |       |                           |
+| [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓    | ✓     |                           |
 | [Menubar](https://vue-primitives.netlify.app/?path=/story/components-menubar--styled)           | ✓      | 🚧    |       |                           |
 | NavigationMenu                                                                                  | 🚧      | 🚧    |       |                           |
 | [Popover](https://vue-primitives.netlify.app/?path=/story/components-popover--styled)           | ✓      | ✓    |       |                           |

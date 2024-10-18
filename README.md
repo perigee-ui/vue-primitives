@@ -77,7 +77,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | ✓    |       |                           |
 | [Dialog](https://vue-primitives.netlify.app/?path=/story/components-dialog--styled)             | ✓      | ✓    | ✓     |                           |
 | [DropdownMenu](https://vue-primitives.netlify.app/?path=/story/components-dropdownmenu--styled) | ✓      | ✓    |       |                           |
-| Form                                                                                            | ✖️      | ✖️    |       |                           |
+| Form                                                                                            | ✖️      | ✖️    | ✖️     |                           |
 | [HoverCard](https://vue-primitives.netlify.app/?path=/story/components-hovercard--chromatic)    | ✓      | ✓    | ✓     | TODO: poligon; Fix: close |
 | [Label](https://vue-primitives.netlify.app/?path=/story/components-label--styled)               | ✓      | ✓    | ✓     |                           |
 | [Menubar](https://vue-primitives.netlify.app/?path=/story/components-menubar--styled)           | ✓      | 🚧    |       |                           |
@@ -107,8 +107,8 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓    |       |                                 |
 | [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓    | ✓     | Arrow                           |
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧    |       | TODO: Dismissable like Solid.js |
-| [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    |       |                                 |
-| Primitives                                                                                            | ✓      | ✖️    |       |                                 |
+| [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    | ✖️     |                                 |
+| Primitives                                                                                            | ✓      | ✖️    | ✖️     |                                 |
 | [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | ✓    | ✓     |                                 |
 | Slot                                                                                                  | ✓      | ✖️    |       | TODO: remove VDom               |
-| [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️    |       |                                 |
+| [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️    | ✖️     |                                 |

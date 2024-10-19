@@ -1,4 +1,4 @@
-import type { PrimitiveDefaultProps } from '../shared/typeUtils.ts'
+import type { PrimitiveDefaultProps } from '../shared/index.ts'
 import { isClient, tryOnScopeDispose } from '@vueuse/core'
 import { type Ref, shallowRef } from 'vue'
 import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'

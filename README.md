@@ -104,7 +104,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓    | ✖️     | TODO: array Items               |
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  | ✓     |                                 |
 | [FocusScope](https://vue-primitives.netlify.app/?path=/story/utilities-focusscope--basic)             | ✓      | ✓    | ✓     |                                 |
-| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓    |       |                                 |
+| [Menu](https://vue-primitives.netlify.app/?path=/story/utilities-menu--styled)                        | ✓      | ✓    | ✓     |                                 |
 | [Popper](https://vue-primitives.netlify.app/?path=/story/utilities-popper--styled)                    | ✓      | ✓    | ✓     | Arrow                           |
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | 🚧    |       | TODO: Dismissable like Solid.js |
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓    | ✖️     |                                 |

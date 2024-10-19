@@ -1,4 +1,4 @@
-import type { EmitsToHookProps, RadixPrimitiveReturns } from '../shared/index.ts'
+import type { EmitsToHookProps, PrimitiveDefaultProps, RadixPrimitiveReturns } from '../shared/index.ts'
 import { useMenuContentContext } from './MenuContentImpl.ts'
 import { useMenuItemImpl, type UseMenuItemImplProps } from './MenuItemImpl.ts'
 import { SELECTION_KEYS, useMenuRootContext } from './MenuRoot.ts'
@@ -8,6 +8,10 @@ export type MenuItemProps = {
   disabled?: boolean
   textValue?: string
 }
+
+export const DEFAULT_MENU_ITEM_PROPS = {
+  disabled: undefined,
+} satisfies PrimitiveDefaultProps<MenuItemProps>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type MenuItemEmits = {

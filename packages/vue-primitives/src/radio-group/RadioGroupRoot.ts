@@ -2,7 +2,7 @@ import type { MaybeRefOrGetter, Ref } from 'vue'
 import { type Direction, useDirection } from '../direction/index.ts'
 import { createContext, type MutableRefObject, useControllableStateV2, useRef } from '../hooks/index.ts'
 import { type RovingFocusGroupRootProps, useRovingFocusGroupRoot } from '../roving-focus/index.ts'
-import { type EmitsToHookProps, mergePrimitiveAttrs, type RadixPrimitiveReturns } from '../shared/index.ts'
+import { type EmitsToHookProps, mergePrimitiveAttrs, type PrimitiveDefaultProps, type RadixPrimitiveReturns } from '../shared/index.ts'
 
 export interface RadioGroupRootProps {
   name?: string
@@ -15,6 +15,12 @@ export interface RadioGroupRootProps {
   defaultValue?: string
 }
 
+export const DEFAULT_RADIO_GROUP_ROOT_PROPS = {
+  disabled: undefined,
+  required: undefined,
+  loop: undefined,
+} satisfies PrimitiveDefaultProps<RadioGroupRootProps>
+
 // eslint-disable-next-line ts/consistent-type-definitions
 export type RadioGroupRootEmits = {
   'update:value': [value: string]
@@ -22,8 +28,8 @@ export type RadioGroupRootEmits = {
 
 export interface RadioGroupContext {
   name: () => string | undefined
-  required: () => boolean
-  disabled: () => boolean
+  required: () => boolean | undefined
+  disabled: () => boolean | undefined
   value: Ref<string | undefined>
   onValueChange: (value: string) => void
 }
@@ -37,8 +43,8 @@ export interface UseRadioGroupRootProps extends EmitsToHookProps<RadioGroupRootE
   defaultValue?: string
 
   name?: () => string | undefined
-  required?: () => boolean
-  disabled?: () => boolean
+  required?: () => boolean | undefined
+  disabled?: () => boolean | undefined
 
   orientation?: RovingFocusGroupRootProps['orientation']
   loop?: boolean
@@ -47,6 +53,12 @@ export interface UseRadioGroupRootProps extends EmitsToHookProps<RadioGroupRootE
 }
 
 export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitiveReturns {
+  const {
+    loop = true,
+    disabled = () => undefined,
+    required = () => undefined,
+  } = props
+
   const elRef = props.elRef || useRef<HTMLElement>()
   const setTemplateEl = props.elRef ? undefined : (value: HTMLElement | undefined) => elRef.value = value
 
@@ -56,8 +68,8 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
 
   provideRadioGroupContext({
     name: props.name ?? (() => undefined),
-    required: props.required ?? (() => false),
-    disabled: props.disabled ?? (() => false),
+    required,
+    disabled,
     value,
     onValueChange(v) {
       value.value = v
@@ -66,7 +78,7 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
 
   const rovingFocusGroupRoot = useRovingFocusGroupRoot({
     orientation: props.orientation,
-    loop: props.loop ?? true,
+    loop,
     dir: direction,
   })
 
@@ -77,7 +89,7 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
         'role': 'radiogroup',
         'aria-required': props.required?.(),
         'aria-orientation': props.orientation,
-        'data-disabled': props.disabled?.() ? '' : undefined,
+        'data-disabled': disabled() ? '' : undefined,
       }
 
       mergePrimitiveAttrs(attrs, [rovingFocusGroupRoot.attrs(), ...extraAttrs])

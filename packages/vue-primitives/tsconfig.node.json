@@ -1,6 +1,10 @@
 {
   "extends": "@teleskop150750/typescript-config/tsconfig.node.json",
   "compilerOptions": {
+    /* Проекты */
+    "incremental": true,
+    "composite": true,
+
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
   },
   "include": [

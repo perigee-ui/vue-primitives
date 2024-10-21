@@ -1,14 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    /* Проекты */
-    "incremental": true,
-    "composite": true,
-
-    /* Генерация */
-    "declaration": true,
-    "declarationMap": true,
-
+    "types": [],
     /* Язык и среда */
     "lib": [
       "DOM",
@@ -17,8 +10,5 @@
     ],
     "jsx": "preserve",
     "jsxImportSource": "vue",
-
-    /* Модули */
-    "rootDir": "src",
   }
 }

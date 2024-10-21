@@ -1,7 +1,10 @@
 {
   "extends": "@teleskop150750/typescript-config/tsconfig.vue.json",
   "compilerOptions": {
-    "rootDir": "src",
+    /* Проекты */
+    "incremental": true,
+    "composite": true,
+
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
   },
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],

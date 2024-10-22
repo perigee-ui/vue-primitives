@@ -91,16 +91,16 @@ export function useMenuItem(props: UseMenuItemProps = {}): RadixPrimitiveReturns
     textValue: props.textValue,
   })
 
+  const attrs = {
+    elRef: setTemplateEl,
+    onClick,
+    onPointerdown,
+    onPointerup,
+    onKeydown,
+  }
+
   return {
     attrs(extraAttrs = []) {
-      const attrs = {
-        elRef: setTemplateEl,
-        onClick,
-        onPointerdown,
-        onPointerup,
-        onKeydown,
-      }
-
       return menuItemImpl.attrs([attrs, ...extraAttrs])
     },
   }

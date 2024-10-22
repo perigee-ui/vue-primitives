@@ -55,6 +55,7 @@ export interface UseRadioGroupRootProps extends EmitsToHookProps<RadioGroupRootE
 export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitiveReturns {
   const {
     loop = true,
+    name = () => undefined,
     disabled = () => undefined,
     required = () => undefined,
   } = props
@@ -67,7 +68,7 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
   const value = useControllableStateV2(props.value, props.onUpdateValue, props.defaultValue)
 
   provideRadioGroupContext({
-    name: props.name ?? (() => undefined),
+    name,
     required,
     disabled,
     value,

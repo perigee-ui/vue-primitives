@@ -89,7 +89,7 @@ Enter the component you want most in the components, leave the emojis and follow
 | Select                                                                                          | 🚧      | 🚧    |       |                           |
 | [Separator](https://vue-primitives.netlify.app/?path=/story/components-separator--styled)       | ✓      | ✓    | ✓     |                           |
 | [Slider](https://vue-primitives.netlify.app/?path=/story/components-slider--styled)             | ✓      | ✓    | ✓     |                           |
-| [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    |       | TODO: input               |
+| [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | 🚧    | ✓     | TODO: input               |
 | [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓    | ✓     |                           |
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | 🚧    |       |                           |
 | [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓    | ✓     |                           |

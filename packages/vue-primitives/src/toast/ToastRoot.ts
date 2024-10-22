@@ -27,7 +27,7 @@ export type ToastRootEmits = {
 export interface ToastContext {
   el: Ref<HTMLElement | undefined>
   open: Ref<boolean>
-  changeOpen: (v: boolean) => void
+  onChangeOpen: (v: boolean) => void
   onClose: () => void
   setOnClose: (onClose: () => void) => void
 }
@@ -60,7 +60,7 @@ export function useToastRoot(props: UseToastRootProps = {}): RadixPrimitiveRetur
   provideToastRootContext({
     el,
     open,
-    changeOpen(v) {
+    onChangeOpen(v) {
       open.value = v
     },
     onClose: () => _onClose(),

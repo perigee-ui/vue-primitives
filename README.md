@@ -66,12 +66,12 @@ Enter the component you want most in the components, leave the emojis and follow
 
 **Developers can work on unclaimed components**.
 
-| Component                                                                                       | Status | Hook | Props | Note                      |
+| Component                                                                                       | Status | Hook v1 | Props | Note                      |
 | ----------------------------------------------------------------------------------------------- | ------ | ---- | ----- | ------------------------- |
 | [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓    | ✓     |                           |
 | [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | ✓    | ✓     |                           |
 | [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | ✓    | ✓     |                           |
-| [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | 🚧    |       | TODO: PR from Radix       |
+| [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | ✓     | ✓       | TODO: PR from Radix       |
 | [Checkbox](https://vue-primitives.netlify.app/?path=/story/components-checkbox--styled)         | ✓      | ✓    | ✓     | TODO: input               |
 | [Collapsible](https://vue-primitives.netlify.app/?path=/story/components-collapsible--styled)   | ✓      | ✓    | ✓     |                           |
 | [Context Menu](https://vue-primitives.netlify.app/?path=/story/components-contextmenu--styled)  | ✓      | ✓    | ✓     |                           |
@@ -99,7 +99,7 @@ Enter the component you want most in the components, leave the emojis and follow
 
 ## Utilites
 
-| Utilites                                                                                              | Status | Hook | Props | Note                            |
+| Utilites                                                                                              | Status | Hook v1 | Props | Note                            |
 | ----------------------------------------------------------------------------------------------------- | ------ | ---- | ----- | ------------------------------- |
 | [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓    | ✖️     | TODO: array Items               |
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓      | ✓/🚧  | ✓     |                                 |

@@ -39,34 +39,34 @@ export function useCollapsibleContentImpl(props: UseCollapsibleContentProps): Ra
     watchEffect(async () => {
       if (!isOpen.value)
         return
-      await nextTick()
-      const node = el.value
-      if (!node)
-        return
+      // await nextTick()
+      // const node = el.value
+      // if (!node)
+      //   return
 
-      const nodeStyle = node.style
+      // const nodeStyle = node.style
 
-      originalStyles = originalStyles || {
-        transitionDuration: nodeStyle.transitionDuration,
-        animationName: nodeStyle.animationName,
-      }
+      // originalStyles = originalStyles || {
+      //   transitionDuration: nodeStyle.transitionDuration,
+      //   animationName: nodeStyle.animationName,
+      // }
 
-      console.error('originalStyles', originalStyles)
-      // block any animations/transitions so the element renders at its full dimensions
-      nodeStyle.transitionDuration = '0s'
-      nodeStyle.animationName = 'none'
+      // console.error('originalStyles', originalStyles)
+      // // block any animations/transitions so the element renders at its full dimensions
+      // nodeStyle.transitionDuration = '0s'
+      // nodeStyle.animationName = 'none'
 
-      // get width and height from full dimensions
-      const rect = node.getBoundingClientRect()
-      nodeStyle.setProperty('--radix-collapsible-content-height', `${rect.height}px`)
-      nodeStyle.setProperty('--radix-collapsible-content-width', `${rect.width}px`)
+      // // get width and height from full dimensions
+      // const rect = node.getBoundingClientRect()
+      // nodeStyle.setProperty('--radix-collapsible-content-height', `${rect.height}px`)
+      // nodeStyle.setProperty('--radix-collapsible-content-width', `${rect.width}px`)
 
-      // kick off any animations/transitions that were originally set up if it isn't the initial mount
-      if (!isMountAnimationPrevented) {
-        console.error('ORIGINAL STYLES', originalStyles)
-        nodeStyle.transitionDuration = originalStyles.transitionDuration
-        nodeStyle.animationName = originalStyles.animationName
-      }
+      // // kick off any animations/transitions that were originally set up if it isn't the initial mount
+      // if (!isMountAnimationPrevented) {
+      //   console.error('ORIGINAL STYLES', originalStyles)
+      //   nodeStyle.transitionDuration = originalStyles.transitionDuration
+      //   nodeStyle.animationName = originalStyles.animationName
+      // }
     })
   }
 
@@ -74,6 +74,29 @@ export function useCollapsibleContentImpl(props: UseCollapsibleContentProps): Ra
     requestAnimationFrame(() => {
       isMountAnimationPrevented = false
     })
+
+    const node = el.value
+    if (!node)
+      return
+
+    const nodeStyle = node.style
+
+    originalStyles = originalStyles || {
+      transitionDuration: nodeStyle.transitionDuration,
+      animationName: nodeStyle.animationName,
+    }
+
+    console.error('originalStyles', originalStyles)
+    // block any animations/transitions so the element renders at its full dimensions
+    nodeStyle.transitionDuration = '0s'
+    nodeStyle.animationName = 'none'
+
+    // get width and height from full dimensions
+    nodeStyle.setProperty('--radix-collapsible-content-height', `38.75px`)
+    nodeStyle.setProperty('--radix-collapsible-content-width', '320px')
+
+    nodeStyle.transitionDuration = originalStyles.transitionDuration
+    nodeStyle.animationName = originalStyles.animationName
   })
   return {
     isOpen,

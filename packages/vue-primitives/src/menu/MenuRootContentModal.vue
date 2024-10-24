@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FocusOutsideEvent } from '../dismissable-layer/index.ts'
 import { hideOthers } from 'aria-hidden'
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import { useComposedElements } from '../hooks/index.ts'
 import MenuContentImpl from './MenuContentImpl.vue'
 import { useMenuContext } from './MenuRoot.ts'
@@ -17,9 +17,15 @@ const forwardElement = useComposedElements((v) => {
 })
 
 // Hide everything from ARIA except the `MenuContent`
-onBeforeUnmount(() => {
+let clearHideOthers: (() => void) | undefined
+onMounted(() => {
   if (elRef)
-    hideOthers(elRef)
+    clearHideOthers = hideOthers(elRef)
+})
+
+onBeforeUnmount(() => {
+  clearHideOthers?.()
+  clearHideOthers = undefined
 })
 
 // When focus is trapped, a `focusout` event may still happen.

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DialogContentModalEmits } from './DialogContentModal.ts'
 import { hideOthers } from 'aria-hidden'
-import { onBeforeUnmount, shallowRef } from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
 import { type FocusOutsideEvent, type PointerdownOutsideEvent, useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
@@ -23,9 +23,15 @@ const forwardElement = useForwardElement($el)
 const context = useDialogContext('DialogContentModal')
 
 // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-onBeforeUnmount(() => {
+let clearHideOthers: (() => void) | undefined
+onMounted(() => {
   if ($el.value)
-    hideOthers($el.value)
+    clearHideOthers = hideOthers($el.value)
+})
+
+onBeforeUnmount(() => {
+  clearHideOthers?.()
+  clearHideOthers = undefined
 })
 
 const onCloseAutoFocus = composeEventHandlers((event) => {

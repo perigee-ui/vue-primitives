@@ -2,7 +2,7 @@
 import type { FocusOutsideEvent, PointerdownOutsideEvent } from '../dismissable-layer/index.ts'
 import type { PopoverContentModalEmits } from './PopoverContentModal.ts'
 import { hideOthers } from 'aria-hidden'
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import { useDismissableLayer } from '../dismissable-layer/index.ts'
 import { useFocusGuards } from '../focus-guards/index.ts'
 import { useFocusScope } from '../focus-scope/index.ts'
@@ -53,10 +53,16 @@ const onFocusOutside = composeEventHandlers<FocusOutsideEvent>((event) => {
 
 const unlock = useBodyScrollLock()
 
+let clearHideOthers: (() => void) | undefined
+onMounted(() => {
+  if (popperContext.content.value)
+    clearHideOthers = hideOthers(popperContext.content.value)
+})
+
 onBeforeUnmount(() => {
   unlock()
-  if (popperContext.content.value)
-    hideOthers(popperContext.content.value)
+  clearHideOthers?.()
+  clearHideOthers = undefined
 })
 
 // COMP::PopoverContentImpl

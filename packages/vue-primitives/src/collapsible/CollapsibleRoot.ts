@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import { type Ref, shallowRef } from 'vue'
 import { createContext, useControllableStateV2, useId } from '../hooks/index.ts'
 import { type EmitsToHookProps, mergePrimitiveAttrs, type PrimitiveDefaultProps, type RadixPrimitiveReturns } from '../shared/index.ts'
 
@@ -20,6 +20,7 @@ export type CollapsibleRootEmits = {
 }
 
 export interface CollapsibleContext {
+  content: Ref<HTMLElement | undefined>
   contentId: string
   disabled: () => boolean | undefined
   open: Ref<boolean>
@@ -42,8 +43,11 @@ export function useCollapsibleRoot(props: UseCollapsibleRootProps): RadixPrimiti
 
   const open = useControllableStateV2(props.open, props.onUpdateOpen, defaultOpen)
 
+  const content = shallowRef<HTMLElement>()
+
   provideCollapsibleContext({
     contentId: useId(),
+    content,
     disabled,
     open,
     onOpenToggle() {

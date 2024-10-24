@@ -6,7 +6,7 @@ import './styles.css'
 <template>
   <div>
     <h1>Closed by default</h1>
-    <CollapsibleRoot class="collapsible_root">
+    <!-- <CollapsibleRoot class="collapsible_root">
       <CollapsibleTrigger class="collapsible_trigger">
         Trigger
       </CollapsibleTrigger>
@@ -15,7 +15,7 @@ import './styles.css'
           Content 1
         </div>
       </CollapsibleContent>
-    </CollapsibleRoot>
+    </CollapsibleRoot> -->
 
     <h1>Open by default</h1>
     <CollapsibleRoot default-open class="collapsible_root">

@@ -37,6 +37,7 @@ export function usePresence(
     onChange?.(present)
 
     const currentAnimationName = getAnimationName(styles)
+    console.error('usePresence', currentAnimationName)
 
     if (present) {
       send('MOUNT')

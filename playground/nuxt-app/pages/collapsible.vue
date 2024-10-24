@@ -8,20 +8,20 @@ import Styled from '../../../packages/vue-primitives/src/collapsible/stories/Sty
 
 <template>
   <DemoList>
-    <Demo title="Styled">
-      <Styled />
-    </Demo>
-    <Demo title="Controlled">
-      <Controlled />
-    </Demo>
+    <!-- <Demo title="Styled"> -->
+    <!-- <Styled /> -->
+    <!-- </Demo> -->
+    <!-- <Demo title="Controlled"> -->
+    <!-- <Controlled /> -->
+    <!-- </Demo> -->
     <Demo title="Animated">
       <Animated />
     </Demo>
-    <Demo title="AnimatedHorizontal">
+    <!-- <Demo title="AnimatedHorizontal">
       <AnimatedHorizontal />
     </Demo>
     <Demo title="Chromatic">
       <Chromatic />
-    </Demo>
+    </Demo> -->
   </DemoList>
 </template>

@@ -82,7 +82,7 @@ export function useMenuvarRoot(props: UseMenubarRootProps = {}): RadixPrimitiveR
   const elRef = useRef<HTMLElement>()
   Collection.provideCollectionContext(elRef)
 
-  function setTemplateEl(el: HTMLElement | undefined) {
+  function setElRef(el: HTMLElement | undefined) {
     elRef.value = el
   }
 
@@ -100,7 +100,7 @@ export function useMenuvarRoot(props: UseMenubarRootProps = {}): RadixPrimitiveR
   })
 
   const rovingFocusGroupRootAttrs = {
-    elRef: setTemplateEl,
+    elRef: setElRef,
     role: 'menubar',
   }
 

@@ -161,7 +161,7 @@ export function useMenuContentImplShared(props: UseMenuContentImplSharedProps = 
   const currentItemId = shallowRef<string>()
 
   const elRef = useRef<HTMLElement>()
-  function setTemplateEl(value: HTMLElement | undefined) {
+  function setElRef(value: HTMLElement | undefined) {
     elRef.value = value
     popperContext.content.value = value
   }
@@ -373,7 +373,7 @@ export function useMenuContentImplShared(props: UseMenuContentImplSharedProps = 
     wrapperAttrs: popperContent.wrapperAttrs,
     attrs(extraAttrs = []) {
       const popperAttrs: PrimitiveElAttrs = {
-        'elRef': setTemplateEl,
+        'elRef': setElRef,
         'role': 'menu',
         'aria-orientation': 'vertical',
         'data-state': context.open() ? 'open' : 'closed',

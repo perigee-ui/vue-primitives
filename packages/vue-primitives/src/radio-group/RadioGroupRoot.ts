@@ -61,7 +61,7 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
   } = props
 
   const elRef = props.elRef || useRef<HTMLElement>()
-  const setTemplateEl = props.elRef ? undefined : (value: HTMLElement | undefined) => elRef.value = value
+  const setElRef = props.elRef ? undefined : (value: HTMLElement | undefined) => elRef.value = value
 
   const direction = useDirection(props.dir)
 
@@ -86,7 +86,7 @@ export function useRadioGroupRoot(props: UseRadioGroupRootProps): RadixPrimitive
   return {
     attrs(extraAttrs = []) {
       const attrs = {
-        'elRef': setTemplateEl,
+        'elRef': setElRef,
         'role': 'radiogroup',
         'aria-required': props.required?.(),
         'aria-orientation': props.orientation,

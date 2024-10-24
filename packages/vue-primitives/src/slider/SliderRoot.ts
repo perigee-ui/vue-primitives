@@ -105,7 +105,7 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
   } = props
 
   const el = props.el || useRef<HTMLElement>()
-  const setTemplateEl = props.el ? undefined : (value: HTMLElement | undefined) => el.value = value
+  const setElRef = props.el ? undefined : (value: HTMLElement | undefined) => el.value = value
 
   Collection.provideCollectionContext(el)
 
@@ -347,7 +347,7 @@ export function useSliderRoot(props: UseSliderRootProps): RadixPrimitiveReturns 
       const _disabled = disabled()
 
       const attrs = {
-        'elRef': setTemplateEl,
+        'elRef': setElRef,
         'dir': direction.value,
         'data-orientation': orientation,
         'aria-disabled': _disabled,

@@ -53,7 +53,7 @@ export function useFocusScope(props: UseFocusScopeProps): RadixPrimitiveReturns 
   const { trapped = () => false } = props
 
   const el = props.el || shallowRef<HTMLElement>()
-  const setTemplateEl = props.el ? undefined : (value: HTMLElement | undefined) => el.value = value
+  const setElRef = props.el ? undefined : (value: HTMLElement | undefined) => el.value = value
 
   let lastFocusedElementRef: HTMLElement | null | undefined
 
@@ -236,7 +236,7 @@ export function useFocusScope(props: UseFocusScopeProps): RadixPrimitiveReturns 
   return {
     attrs(extraAttrs) {
       const attrs = {
-        elRef: setTemplateEl,
+        elRef: setElRef,
         tabindex: -1,
         onKeydown,
       }

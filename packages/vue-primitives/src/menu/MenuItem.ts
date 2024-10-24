@@ -27,7 +27,7 @@ export function useMenuItem(props: UseMenuItemProps = {}): RadixPrimitiveReturns
   const contentContext = useMenuContentContext('MenuItem')
 
   let elRef: HTMLElement | undefined
-  function setTemplateEl(v: HTMLElement | undefined) {
+  function setElRef(v: HTMLElement | undefined) {
     elRef = v
   }
 
@@ -92,7 +92,7 @@ export function useMenuItem(props: UseMenuItemProps = {}): RadixPrimitiveReturns
   })
 
   const attrs = {
-    elRef: setTemplateEl,
+    elRef: setElRef,
     onClick,
     onPointerdown,
     onPointerup,

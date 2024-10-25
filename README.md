@@ -68,7 +68,7 @@ Enter the component you want most in the components, leave the emojis and follow
 
 | Component                                                                                       | Status | Hook v1 | Check | Note                      |
 | ----------------------------------------------------------------------------------------------- | ------ | ------- | ----- | ------------------------- |
-| [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓       |       |                           |
+| [Accordion](https://vue-primitives.netlify.app/?path=/story/components-accordion--single)       | ✓      | ✓       | ✓     |                           |
 | [AlertDialog](https://vue-primitives.netlify.app/?path=/story/components-alertdialog--styled)   | ✓      | ✓       |       |                           |
 | [AspectRatio](https://vue-primitives.netlify.app/?path=/story/components-aspectratio--styled)   | ✓      | ✓       |       |                           |
 | [Avatar](https://vue-primitives.netlify.app/?path=/story/components-avatar--styled)             | ✓      | ✓       |       | TODO: PR from Radix       |

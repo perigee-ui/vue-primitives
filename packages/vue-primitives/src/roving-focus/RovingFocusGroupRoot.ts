@@ -162,6 +162,8 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
 
   const tabindex = computed(() => isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0)
 
+  const style = { outline: 'none' }
+
   return {
     attrs(extraAttrs) {
       const attrs = {
@@ -169,7 +171,7 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
         'dir': dir.value,
         'tabindex': tabindex.value,
         'data-orientation': props.orientation,
-        'style': { outline: 'none' },
+        'style': style,
         onMousedown,
         onFocusin,
         onFocusout,

@@ -92,14 +92,14 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Switch](https://vue-primitives.netlify.app/?path=/story/components-switch--styled)             | ✓      | ✓       |       | TODO: input               |
 | [Tabs](https://vue-primitives.netlify.app/?path=/story/components-tabs--styled)                 | ✓      | ✓       |       |                           |
 | [Toast](https://vue-primitives.netlify.app/?path=/story/components-toast--styled)               | ✓      | ✓       |       |                           |
-| [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓       |      |                           |
-| [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓       | ✓      |                           |
+| [ToggleGroup](https://vue-primitives.netlify.app/?path=/story/components-togglegroup--single)   | ✓      | ✓       |       |                           |
+| [Toggle](https://vue-primitives.netlify.app/?path=/story/components-toggle--styled)             | ✓      | ✓       | ✓     |                           |
 | [Toolbar](https://vue-primitives.netlify.app/?path=/story/components-toolbar--styled)           | ✓      | ✓       |       | TODO: focus on MouseDown  |
 | [Tooltip](https://vue-primitives.netlify.app/?path=/story/components-tooltip--styled)           | ✓      | ✓       |       |                           |
 
 ## Utilites
 
-| Utilites                                                                                              | Status | Hook v1 | Props | Note                            |
+| Utilites                                                                                              | Status | Hook v1 | Check | Note                            |
 | ----------------------------------------------------------------------------------------------------- | ------ | ------- | ----- | ------------------------------- |
 | [Collection](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic)       | ✓/🚧    | ✓       |       | TODO: array Items               |
 | [DismissableLayer](https://vue-primitives.netlify.app/?path=/story/utilities-dismissablelayer--basic) | ✓/🚧    | ✓       |       | TODO: Dismissable like Solid.js |
@@ -109,6 +109,6 @@ Enter the component you want most in the components, leave the emojis and follow
 | [Portal](https://vue-primitives.netlify.app/?path=/story/utilities-portal--base)                      | ✓      | ✖️       |       | TODO: Dismissable like Solid.js |
 | [Presence](https://vue-primitives.netlify.app/?path=/story/utilities-presence--basic)                 | ✓      | ✓       |       |                                 |
 | Primitives                                                                                            | ✓      | ✖️       |       |                                 |
-| [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | ✓       |       |                                 |
+| [RovingFocusGroup](https://vue-primitives.netlify.app/?path=/story/utilities-rovingfocusgroup--basic) | ✓      | ✓       | ✓     |                                 |
 | Slot                                                                                                  | ✓      | ✖️       |       | TODO: remove VDom               |
 | [VisuallyHidden](https://vue-primitives.netlify.app/?path=/story/utilities-visuallyhidden--basic)     | ✓      | ✖️       |       |                                 |

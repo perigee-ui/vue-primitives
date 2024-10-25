@@ -85,6 +85,9 @@ export interface UseRovingFocusGroupRootProps extends EmitsToHookProps<RovingFoc
 }
 
 export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): RadixPrimitiveReturns {
+  const {
+    loop = false,
+  } = props
   const elRef = props.elRef || useRef<HTMLElement>()
   const setElRef = props.elRef ? undefined : (value: HTMLElement | undefined) => elRef.value = value
 
@@ -141,7 +144,7 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
   provideRovingFocusContext({
     orientation: props.orientation,
     dir,
-    loop: props.loop ?? false,
+    loop,
     currentTabStopId,
     onItemFocus(tabStopId) {
       currentTabStopId.value = tabStopId

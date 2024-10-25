@@ -64,7 +64,7 @@ This is currently a test implementation.
 
 Enter the component you want most in the components, leave the emojis and follow.
 
-**Developers can work on unclaimed components**.
+**Developers can work on unclaimed components**
 
 | Component                                                                                       | Status | Hook v1 | Visual Check | Note                      |
 | ----------------------------------------------------------------------------------------------- | ------ | ------- | ------------ | ------------------------- |

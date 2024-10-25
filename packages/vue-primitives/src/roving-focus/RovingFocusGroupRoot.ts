@@ -169,7 +169,7 @@ export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): Ra
         'dir': dir.value,
         'tabindex': tabindex.value,
         'data-orientation': props.orientation,
-        'style': 'outline: none;',
+        'style': { outline: 'none' },
         onMousedown,
         onFocusin,
         onFocusout,

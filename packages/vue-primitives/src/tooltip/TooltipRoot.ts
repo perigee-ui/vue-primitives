@@ -1,5 +1,8 @@
-import type { Ref } from 'vue'
-import { createContext } from '../hooks/index.ts'
+import type { EmitsToHookProps, PrimitiveDefaultProps } from '../shared/index.ts'
+import { onBeforeUnmount, type Ref, shallowRef, useId } from 'vue'
+import { createContext, useControllableStateV2 } from '../hooks/index.ts'
+import { usePooperRoot } from '../popper/index.ts'
+import { useTooltipProviderContext } from './TooltipProvider.ts'
 
 export interface TooltipRootProps {
   open?: boolean
@@ -17,6 +20,12 @@ export interface TooltipRootProps {
   disableHoverableContent?: boolean
 }
 
+export const DEFAULT_TOOLTIP_ROOT_PROPS = {
+  open: undefined,
+  defaultOpen: undefined,
+  disableHoverableContent: undefined,
+} satisfies PrimitiveDefaultProps<TooltipRootProps>
+
 // eslint-disable-next-line ts/consistent-type-definitions
 export type TooltipRootEmits = {
   'update:open': [open: boolean]
@@ -24,14 +33,11 @@ export type TooltipRootEmits = {
 
 export const TOOLTIP_OPEN = 'tooltip.open'
 
-type TooltipTriggerElement = HTMLButtonElement
-
 export interface TooltipContext {
   contentId: string
   open: Ref<boolean>
   stateAttribute: () => 'closed' | 'delayed-open' | 'instant-open'
-  trigger: Ref<TooltipTriggerElement | undefined>
-  onTriggerChange: (trigger: TooltipTriggerElement | undefined) => void
+  trigger: Ref<HTMLElement | undefined>
   onTriggerEnter: () => void
   onTriggerLeave: () => void
   onOpen: () => void
@@ -40,3 +46,101 @@ export interface TooltipContext {
 }
 
 export const [provideTooltipContext, useTooltipContext] = createContext<TooltipContext>('Tooltip')
+
+export interface UseTooltipRootProps extends EmitsToHookProps<TooltipRootEmits> {
+  open?: () => boolean | undefined
+  defaultOpen?: boolean
+  delayDuration?: number
+  disableHoverableContent?: boolean
+}
+
+export function useTooltipRoot(props: UseTooltipRootProps) {
+  const providerContext = useTooltipProviderContext('Tooltip')
+
+  const {
+    defaultOpen = false,
+    disableHoverableContent = providerContext.disableHoverableContent,
+    delayDuration = providerContext.delayDuration,
+  } = props
+
+  const trigger = shallowRef<HTMLElement>()
+
+  let openTimerRef = 0
+
+  let wasOpenDelayedRef = false
+
+  const open = useControllableStateV2(
+    props.open,
+    (v: boolean) => {
+      if (v) {
+        providerContext.onOpen()
+
+        // as `onChange` is called within a lifecycle method we
+        // avoid dispatching via `dispatchDiscreteCustomEvent`.
+        document.dispatchEvent(new CustomEvent(TOOLTIP_OPEN))
+      }
+      else {
+        providerContext.onClose()
+      }
+
+      props.onUpdateOpen?.(v)
+    },
+    defaultOpen,
+  )
+
+  function handleOpen() {
+    window.clearTimeout(openTimerRef)
+    openTimerRef = 0
+    wasOpenDelayedRef = false
+    open.value = true
+  }
+
+  function handleClose() {
+    window.clearTimeout(openTimerRef)
+    openTimerRef = 0
+    open.value = false
+  }
+
+  function handleDelayedOpen() {
+    window.clearTimeout(openTimerRef)
+    openTimerRef = window.setTimeout(() => {
+      wasOpenDelayedRef = true
+      open.value = true
+      openTimerRef = 0
+    }, delayDuration)
+  }
+
+  onBeforeUnmount(() => {
+    if (openTimerRef)
+      window.clearTimeout(openTimerRef)
+  })
+
+  provideTooltipContext({
+    contentId: useId(),
+    open,
+    stateAttribute() {
+      return open.value ? (wasOpenDelayedRef ? 'delayed-open' : 'instant-open') : 'closed'
+    },
+    trigger,
+    onTriggerEnter() {
+      if (providerContext.isOpenDelayed.value)
+        handleDelayedOpen()
+      else handleOpen()
+    },
+    onTriggerLeave() {
+      if (disableHoverableContent) {
+        handleClose()
+      }
+      else {
+        // Clear the timer in case the pointer leaves the trigger before the tooltip is opened.
+        window.clearTimeout(openTimerRef)
+        openTimerRef = 0
+      }
+    },
+    onOpen: handleOpen,
+    onClose: handleClose,
+    disableHoverableContent,
+  })
+
+  usePooperRoot({ anchor: trigger })
+}

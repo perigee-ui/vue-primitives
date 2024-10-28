@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import MenuGroup from './MenuGroup.vue'
-import { type MenuRadioGroupEmits, type MenuRadioGroupProps, providRadioGroupContext } from './MenuRadioGroup.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { type MenuRadioGroupEmits, type MenuRadioGroupProps, useMenuRadioGroup } from './MenuRadioGroup.ts'
 
 defineOptions({
   name: 'MenuRadioGroup',
@@ -10,18 +12,19 @@ const props = defineProps<MenuRadioGroupProps>()
 
 const emit = defineEmits<MenuRadioGroupEmits>()
 
-providRadioGroupContext({
-  value() {
-    return props.value
-  },
-  onValueChange(value) {
-    emit('update:value', value)
-  },
-})
+useMenuRadioGroup(convertPropsToHookProps(
+  props,
+  ['value'],
+  (): Required<EmitsToHookProps<MenuRadioGroupEmits>> => ({
+    onUpdateValue(value) {
+      emit('update:value', value)
+    },
+  }),
+))
 </script>
 
 <template>
-  <MenuGroup>
+  <Primitive role="group">
     <slot />
-  </MenuGroup>
+  </Primitive>
 </template>

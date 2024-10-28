@@ -1,38 +1,23 @@
 <script setup lang="ts">
-import type { DialogOverlayProps } from './DialogOverlay.ts'
-import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
-import { useBodyScrollLock, useForwardElement } from '../hooks/index.ts'
-import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useDialogContext } from './DialogRoot.ts'
-import { getState } from './utils.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_DIALOG_OVERLAY_PROPS, type DialogOverlayProps, useDialogOverlay } from './DialogOverlay.ts'
 
 defineOptions({
   name: 'DialogOverlay',
 })
 
-const props = defineProps<DialogOverlayProps>()
+const props = withDefaults(defineProps<DialogOverlayProps>(), DEFAULT_DIALOG_OVERLAY_PROPS)
 
-const context = useDialogContext('DialogOverlay')
-
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
-
-const isPresent = usePresence($el, () => props.forceMount || context.open.value)
-
-watchEffect(() => {
-  if (isPresent.value) {
-    onWatcherCleanup(useBodyScrollLock())
-  }
+const dialogOverlay = useDialogOverlay({
+  forceMount: props.forceMount,
 })
 </script>
 
 <template>
   <Primitive
-    v-if="isPresent"
-    :ref="forwardElement"
-    :data-state="getState(context.open.value)"
-    style="pointer-events: auto"
+    v-if="dialogOverlay.isPresent.value"
+    v-bind="normalizeAttrs(dialogOverlay.attrs([$attrs]))"
   >
     <slot />
   </Primitive>

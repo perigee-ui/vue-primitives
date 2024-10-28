@@ -1,8 +1,9 @@
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { NOOP } from '@vue/shared'
 import { createContext } from '../hooks/index.ts'
 
 export interface MenuRadioGroupProps {
   value?: string
-  onValueChange?: (value: string) => void
 }
 
 // eslint-disable-next-line ts/consistent-type-definitions
@@ -25,3 +26,18 @@ export const [providRadioGroupContext, useRadioGroupContext] = createContext<Men
     onValueChange() { },
   },
 )
+
+export interface UseMenuRadioGroupProps extends EmitsToHookProps<MenuRadioGroupEmits> {
+  value?: () => string | undefined
+}
+
+export function useMenuRadioGroup(props: UseMenuRadioGroupProps): void {
+  const {
+    value = () => undefined,
+    onUpdateValue = NOOP,
+  } = props
+  providRadioGroupContext({
+    value,
+    onValueChange: onUpdateValue,
+  })
+}

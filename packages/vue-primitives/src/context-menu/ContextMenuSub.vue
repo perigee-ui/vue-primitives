@@ -1,67 +1,26 @@
 <script setup lang="ts">
-import type { ContextMenuSubEmits, ContextMenuSubProps } from './ContextMenuSub.ts'
-import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
-import { useControllableState, useId, useRef } from '../hooks/index.ts'
-import { provideMenuContext, provideMenuSubContext, useMenuContext } from '../menu/index.ts'
-import { type Measurable, providePopperContext } from '../popper/index.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { type ContextMenuSubEmits, type ContextMenuSubProps, DEFAULT_CONTEXT_MENU_SUB_PROPS, useContextMenuSub } from './ContextMenuSub.ts'
 
 defineOptions({
   name: 'ContextMenuSub',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ContextMenuSubProps>(), {
-  open: undefined,
-  defaultOpen: false,
-})
+const props = withDefaults(defineProps<ContextMenuSubProps>(), DEFAULT_CONTEXT_MENU_SUB_PROPS)
 
 const emit = defineEmits<ContextMenuSubEmits>()
 
-const open = useControllableState(props, 'open', v => emit('update:open', v), props.defaultOpen)
-
-// COMP::MenuSub
-
-const parentMenuContext = useMenuContext('MenuSub')
-const trigger = useRef<HTMLDivElement>()
-
-// Prevent the parent menu from reopening with open submenus.
-watchEffect(() => {
-  if (parentMenuContext.open() === false)
-    open.value = false
-
-  onWatcherCleanup(() => {
-    open.value = false
-  })
-})
-
-provideMenuContext({
-  open() {
-    return open.value
-  },
-  onOpenChange(v) {
-    open.value = v
-  },
-})
-
-provideMenuSubContext({
-  contentId: useId(),
-  triggerId: useId(),
-  trigger,
-  onTriggerChange(el) {
-    trigger.current = el
-  },
-})
-
-// COMP::PopperRoot
-
-const anchor = shallowRef<Measurable>()
-
-providePopperContext({
-  content: shallowRef(),
-  anchor,
-  onAnchorChange(newAnchor) {
-    anchor.value = newAnchor
-  },
-})
+useContextMenuSub(convertPropsToHookProps(
+  props,
+  ['open'],
+  (): Required<EmitsToHookProps<ContextMenuSubEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

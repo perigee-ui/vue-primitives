@@ -1,27 +1,24 @@
 <script setup lang="ts">
-import type { RadioGroupBubbleInputProps } from './RadioGroupBubbleInput.ts'
 import { watch } from 'vue'
-import { useSize } from '../hooks/index.ts'
+import { useRadioContext } from './RadioGroupItem.ts'
 
 defineOptions({
   name: 'RadioGroupBubbleInput',
 })
 
-const props = withDefaults(defineProps<RadioGroupBubbleInputProps>(), {
-  checked: undefined,
-  control: undefined,
-})
+const bubbleInput = useRadioContext('RadioGroupBubbleInput').bubbleInput
+bubbleInput.isFormControl.value = true
+
 let input: HTMLInputElement | undefined
 function setElRef(vNode: any) {
   input = vNode
 }
 
-const controlSize = useSize(() => props.control)
 // TODO: Check if this is the correct way to create a change event
 // const initChecked = isIndeterminate(props.checked) ? false : props.checked
 
 // Bubble checked change to parents (e.g form change event)
-watch(() => props.checked, (checked) => {
+watch(bubbleInput.checked, (checked) => {
   if (!input)
     return
 
@@ -31,9 +28,11 @@ watch(() => props.checked, (checked) => {
 
   if (checked && setChecked) {
     // TODO: Check if this is the correct way to create a change event
-    const event = new Event('change', { bubbles: props.bubbles.current })
+    const inputEvent = new Event('input', { bubbles: bubbleInput.bubbles.value })
+    const changeEvent = new Event('change', { bubbles: bubbleInput.bubbles.value })
     setChecked.call(input, checked)
-    input.dispatchEvent(event)
+    input.dispatchEvent(inputEvent)
+    input.dispatchEvent(changeEvent)
   }
 })
 </script>
@@ -44,15 +43,15 @@ watch(() => props.checked, (checked) => {
     type="radio"
     aria-hidden="true"
     tabindex="-1"
-    :checked="checked"
+    :name="bubbleInput.name()"
+    :value="bubbleInput.value()"
+    :checked="bubbleInput.checked.value"
+    :required="bubbleInput.required()"
     :style="{
-      width: `${controlSize?.width || 0}px`,
-      height: `${controlSize?.height || 0}px`,
       position: 'absolute',
       pointerEvents: 'none',
       opacity: 0,
       margin: 0,
-      transform: 'translateX(-100%)',
     }"
   >
 </template>

@@ -1,5 +1,6 @@
 import { isClient } from '@vueuse/core'
-import { nextTick, onWatcherCleanup, type Ref, toValue, watch, watchEffect } from 'vue'
+import { nextTick, onWatcherCleanup, type Ref, shallowRef, watch, watchEffect } from 'vue'
+import { type EmitsToHookProps, mergePrimitiveAttrs, type PrimitiveDefaultProps, type RadixPrimitiveReturns } from '../shared/index.ts'
 import { focus, focusFirst, focusScopesStack, getTabbableCandidates, getTabbableEdges, removeLinks } from './utils.ts'
 
 export interface FocusScopeProps {
@@ -17,6 +18,11 @@ export interface FocusScopeProps {
    */
   trapped?: boolean
 }
+
+export const DEFAULT_FOCUS_SCOPE_PROPS = {
+  loop: undefined,
+  trapped: false,
+} satisfies PrimitiveDefaultProps<FocusScopeProps, 'trapped'>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type FocusScopeEmits = {
@@ -37,16 +43,18 @@ export const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 export const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 export const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
 
-export interface UseFocusScopeProps {
+export interface UseFocusScopeProps extends EmitsToHookProps<FocusScopeEmits> {
+  el?: Ref<HTMLElement | undefined>
   loop?: boolean
-  trapped?: boolean | (() => boolean)
-}
-export interface UseFocusScopeEmits {
-  onMountAutoFocus: (event: Event) => void
-  onUnmountAutoFocus: (event: Event) => void
+  trapped?: () => boolean
 }
 
-export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocusScopeProps, emits: UseFocusScopeEmits) {
+export function useFocusScope(props: UseFocusScopeProps): RadixPrimitiveReturns {
+  const { trapped = () => false } = props
+
+  const el = props.el || shallowRef<HTMLElement>()
+  const setElRef = props.el ? undefined : (value: HTMLElement | undefined) => el.value = value
+
   let lastFocusedElementRef: HTMLElement | null | undefined
 
   const focusScope = {
@@ -62,12 +70,12 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
   // Takes care of trapping focus if focus is moved outside programmatically for example
   if (isClient) {
     function handleFocusIn(event: FocusEvent) {
-      if (focusScope.paused || !$el.value)
+      if (focusScope.paused || !el.value)
         return
 
       const target = event.target as HTMLElement | null
 
-      if ($el.value.contains(target)) {
+      if (el.value.contains(target)) {
         lastFocusedElementRef = target
       }
       else {
@@ -76,7 +84,7 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
     }
 
     function handleFocusOut(event: FocusEvent) {
-      if (focusScope.paused || !$el.value)
+      if (focusScope.paused || !el.value)
         return
       const relatedTarget = event.relatedTarget as HTMLElement | null
 
@@ -95,7 +103,7 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
 
       // If the focus has moved to an actual legitimate element (`relatedTarget !== null`)
       // that is outside the container, we move focus to the last valid focused element inside.
-      if (!$el.value.contains(relatedTarget)) {
+      if (!el.value.contains(relatedTarget)) {
         focus(lastFocusedElementRef, { select: true })
       }
     }
@@ -109,22 +117,22 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
     // if the element still exist inside the container,
     // if not then we focus to the container
     function handleMutations() {
-      const isLastFocusedElementExist = $el.value?.contains(lastFocusedElementRef as HTMLElement)
+      const isLastFocusedElementExist = el.value?.contains(lastFocusedElementRef as HTMLElement)
       if (!isLastFocusedElementExist) {
-        focus($el.value)
+        focus(el.value)
       }
     }
 
     watchEffect(() => {
-      if (!toValue(props.trapped))
+      if (!trapped())
         return
 
       document.addEventListener('focusin', handleFocusIn)
       document.addEventListener('focusout', handleFocusOut)
       const mutationObserver = new MutationObserver(handleMutations)
 
-      if ($el.value)
-        mutationObserver.observe($el.value, { childList: true, subtree: true })
+      if (el.value)
+        mutationObserver.observe(el.value, { childList: true, subtree: true })
 
       onWatcherCleanup(() => {
         document.removeEventListener('focusin', handleFocusIn)
@@ -133,19 +141,22 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
       })
     })
 
-    watch($el, async (container, _, onCleanup) => {
+    watch(el, async (container, _, onCleanup) => {
       if (!container)
         return
       focusScopesStack.add(focusScope)
 
       await nextTick()
+      const onMountAutoFocus = props.onMountAutoFocus
+      const onUnmountAutoFocus = props.onUnmountAutoFocus
 
       const previouslyFocusedElement = document.activeElement as HTMLElement | null
       const hasFocusedCandidate = container.contains(previouslyFocusedElement)
 
       if (!hasFocusedCandidate) {
         const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
-        container.addEventListener(AUTOFOCUS_ON_MOUNT, emits.onMountAutoFocus)
+        if (onMountAutoFocus)
+          container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
         container.dispatchEvent(mountEvent)
         if (!mountEvent.defaultPrevented) {
           focusFirst(removeLinks(getTabbableCandidates(container)), { select: true })
@@ -156,13 +167,15 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
       }
 
       onCleanup(() => {
-        container.removeEventListener(AUTOFOCUS_ON_MOUNT, emits.onMountAutoFocus)
+        if (onMountAutoFocus)
+          container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
 
         // We hit a react bug (fixed in v17) with focusing in unmount.
         // We need to delay the focus a little to get around it for now.
         // See: https://github.com/facebook/react/issues/17894
         const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
-        container.addEventListener(AUTOFOCUS_ON_UNMOUNT, emits.onUnmountAutoFocus)
+        if (onUnmountAutoFocus)
+          container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
         container.dispatchEvent(unmountEvent)
 
         setTimeout(() => {
@@ -171,7 +184,8 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
           }
 
           // we need to remove the listener after we `dispatchEvent`
-          container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, emits.onUnmountAutoFocus)
+          if (onUnmountAutoFocus)
+            container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
 
           focusScopesStack.remove(focusScope)
         }, 0)
@@ -181,7 +195,7 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
 
   // Takes care of looping focus (when tabbing whilst at the edges)
   function onKeydown(event: KeyboardEvent) {
-    if (!props.loop && !toValue(props.trapped))
+    if (!props.loop && !trapped())
       return
     if (focusScope.paused)
       return
@@ -220,6 +234,18 @@ export function useFocusScope($el: Ref<HTMLElement | undefined>, props: UseFocus
   }
 
   return {
-    onKeydown,
+    attrs(extraAttrs) {
+      const attrs = {
+        elRef: setElRef,
+        tabindex: -1,
+        onKeydown,
+      }
+
+      if (extraAttrs && extraAttrs.length > 0) {
+        mergePrimitiveAttrs(attrs, extraAttrs)
+      }
+
+      return attrs
+    },
   }
 }

@@ -1,27 +1,19 @@
 <script setup lang="ts">
-import type { DialogCloseEmits, DialogCloseProps } from './DialogClose.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers } from '../shared/index.ts'
-import { useDialogContext } from './DialogRoot.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_DIALOG_CLOSE_PROPS, type DialogCloseProps, useDialogClose } from './DialogClose.ts'
 
 defineOptions({
   name: 'DialogClose',
 })
 
-withDefaults(defineProps<DialogCloseProps>(), {
-  as: 'button',
-})
-const emit = defineEmits<DialogCloseEmits>()
+withDefaults(defineProps<DialogCloseProps>(), DEFAULT_DIALOG_CLOSE_PROPS)
 
-const context = useDialogContext('DialogClose')
-
-const onClick = composeEventHandlers<MouseEvent>((event) => {
-  emit('click', event)
-}, () => context.onOpenChange(false))
+const dialogClose = useDialogClose()
 </script>
 
 <template>
-  <Primitive :as="as" type="button" @click="onClick">
+  <Primitive v-bind="normalizeAttrs(dialogClose.attrs([$attrs, { as }]))">
     <slot />
   </Primitive>
 </template>

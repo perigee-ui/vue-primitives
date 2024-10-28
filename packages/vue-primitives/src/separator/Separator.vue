@@ -1,29 +1,19 @@
 <script setup lang="ts">
-import type { SeparatorProps } from './Separator.ts'
 import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_SEPARATOR_PROPS, type SeparatorProps, useSeparator } from './Separator.ts'
 
 defineOptions({
   name: 'Separator',
 })
 
-withDefaults(defineProps<SeparatorProps>(), {
-  orientation: 'horizontal',
-})
+const props = withDefaults(defineProps<SeparatorProps>(), DEFAULT_SEPARATOR_PROPS)
 
-const decorativeAttrs = { role: 'none' }
+const separator = useSeparator(convertPropsToHookProps(props))
 </script>
 
 <template>
-  <Primitive
-    :data-orientation="orientation"
-    v-bind="decorative
-      ? decorativeAttrs
-      : {
-        'aria-orientation': orientation === 'vertical' ? orientation : undefined,
-        'role': 'separator',
-      }
-    "
-  >
+  <Primitive v-bind="normalizeAttrs(separator.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

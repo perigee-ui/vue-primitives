@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, type EmitsToHookProps, normalizeAttrs } from '../shared/index.ts'
 import {
+  DEFAULT_FOCUS_SCOPE_PROPS,
   type FocusScopeEmits,
   type FocusScopeProps,
   useFocusScope,
@@ -10,34 +10,28 @@ import {
 
 defineOptions({
   name: 'FocusScope',
+  inheritAttrs: false,
 })
 
-const props = defineProps<FocusScopeProps>()
+const props = withDefaults(defineProps<FocusScopeProps>(), DEFAULT_FOCUS_SCOPE_PROPS)
 const emit = defineEmits<FocusScopeEmits>()
 
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
-
-const focusScope = useFocusScope(
-  $el,
+const focusScope = useFocusScope(convertPropsToHookProps(
   props,
-  {
+  ['trapped'],
+  (): Required<EmitsToHookProps<FocusScopeEmits>> => ({
     onMountAutoFocus(event) {
       emit('mountAutoFocus', event)
     },
     onUnmountAutoFocus(event) {
       emit('unmountAutoFocus', event)
     },
-  },
-)
+  }),
+))
 </script>
 
 <template>
-  <Primitive
-    :ref="forwardElement"
-    tabindex="-1"
-    @keydown="focusScope.onKeydown"
-  >
+  <Primitive v-bind="normalizeAttrs(focusScope.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

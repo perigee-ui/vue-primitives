@@ -1,35 +1,22 @@
 <script setup lang="ts">
-import type { CheckboxIndicatorProps } from './CheckboxIndicator.ts'
-import { shallowRef } from 'vue'
-import { useForwardElement } from '../hooks/index.ts'
-import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useCheckboxContext } from './CheckboxRoot.ts'
-import { getState, isIndeterminate } from './utils.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { type CheckboxIndicatorProps, DEFAULT_CHECKBOX_INDICATOR_PROPS, useCheckboxIndicator } from './CheckboxIndicator.ts'
 
 defineOptions({
   name: 'CheckboxIndicator',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<CheckboxIndicatorProps>(), {
-  as: 'span',
-})
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
+const props = withDefaults(defineProps<CheckboxIndicatorProps>(), DEFAULT_CHECKBOX_INDICATOR_PROPS)
 
-const context = useCheckboxContext('CheckboxIndicator')
-
-const isPresent = usePresence($el, () => props.forceMount || isIndeterminate(context.state.value) || context.state.value === true)
+const checkboxIndicator = useCheckboxIndicator(convertPropsToHookProps(props))
 </script>
 
 <template>
   <Primitive
-    v-if="isPresent"
-    :ref="forwardElement"
-    :as="as"
-    :data-state="getState(context.state.value)"
-    :data-disabled="context.disabled() ? '' : undefined"
-    :style="{ pointerEvents: 'none' }"
+    v-if="checkboxIndicator.isPresent.value"
+    v-bind="normalizeAttrs(checkboxIndicator.attrs([$attrs, { as }]))"
   >
     <slot />
   </Primitive>

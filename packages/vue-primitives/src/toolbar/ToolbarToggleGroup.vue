@@ -1,26 +1,32 @@
-<script setup lang="ts" generic="T extends ToggleGroupType">
-import type { ToolbarToggleGroupProps } from './ToolbarToggleGroup.ts'
-import { ToggleGroupRoot, type ToggleGroupType } from '../toggle-group/index.ts'
-import { useToolbarContext } from './ToolbarRoot.ts'
+<script setup lang="ts" generic="T extends ToggleGroupType = undefined">
+import type { EmitsToHookProps } from '../shared/index.ts'
+import type { ToggleGroupType } from '../toggle-group/index.ts'
+import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_TOOLBAR_TOGGLE_GROUP_PROPS, type ToolbarToggleGroupEmits, type ToolbarToggleGroupProps, useToolbarToggleGroup } from './ToolbarToggleGroup.ts'
 
 defineOptions({
   name: 'ToolbarToggleGroup',
+  inheritAttrs: false,
 })
 
-withDefaults(defineProps<ToolbarToggleGroupProps<T>>(), {
-  loop: true,
-})
-const context = useToolbarContext('ToolbarToggleGroup')
+const props = withDefaults(defineProps<ToolbarToggleGroupProps<T>>(), DEFAULT_TOOLBAR_TOGGLE_GROUP_PROPS)
+
+const emit = defineEmits<ToolbarToggleGroupEmits<T>>()
+
+const toolbarToggleGroup = useToolbarToggleGroup(convertPropsToHookProps(
+  props,
+  ['value', 'disabled', 'dir'],
+  (): Required<EmitsToHookProps<ToolbarToggleGroupEmits<T>>> => ({
+    onUpdateValue(value) {
+      emit('update:value', value)
+    },
+  }),
+))
 </script>
 
 <template>
-  <ToggleGroupRoot
-    :type="type"
-    :loop="loop"
-    :data-orientation="context.orientation()"
-    :dir="context.dir.value"
-    :roving-focus="false"
-  >
+  <Primitive v-bind="normalizeAttrs(toolbarToggleGroup.attrs([$attrs]))">
     <slot />
-  </ToggleGroupRoot>
+  </Primitive>
 </template>

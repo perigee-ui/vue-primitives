@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { DialogContentElement } from '../dialog/index.ts'
-import type { AlertDialogRootEmits, AlertDialogRootProps } from './AlertDialogRoot.ts'
-import { provideDialogContext } from '../dialog/index.ts'
-import { useControllableState, useId, useRef } from '../hooks/index.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { type AlertDialogRootEmits, type AlertDialogRootProps, useAlertDialogRoot } from './AlertDialogRoot.ts'
 
 defineOptions({
   name: 'AlertDialogRoot',
+  inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<AlertDialogRootProps>(), {
@@ -15,26 +15,15 @@ const props = withDefaults(defineProps<AlertDialogRootProps>(), {
 
 const emit = defineEmits<AlertDialogRootEmits>()
 
-const triggerRef = useRef<HTMLButtonElement>()
-const contentRef = useRef<DialogContentElement>()
-
-const open = useControllableState(props, 'open', v => emit('update:open', v), props.defaultOpen)
-
-provideDialogContext({
-  triggerRef,
-  contentRef,
-  contentId: useId(),
-  titleId: useId(),
-  descriptionId: useId(),
-  open,
-  modal: true,
-  onOpenChange(value) {
-    open.value = value
-  },
-  onOpenToggle() {
-    open.value = !open.value
-  },
-})
+useAlertDialogRoot(convertPropsToHookProps(
+  props,
+  ['open'],
+  (): Required<EmitsToHookProps<AlertDialogRootEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

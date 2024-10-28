@@ -17,11 +17,10 @@
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
     "@teleskop150750/typescript-config": "workspace:*",
-    "@types/node": "^20.16.13",
-    "eslint": "npm:eslint-ts-patch@9.4.0-0",
-    "eslint-ts-patch": "9.4.0-0",
+    "@types/node": "^20.16.15",
+    "eslint": "^9.13.0",
     "prettier": "^3.3.3",
-    "turbo": "^2.2.1",
-    "typescript": "^5.6.3"
+    "turbo": "^2.2.3",
+    "typescript": "~5.6.3"
   }
 }

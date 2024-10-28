@@ -1,39 +1,31 @@
 <script setup lang="ts">
-import { useControllableState, useId, useRef } from '../hooks/index.ts'
-import { type DialogContentElement, type DialogRootEmits, type DialogRootProps, provideDialogContext } from './DialogRoot.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import {
+  DEFAULT_DIALOG_ROOT_PROPS,
+  type DialogRootEmits,
+  type DialogRootProps,
+  useDialogRoot,
+} from './DialogRoot.ts'
 
 defineOptions({
   name: 'DialogRoot',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<DialogRootProps>(), {
-  open: undefined,
-  defaultOpen: false,
-  modal: true,
-})
+const props = withDefaults(defineProps<DialogRootProps>(), DEFAULT_DIALOG_ROOT_PROPS)
 
 const emit = defineEmits<DialogRootEmits>()
 
-const triggerRef = useRef<HTMLButtonElement>()
-const contentRef = useRef<DialogContentElement>()
-
-const open = useControllableState(props, 'open', v => emit('update:open', v), props.defaultOpen)
-
-provideDialogContext({
-  triggerRef,
-  contentRef,
-  contentId: useId(),
-  titleId: useId(),
-  descriptionId: useId(),
-  open,
-  modal: props.modal,
-  onOpenChange(value) {
-    open.value = value
-  },
-  onOpenToggle() {
-    open.value = !open.value
-  },
-})
+useDialogRoot(convertPropsToHookProps(
+  props,
+  ['open'],
+  (): Required<EmitsToHookProps<DialogRootEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

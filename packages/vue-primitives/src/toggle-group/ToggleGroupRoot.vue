@@ -1,86 +1,35 @@
-<script setup lang="ts" generic="T extends ToggleGroupType">
-import { computed } from 'vue'
-import { useDirection } from '../direction/Direction.ts'
-import { useControllableState } from '../hooks/index.ts'
+<script setup lang="ts" generic="T extends ToggleGroupType = undefined">
 import { Primitive } from '../primitive/index.ts'
-import { RovingFocusGroupRoot } from '../roving-focus/index.ts'
-import { arrayify } from '../shared/index.ts'
-import { provideToggleGroupContext, type ToggleGroupEmits, type ToggleGroupProps, type ToggleGroupType } from './ToggleGroupRoot.ts'
-
-type SingleValue = Exclude<ToggleGroupProps<'single'>['value'], undefined>
-type MultipleValue = Exclude<ToggleGroupProps<'multiple'>['value'], undefined>
-type Value = T extends 'single' ? SingleValue : MultipleValue
+import { convertPropsToHookProps, type EmitsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import {
+  DEFAULT_TOGGLE_GROUP_PROPS,
+  type ToggleGroupEmits,
+  type ToggleGroupProps,
+  type ToggleGroupType,
+  useToggleGroup,
+} from './ToggleGroupRoot.ts'
 
 defineOptions({
   name: 'ToggleGroup',
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ToggleGroupProps<T>>(), {
-  disabled: false,
-  rovingFocus: true,
-  loop: true,
-})
+const props = withDefaults(defineProps<ToggleGroupProps<T>>(), DEFAULT_TOGGLE_GROUP_PROPS)
 const emit = defineEmits<ToggleGroupEmits<T>>()
 
-const defaultValue = props.type === 'single' ? props.defaultValue : props.defaultValue ?? [] as string[]
-const value = useControllableState(props, 'value', v => emit('update:value', v as Value), defaultValue)
-
-const TYPE_SINGLE = 'single' as const satisfies ToggleGroupType
-
-const direction = useDirection(() => props.dir)
-
-provideToggleGroupContext({
-  type() {
-    return props.type
-  },
-  value: computed(() => {
-    if (props.type === TYPE_SINGLE)
-      return typeof value.value === 'string' ? [value.value] : []
-    return Array.isArray(value.value) ? value.value : []
+const toggleGroup = useToggleGroup(convertPropsToHookProps(
+  props,
+  ['value', 'disabled', 'dir'],
+  (): Required<EmitsToHookProps<ToggleGroupEmits<T>>> => ({
+    onUpdateValue(value) {
+      emit('update:value', value)
+    },
   }),
-  onItemActivate(itemValue) {
-    if (props.type === TYPE_SINGLE) {
-      value.value = itemValue as Value
-    }
-    else {
-      value.value = [...arrayify<SingleValue>(value.value || []), itemValue] as Value
-    }
-  },
-  onItemDeactivate(itemValue) {
-    if (props.type === TYPE_SINGLE) {
-      value.value = '' as Value
-    }
-    else {
-      value.value = arrayify<SingleValue>(value.value || []).filter(value => value !== itemValue) as Value
-    }
-  },
-  rovingFocus() {
-    return props.rovingFocus
-  },
-  disabled() {
-    return props.disabled
-  },
-})
+))
 </script>
 
 <template>
-  <RovingFocusGroupRoot
-    v-if="rovingFocus"
-    :orientation="orientation"
-    :dir="direction"
-    :loop="loop"
-    role="group"
-    v-bind="$attrs"
-  >
-    <slot />
-  </RovingFocusGroupRoot>
-  <Primitive
-    v-else
-    v-bind="$attrs"
-    role="group"
-    :dir="direction"
-  >
+  <Primitive v-bind="normalizeAttrs(toggleGroup.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

@@ -1,77 +1,20 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { useDirection } from '../direction/index.ts'
-import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import {
-  provideScrollAreaContext,
-  type ScrollAreaElement,
-  type ScrollAreaRootProps,
-  type ScrollAreaScrollbarElement,
-  type ScrollAreaViewportElement,
-} from './ScrollAreaRoot.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_SCROLL_AREA_PROPS, type ScrollAreaRootProps, useScrollAreaRoot } from './ScrollAreaRoot.ts'
 
 defineOptions({
   name: 'ScrollAreaRoot',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ScrollAreaRootProps>(), {
-  type: 'hover',
-  scrollHideDelay: 600,
-})
+const props = withDefaults(defineProps<ScrollAreaRootProps>(), DEFAULT_SCROLL_AREA_PROPS)
 
-const scrollArea = shallowRef<ScrollAreaElement>()
-const forwardElement = useForwardElement(scrollArea)
-const viewport = shallowRef<ScrollAreaViewportElement>()
-const content = shallowRef<HTMLDivElement>()
-const scrollbarX = shallowRef<ScrollAreaScrollbarElement>()
-const scrollbarY = shallowRef<ScrollAreaScrollbarElement>()
-const cornerWidth = shallowRef(0)
-const cornerHeight = shallowRef(0)
-const scrollbarXEnabled = shallowRef(false)
-const scrollbarYEnabled = shallowRef(false)
-
-const direction = useDirection(() => props.dir)
-
-provideScrollAreaContext({
-  type() {
-    return props.type
-  },
-  dir: direction,
-  scrollHideDelay: props.scrollHideDelay,
-  scrollArea,
-  viewport,
-  content,
-  scrollbarX,
-  scrollbarXEnabled,
-  onScrollbarXEnabledChange(rendered) {
-    scrollbarXEnabled.value = rendered
-  },
-  scrollbarY,
-  scrollbarYEnabled,
-  onScrollbarYEnabledChange(rendered) {
-    scrollbarYEnabled.value = rendered
-  },
-  onCornerWidthChange(width) {
-    cornerWidth.value = width
-  },
-  onCornerHeightChange(height) {
-    cornerHeight.value = height
-  },
-})
+const scrollAreaRoot = useScrollAreaRoot(convertPropsToHookProps(props, ['dir']))
 </script>
 
 <template>
-  <Primitive
-    :ref="forwardElement"
-    :dir="direction"
-    :style="{
-      'position': 'relative',
-      // Pass corner sizes as CSS vars to reduce re-renders of context consumers
-      '--radix-scroll-area-corner-width': `${cornerWidth}px`,
-      '--radix-scroll-area-corner-height': `${cornerHeight}px`,
-    }"
-  >
+  <Primitive v-bind="normalizeAttrs(scrollAreaRoot.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

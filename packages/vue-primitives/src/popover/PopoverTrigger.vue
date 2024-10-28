@@ -1,43 +1,20 @@
 <script setup lang="ts">
-import type { PopoverTriggerEmits, PopoverTriggerProps } from './PopoverTrigger.ts'
-import { useComposedElements } from '../hooks/index.ts'
-import { PopperAnchor } from '../popper/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers } from '../shared/index.ts'
-import { usePopoverContext } from './PopoverRoot.ts'
-import { getState } from './utilts.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_POPOVER_TRIGGER_PROPS, type PopoverTriggerProps, usePopoverTrigger } from './PopoverTrigger.ts'
 
 defineOptions({
   name: 'PopoverTrigger',
+  inheritAttrs: false,
 })
 
-withDefaults(defineProps<PopoverTriggerProps>(), {
-  as: 'button',
-})
-const emit = defineEmits<PopoverTriggerEmits>()
-const context = usePopoverContext('PopoverTrigger')
+withDefaults(defineProps<PopoverTriggerProps>(), DEFAULT_POPOVER_TRIGGER_PROPS)
 
-const composedElements = useComposedElements<HTMLButtonElement>((v) => {
-  context.triggerRef.current = v
-})
-
-const onClick = composeEventHandlers<MouseEvent>((event) => {
-  emit('click', event)
-}, context.onOpenToggle)
+const popoverTrigger = usePopoverTrigger()
 </script>
 
 <template>
-  <component
-    :is="context.hasCustomAnchor.value ? Primitive : PopperAnchor"
-    :ref="composedElements"
-    :as="as"
-    type="button"
-    aria-haspopup="dialog"
-    :aria-expanded="context.open.value"
-    :aria-controls="context.contentId"
-    :data-state="getState(context.open.value)"
-    @click="onClick"
-  >
+  <Primitive v-bind="normalizeAttrs(popoverTrigger.attrs([$attrs, { as }]))">
     <slot />
-  </component>
+  </Primitive>
 </template>

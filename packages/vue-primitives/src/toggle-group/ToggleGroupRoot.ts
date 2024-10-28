@@ -1,23 +1,31 @@
-import type { Ref } from 'vue'
-import type { RovingFocusGroupRootProps } from '../roving-focus/index.ts'
-import { createContext } from '../hooks/index.ts'
+import { computed, type MaybeRefOrGetter, type Ref } from 'vue'
+import { type Direction, useDirection } from '../direction/index.ts'
+import { createContext, useControllableStateV2 } from '../hooks/index.ts'
+import { type RovingFocusGroupRootProps, useRovingFocusGroupRoot } from '../roving-focus/index.ts'
+import { type EmitsToHookProps, mergePrimitiveAttrs, type PrimitiveDefaultProps, type RadixPrimitiveReturns } from '../shared/index.ts'
 
-export type ToggleGroupType = 'single' | 'multiple'
+export type ToggleGroupType = 'single' | 'multiple' | undefined
 
 export interface ToggleGroupProps<T extends ToggleGroupType> extends ToggleGroupImplProps {
-  type: T
+  type?: T
 
-  value?: T extends 'single' ? ToggleGroupSingleProps['value'] : ToggleGroupMultipleProps['value']
+  value?: T extends 'multiple' ? ToggleGroupMultipleProps['value'] : ToggleGroupSingleProps['value']
 
-  defaultValue?: T extends 'single' ? ToggleGroupSingleProps['defaultValue'] : ToggleGroupMultipleProps['defaultValue']
+  defaultValue?: T extends 'multiple' ? ToggleGroupMultipleProps['defaultValue'] : ToggleGroupSingleProps['defaultValue']
 }
+
+export const DEFAULT_TOGGLE_GROUP_PROPS = {
+  disabled: undefined,
+  rovingFocus: undefined,
+  loop: undefined,
+} satisfies PrimitiveDefaultProps<ToggleGroupProps<ToggleGroupType>>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type ToggleGroupEmits<T extends ToggleGroupType> = {
   /**
    * The callback that fires when the state of the toggle group changes.
    */
-  'update:value': [value: T extends 'single' ? NonNullable<ToggleGroupSingleProps['value']> : NonNullable<ToggleGroupMultipleProps['value']>]
+  'update:value': [value: T extends 'multiple' ? NonNullable<ToggleGroupMultipleProps['value']> : NonNullable<ToggleGroupSingleProps['value']>]
 }
 
 interface ToggleGroupSingleProps {
@@ -61,13 +69,95 @@ interface ToggleGroupImplProps {
 }
 
 export interface ToggleGroupContext {
-  rovingFocus: () => boolean
-  disabled: () => boolean
+  rovingFocus: boolean
+  disabled: () => boolean | undefined
 
-  type: () => 'single' | 'multiple'
+  type: ToggleGroupType
   value: Ref<string[]>
   onItemActivate: (value: string) => void
   onItemDeactivate: (value: string) => void
 }
 
 export const [provideToggleGroupContext, useToggleGroupContext] = createContext<ToggleGroupContext>('ToggleGroup')
+
+export interface UseToggleGroupProps<T extends ToggleGroupType> extends EmitsToHookProps<ToggleGroupEmits<T>> {
+  type?: T
+  value?: () => T extends 'multiple' ? ToggleGroupMultipleProps['value'] : ToggleGroupSingleProps['value']
+  defaultValue?: T extends 'multiple' ? ToggleGroupMultipleProps['defaultValue'] : ToggleGroupSingleProps['defaultValue']
+
+  disabled?: () => boolean | undefined
+  rovingFocus?: boolean
+  loop?: RovingFocusGroupRootProps['loop']
+  orientation?: RovingFocusGroupRootProps['orientation']
+  dir?: MaybeRefOrGetter<Direction | undefined>
+}
+
+type SingleValue = Exclude<ToggleGroupProps<'single'>['value'], undefined>
+type MultipleValue = Exclude<ToggleGroupProps<'multiple'>['value'], undefined>
+type Value<T extends ToggleGroupType> = T extends 'multiple' ? MultipleValue : SingleValue
+
+const TYPE_MULTIPLE = 'multiple' as const satisfies ToggleGroupType
+
+export function useToggleGroup<T extends ToggleGroupType>(props: UseToggleGroupProps<T>): RadixPrimitiveReturns {
+  const {
+    disabled = () => undefined,
+    rovingFocus = true,
+    loop = true,
+  } = props
+
+  const value = useControllableStateV2(
+    props.value,
+    props.onUpdateValue,
+    (props.type === TYPE_MULTIPLE ? props.defaultValue ?? [] : props.defaultValue) as Value<T>,
+  )
+
+  const direction = useDirection(props.dir)
+
+  provideToggleGroupContext({
+    type: props.type,
+    value: props.type === TYPE_MULTIPLE
+      ? value as Ref<string[]>
+      : computed<string[]>(() => value.value ? [value.value as string] : []),
+    onItemActivate: props.type === TYPE_MULTIPLE
+      ? (itemValue) => {
+          value.value = [...value.value || [], itemValue] as Value<T>
+        }
+      : (itemValue) => {
+          value.value = itemValue as Value<T>
+        },
+    onItemDeactivate: props.type === TYPE_MULTIPLE
+      ? (itemValue) => {
+          value.value = ((value.value || []) as string[]).filter(value => value !== itemValue) as Value<T>
+        }
+      : () => {
+          value.value = '' as Value<T>
+        },
+    rovingFocus,
+    disabled,
+  })
+
+  const rovingFocusGroupRoot = rovingFocus
+    ? useRovingFocusGroupRoot({
+      orientation: props.orientation,
+      dir: direction,
+      loop,
+    })
+    : undefined
+
+  return {
+    attrs(extraAttrs = []) {
+      const primitiveAttrs = {
+        role: 'group',
+        dir: direction.value,
+      }
+
+      if (rovingFocusGroupRoot) {
+        return rovingFocusGroupRoot.attrs([primitiveAttrs, ...extraAttrs])
+      }
+
+      mergePrimitiveAttrs(primitiveAttrs, extraAttrs)
+
+      return primitiveAttrs
+    },
+  }
+}

@@ -10,7 +10,7 @@ const context = useTooltipContentContext('TooltipContentAriaLabel')
 </script>
 
 <template>
-  <VisuallyHidden v-if="context.label()" :id="context.id" role="tooltip">
-    {{ context.label() }}
+  <VisuallyHidden :id="context.id" role="tooltip">
+    {{ context.ariaLabel }}
   </VisuallyHidden>
 </template>

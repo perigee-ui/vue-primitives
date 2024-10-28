@@ -1,11 +1,10 @@
-import type { Direction } from '../direction/index.ts'
-import { type AriaAttributes, type Ref, shallowRef } from 'vue'
+import { type AriaAttributes, computed, type MaybeRefOrGetter, type Ref, shallowRef } from 'vue'
 import { createCollection } from '../collection/index.ts'
-import { createContext, type MutableRefObject } from '../hooks/index.ts'
+import { type Direction, useDirection } from '../direction/index.ts'
+import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'
 import { useControllableStateV2 } from '../hooks/index.ts'
-import { focusFirst } from '../shared/index.ts'
-import { composeEventHandlers } from '../shared/index.ts'
-import { ENTRY_FOCUS, EVENT_OPTIONS } from './utils.ts'
+import { type EmitsToHookProps, focusFirst, mergePrimitiveAttrs, type PrimitiveDefaultProps, type RadixPrimitiveReturns, wrapArray } from '../shared/index.ts'
+import { ENTRY_FOCUS, EVENT_OPTIONS, getFocusIntent } from './utils.ts'
 
 type Orientation = AriaAttributes['aria-orientation']
 
@@ -30,17 +29,19 @@ export interface RovingFocusGroupRootProps {
   preventScrollOnEntryFocus?: boolean
 }
 
+export const DEFAULT_ROVING_FOCUS_GROUP_ROOT_PROPS = {
+  loop: undefined,
+  preventScrollOnEntryFocus: undefined,
+} satisfies PrimitiveDefaultProps<RovingFocusGroupRootProps>
+
 // eslint-disable-next-line ts/consistent-type-definitions
 export type RovingFocusGroupRootEmits = {
   'update:currentTabStopId': [tabStopId: string | undefined]
   'entryFocus': [event: Event]
-  'mousedown': [event: MouseEvent]
-  'focus': [event: FocusEvent]
-  'focusout': [event: FocusEvent]
 }
 
 export interface ItemData {
-  rfg: {
+  $rfg: {
     id: string
     focusable: boolean
     active: boolean
@@ -54,7 +55,7 @@ export interface RovingContext {
    * The orientation of the group.
    * Mainly so arrow navigation is done accordingly (left & right vs. up & down)
    */
-  orientation: () => Orientation
+  orientation?: Orientation
   /**
    * The direction of navigation between items.
    */
@@ -63,7 +64,7 @@ export interface RovingContext {
    * Whether keyboard navigation should loop around
    * @defaultValue false
    */
-  loop: () => boolean
+  loop: boolean
   currentTabStopId: Ref<string | null>
   onItemFocus: (tabStopId: string) => void
   onItemShiftTab: () => void
@@ -73,30 +74,23 @@ export interface RovingContext {
 
 export const [provideRovingFocusContext, useRovingFocusContext] = createContext<RovingContext>('RovingFocusGroup')
 
-export interface UseRovingFocusGroupRootProps {
+export interface UseRovingFocusGroupRootProps extends EmitsToHookProps<RovingFocusGroupRootEmits> {
+  elRef?: MutableRefObject<HTMLElement | undefined>
   currentTabStopId?: () => string | undefined
   defaultCurrentTabStopId?: string
-  orientation: (() => Orientation)
-  loop: (() => boolean)
-  dir: Ref<Direction>
+  orientation?: Orientation
+  loop?: boolean
+  dir?: MaybeRefOrGetter<Direction | undefined>
   preventScrollOnEntryFocus?: boolean
-
 }
 
-export interface UseRovingFocusGroupRootEmits {
-  onMousedown?: (event: MouseEvent) => void
-  onFocus?: (event: FocusEvent) => void
-  onFocusout?: (event: FocusEvent) => void
-  updateCurrentTabStopId?: (tabStopId: string) => void
-  onEntryFocus?: (event: CustomEvent) => void
-}
+export function useRovingFocusGroupRoot(props: UseRovingFocusGroupRootProps): RadixPrimitiveReturns {
+  const elRef = props.elRef || useRef<HTMLElement>()
+  const setElRef = props.elRef ? undefined : (value: HTMLElement | undefined) => elRef.value = value
 
-export function useRovingFocusGroupRoot(
-  elRef: MutableRefObject<HTMLElement | undefined>,
-  props: UseRovingFocusGroupRootProps,
-  emits: UseRovingFocusGroupRootEmits,
-) {
-  const currentTabStopId = useControllableStateV2(props.currentTabStopId, emits.updateCurrentTabStopId, props.defaultCurrentTabStopId)
+  const dir = useDirection(props.dir)
+
+  const currentTabStopId = useControllableStateV2(props.currentTabStopId, props.onUpdateCurrentTabStopId, props.defaultCurrentTabStopId)
 
   const collectionContext = Collection.provideCollectionContext(elRef)
   const getItems = useCollection(collectionContext)
@@ -104,44 +98,50 @@ export function useRovingFocusGroupRoot(
   let isClickFocus = false
   const focusableItemsCount = shallowRef(0)
 
-  const onMousedown = composeEventHandlers<MouseEvent>(emits.onMousedown, () => {
+  function onMousedown(event: MouseEvent) {
+    if (event.defaultPrevented)
+      return
     isClickFocus = true
-  })
+  }
 
-  const onFocus = composeEventHandlers<FocusEvent>(emits.onFocus, () => {
-  // We normally wouldn't need this check, because we already check
-  // that the focus is on the current target and not bubbling to it.
-  // We do this because Safari doesn't focus buttons when clicked, and
-  // instead, the wrapper will get focused and not through a bubbling event.
+  function onFocus(event: FocusEvent) {
+    if (event.defaultPrevented)
+      return
+
+    // We normally wouldn't need this check, because we already check
+    // that the focus is on the current target and not bubbling to it.
+    // We do this because Safari doesn't focus buttons when clicked, and
+    // instead, the wrapper will get focused and not through a bubbling event.
     const isKeyboardFocus = !isClickFocus
 
     // TODO: event.target === event.currentTarget всегда равно true
     if (isKeyboardFocus && !isTabbingBackOut.value) {
       const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS)
       // event.currentTarget!.dispatchEvent(entryFocusEvent)
-      emits.onEntryFocus?.(entryFocusEvent)
+      props.onEntryFocus?.(entryFocusEvent)
 
       if (!entryFocusEvent.defaultPrevented) {
-        const items = getItems().filter(item => item.$$rcid.rfg.focusable)
-        const activeItem = items.find(item => item.$$rcid.rfg.active)
-        const currentItem = items.find(item => item.$$rcid.rfg.id === currentTabStopId.value)
+        const items = getItems().filter(item => item.$$rcid.$rfg.focusable)
+        const activeItem = items.find(item => item.$$rcid.$rfg.active)
+        const currentItem = items.find(item => item.$$rcid.$rfg.id === currentTabStopId.value)
         const candidateItems = [activeItem, currentItem, ...items].filter(Boolean) as typeof items
-        const candidateNodes = candidateItems.map(item => item)
-        focusFirst(candidateNodes, props.preventScrollOnEntryFocus ?? false)
+        focusFirst(candidateItems, props.preventScrollOnEntryFocus ?? false)
       }
     }
 
     isClickFocus = false
-  })
+  }
 
-  const onFocusout = composeEventHandlers<FocusEvent>(emits.onFocusout, () => {
+  function onFocusout(event: FocusEvent) {
+    if (event.defaultPrevented)
+      return
     isTabbingBackOut.value = false
-  })
+  }
 
   provideRovingFocusContext({
     orientation: props.orientation,
-    dir: props.dir,
-    loop: props.loop,
+    dir,
+    loop: props.loop ?? false,
     currentTabStopId,
     onItemFocus(tabStopId) {
       currentTabStopId.value = tabStopId
@@ -157,12 +157,73 @@ export function useRovingFocusGroupRoot(
     },
   })
 
+  function onKeydown(event: KeyboardEvent) {
+    const target = event.target as HTMLElement
+    if (!target.matches('[data-radix-collection-item]')) {
+      return
+    }
+    if (event.key === 'Tab' && event.shiftKey) {
+      isTabbingBackOut.value = true
+      return
+    }
+
+    // if (event.target !== event.currentTarget)
+    //   return
+
+    if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey)
+      return
+
+    const focusIntent = getFocusIntent(event, props.orientation, dir.value)
+
+    if (!focusIntent)
+      return
+
+    event.preventDefault()
+    let candidateNodes = getItems().filter(item => item.$$rcid.$rfg.focusable)
+
+    if (focusIntent === 'last') {
+      candidateNodes.reverse()
+    }
+    else if (focusIntent === 'prev' || focusIntent === 'next') {
+      if (focusIntent === 'prev')
+        candidateNodes.reverse()
+      const currentIndex = (candidateNodes as HTMLElement[]).indexOf(event.target as HTMLElement)
+      candidateNodes = props.loop ?? false
+        ? wrapArray(candidateNodes, currentIndex + 1)
+        : candidateNodes.slice(currentIndex + 1)
+    }
+
+    // TODO: wip
+    /**
+     * Imperative focus during keydown is risky so we prevent React's batching updates
+     * to avoid potential bugs. See: https://github.com/facebook/react/issues/20332
+     */
+    setTimeout(() => {
+      focusFirst(candidateNodes)
+    })
+  }
+
+  const tabindex = computed(() => isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0)
+
   return {
-    onMousedown,
-    onFocus,
-    onFocusout,
-    tabindex() {
-      return isTabbingBackOut.value || focusableItemsCount.value === 0 ? -1 : 0
+    attrs(extraAttrs) {
+      const attrs = {
+        'elRef': setElRef,
+        'dir': dir.value,
+        'tabindex': tabindex.value,
+        'data-orientation': props.orientation,
+        'style': 'outline: none;',
+        onMousedown,
+        onFocus,
+        onFocusout,
+        onKeydown,
+      }
+
+      if (extraAttrs && extraAttrs.length > 0) {
+        mergePrimitiveAttrs(attrs, extraAttrs)
+      }
+
+      return attrs
     },
   }
 }

@@ -1,28 +1,20 @@
 <script setup lang="ts">
-import type { PopperAnchorElement, PopperAnchorProps } from './PopperAnchor'
-import { onMounted } from 'vue'
-import { useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { usePopperContext } from './PopperRoot.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { type PopperAnchorProps, usePopperAnchor } from './PopperAnchor.ts'
 
 defineOptions({
   name: 'PopperAnchor',
+  inheritAttrs: false,
 })
 
 const props = defineProps<PopperAnchorProps>()
 
-const context = usePopperContext('PopperAnchor')
-
-const elRef = useRef<PopperAnchorElement>()
-const forwardElement = useForwardElement(elRef)
-
-onMounted(() => {
-  context.onAnchorChange(props.virtualRef?.current || elRef.current)
-})
+const popperAnchor = usePopperAnchor(convertPropsToHookProps(props))
 </script>
 
 <template>
-  <Primitive v-if="!virtualRef" :ref="forwardElement">
+  <Primitive v-if="!virtualRef" v-bind="normalizeAttrs(popperAnchor.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

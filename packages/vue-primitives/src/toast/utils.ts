@@ -1,6 +1,6 @@
 import type { SwipeDirection } from './ToastProvider'
 
-export function getAnnounceTextContent(container: HTMLElement) {
+export function getAnnounceTextContent(container: HTMLElement): string[] {
   const textContent: string[] = []
 
   for (const node of container.childNodes) {

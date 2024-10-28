@@ -1,11 +1,7 @@
 /* ----------------------------------------------------------------------------------------------- */
 
 import type { CheckedState } from '../checkbox/index.ts'
-import { isPointInPolygon, type Polygon, wrapArray } from '../shared/index.ts'
-
-export function getOpenState(open: boolean) {
-  return open ? 'open' : 'closed'
-}
+import { isPointInPolygon, type Point, type Polygon, wrapArray } from '../shared/index.ts'
 
 function isIndeterminate(checked?: CheckedState): checked is 'indeterminate' {
   return checked === 'indeterminate'
@@ -56,7 +52,7 @@ export function isPointerInGraceArea(event: PointerEvent, area?: Polygon) {
   if (!area)
     return false
 
-  const cursorPos = { x: event.clientX, y: event.clientY }
+  const cursorPos: Point = [event.clientX, event.clientY]
 
   return isPointInPolygon(cursorPos, area)
 }

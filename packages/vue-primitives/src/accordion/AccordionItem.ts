@@ -1,5 +1,9 @@
-import type { Ref } from 'vue'
-import { createContext } from '../hooks/index.ts'
+import type { PrimitiveDefaultProps, RadixPrimitiveReturns } from '../shared/index.ts'
+import { computed, type Ref } from 'vue'
+import { useCollapsibleRoot } from '../collapsible/index.ts'
+import { createContext, useId } from '../hooks/index.ts'
+import { mergePrimitiveAttrs } from '../shared/index.ts'
+import { useAccordionContext } from './AccordionRoot.ts'
 
 export interface AccordionItemProps {
   /**
@@ -14,10 +18,63 @@ export interface AccordionItemProps {
   value: string
 }
 
+export const DEFAULT_ACCORDION_ITEM_PROPS = {
+  disabled: undefined,
+} satisfies PrimitiveDefaultProps<AccordionItemProps>
+
 export interface AccordionItemContext {
   open: Ref<boolean>
-  disabled: Ref<boolean>
+  disabled: Ref<boolean | undefined>
   triggerId: string
 }
 
 export const [provideAccordionItemContext, useAccordionItemContext] = createContext<AccordionItemContext>('AccordionItem')
+
+export interface UseAccordionItemProps {
+  value: () => string
+  disabled?: () => boolean | undefined
+}
+
+export function useAccordionItem(props: UseAccordionItemProps): RadixPrimitiveReturns {
+  const context = useAccordionContext('AccordionItem')
+  const open = computed(() => {
+    const value = props.value()
+    return (value && context.value.value.includes(value)) || false
+  })
+  const disabled = computed(() => context.disabled?.() || props.disabled?.())
+
+  function onUpdateOpen(open: boolean) {
+    if (open)
+      context.onItemOpen(props.value())
+    else
+      context.onItemClose(props.value())
+  }
+
+  provideAccordionItemContext({
+    open,
+    disabled,
+    triggerId: useId(),
+  })
+
+  const collapsibleRoot = useCollapsibleRoot({
+    open() {
+      return open.value
+    },
+    onUpdateOpen,
+    disabled() {
+      return disabled.value
+    },
+  })
+
+  return {
+    attrs(extraAttrs = []) {
+      const attrs = {
+        'data-orientation': context.orientation,
+      }
+
+      mergePrimitiveAttrs(attrs, [collapsibleRoot.attrs(), ...extraAttrs])
+
+      return attrs
+    },
+  }
+}

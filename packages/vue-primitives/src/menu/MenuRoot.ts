@@ -1,13 +1,20 @@
-import type { Direction } from '../direction/index.ts'
-import { onBeforeUnmount, onMounted, type Ref } from 'vue'
-import { createCollection } from '../collection/Collection.ts'
+import type { EmitsToHookProps, PrimitiveDefaultProps } from '../shared/index.ts'
+import { type MaybeRefOrGetter, onBeforeUnmount, onMounted, type Ref } from 'vue'
+import { createCollection } from '../collection/index.ts'
+import { type Direction, useDirection } from '../direction/index.ts'
 import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'
+import { usePooperRoot } from '../popper/index.ts'
 
 export interface MenuRootProps {
   open?: boolean
   dir?: Direction
   modal?: boolean
 }
+
+export const DEFAULT_MENU_ROOT_PROPS = {
+  open: false,
+  modal: undefined,
+} satisfies PrimitiveDefaultProps<MenuRootProps, 'open'>
 
 // eslint-disable-next-line ts/consistent-type-definitions
 export type MenuRootEmits = {
@@ -32,8 +39,40 @@ export interface MenuRootContext {
 
 export const [provideMenuRootContext, useMenuRootContext] = createContext<MenuRootContext>('MenuRoot')
 
-export interface ItemData { menu: { disabled: boolean, textValue: string } }
-export const [Collection, useCollection] = createCollection< HTMLDivElement, ItemData>('Menu')
+export interface ItemData { menu: { disabled?: boolean, textValue: string } }
+export const [Collection, useCollection] = createCollection<HTMLElement, ItemData>('Menu')
+
+export interface UseMenuRootProps extends EmitsToHookProps<MenuRootEmits> {
+  open?: () => boolean
+  dir?: MaybeRefOrGetter<Direction | undefined>
+  modal?: boolean
+}
+
+export function useMenuRoot(props: UseMenuRootProps = {}) {
+  const { open = () => false, modal = true } = props
+  const isUsingKeyboardRef = useIsUsingKeyboard()
+  const direction = useDirection(props.dir)
+
+  provideMenuContext({
+    open,
+    onOpenChange(open) {
+      props.onUpdateOpen?.(open)
+    },
+  })
+
+  provideMenuRootContext({
+    onClose() {
+      props.onUpdateOpen?.(false)
+    },
+    isUsingKeyboardRef,
+    dir: direction,
+    modal,
+  })
+
+  usePooperRoot()
+}
+
+// UTILS
 
 export const SELECTION_KEYS = ['Enter', ' ']
 export const FIRST_KEYS = ['ArrowDown', 'PageUp', 'Home']
@@ -52,11 +91,11 @@ let subscribers = 0
 const isUsingKeyboardRef = useRef(false)
 
 function handlePointer() {
-  isUsingKeyboardRef.current = false
+  isUsingKeyboardRef.value = false
 }
 
 function handleKeyDown() {
-  isUsingKeyboardRef.current = true
+  isUsingKeyboardRef.value = true
 }
 
 export function useIsUsingKeyboard() {

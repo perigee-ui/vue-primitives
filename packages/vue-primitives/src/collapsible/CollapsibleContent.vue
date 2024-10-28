@@ -1,34 +1,20 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { useForwardElement } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { type CollapsibleContentProps, useCollapsibleContent } from './CollapsibleContent.ts'
-import { getState } from './utils.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { type CollapsibleContentProps, DEFAULT_COLLAPSIBLE_CONTENT_PROPS, useCollapsibleContent } from './CollapsibleContent.ts'
 
 defineOptions({
   name: 'CollapsibleContent',
+  inheritAttrs: false,
 })
 
-const props = defineProps<CollapsibleContentProps>()
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
+const props = withDefaults(defineProps<CollapsibleContentProps>(), DEFAULT_COLLAPSIBLE_CONTENT_PROPS)
 
-const collapsibleContent = useCollapsibleContent($el, props)
+const collapsibleContent = useCollapsibleContent(convertPropsToHookProps(props))
 </script>
 
 <template>
-  <Primitive
-    :id="collapsibleContent.context.contentId"
-    :ref="forwardElement"
-    :data-state="getState(collapsibleContent.context.open.value)"
-    :data-disabled="collapsibleContent.context.disabled() ? '' : undefined"
-    :hidden="!collapsibleContent.isOpen.value"
-    :style="{
-      '--radix-collapsible-content-height': '0px',
-      '--radix-collapsible-content-width': '0px',
-      ...collapsibleContent.blockAnimationStyles.value,
-    }"
-  >
+  <Primitive v-bind="normalizeAttrs(collapsibleContent.attrs([$attrs]))">
     <slot v-if="collapsibleContent.isOpen.value" />
   </Primitive>
 </template>

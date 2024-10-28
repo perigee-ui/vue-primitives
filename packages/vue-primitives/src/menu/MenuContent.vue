@@ -1,28 +1,19 @@
 <script setup lang="ts">
-import type { MenuContentProps } from './MenuContent.ts'
-import { usePopperContext } from '../popper/index.ts'
-import { usePresence } from '../presence/index.ts'
-import { useMenuContext, useMenuRootContext } from './MenuRoot.ts'
-import MenuRootContentModal from './MenuRootContentModal.vue'
-import MenuRootContentNonModal from './MenuRootContentNonModal.vue'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { DEFAULT_MENU_CONTENT_PROPS, type MenuContentProps, useMenuContent } from './MenuContent.ts'
+import MenuContentImpl from './MenuContentImpl.vue'
 
 defineOptions({
   name: 'MenuContent',
 })
 
-const props = defineProps<MenuContentProps>()
+const props = withDefaults(defineProps<MenuContentProps>(), DEFAULT_MENU_CONTENT_PROPS)
 
-const context = useMenuContext('MenuContent')
-const rootContext = useMenuRootContext('MenuContent')
-const popperContext = usePopperContext('MenuContent')
-
-const isPresent = usePresence(popperContext.content, () => props.forceMount || context.open())
-
-const Comp = rootContext.modal ? MenuRootContentModal : MenuRootContentNonModal
+const menuContent = useMenuContent(convertPropsToHookProps(props))
 </script>
 
 <template>
-  <Comp v-if="isPresent">
+  <MenuContentImpl v-if="menuContent.isPresent.value">
     <slot />
-  </Comp>
+  </MenuContentImpl>
 </template>

@@ -1,64 +1,31 @@
 <script setup lang="ts">
-import { useDirection } from '../direction/index.ts'
-import { useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { type RovingFocusGroupRootEmits, type RovingFocusGroupRootProps, useRovingFocusGroupRoot } from './RovingFocusGroupRoot.ts'
+import { convertPropsToHookProps, type EmitsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_ROVING_FOCUS_GROUP_ROOT_PROPS, type RovingFocusGroupRootEmits, type RovingFocusGroupRootProps, useRovingFocusGroupRoot } from './RovingFocusGroupRoot.ts'
 
 defineOptions({
   name: 'RovingFocusGroupRoot',
+  inheritAttrs: false,
 })
-const props = withDefaults(defineProps<RovingFocusGroupRootProps>(), {
-  loop: false,
-  preventScrollOnEntryFocus: false,
-})
+const props = withDefaults(defineProps<RovingFocusGroupRootProps>(), DEFAULT_ROVING_FOCUS_GROUP_ROOT_PROPS)
 const emit = defineEmits<RovingFocusGroupRootEmits>()
-const elRef = useRef<HTMLElement>()
-const forwardElement = useForwardElement(elRef)
 
-const dir = useDirection(() => props.dir)
-
-const rovingFocusGroupRoot = useRovingFocusGroupRoot(elRef, {
-  currentTabStopId: undefined,
-  preventScrollOnEntryFocus: props.preventScrollOnEntryFocus,
-  orientation() {
-    return props.orientation
-  },
-  loop() {
-    return props.loop
-  },
-  dir,
-}, {
-  onMousedown(event) {
-    emit('mousedown', event)
-  },
-  onFocus(event) {
-    emit('focus', event)
-  },
-  onFocusout(event) {
-    emit('focusout', event)
-  },
-  updateCurrentTabStopId(tabStopId) {
-    emit('update:currentTabStopId', tabStopId)
-  },
-  onEntryFocus(event: CustomEvent) {
-    emit('entryFocus', event)
-  },
-})
+const rovingFocusGroupRoot = useRovingFocusGroupRoot(convertPropsToHookProps(
+  props,
+  ['currentTabStopId', 'dir'],
+  (): Required<EmitsToHookProps<RovingFocusGroupRootEmits>> => ({
+    onEntryFocus(entry) {
+      emit('entryFocus', entry)
+    },
+    onUpdateCurrentTabStopId(tabStopId) {
+      emit('update:currentTabStopId', tabStopId)
+    },
+  }),
+))
 </script>
 
 <template>
-  <Primitive
-    :ref="forwardElement"
-
-    :dir="dir"
-    :tabindex="rovingFocusGroupRoot.tabindex()"
-    :data-orientation="orientation"
-    style="outline: none;"
-
-    @mousedown="rovingFocusGroupRoot.onMousedown"
-    @focus="rovingFocusGroupRoot.onFocus"
-    @focusout="rovingFocusGroupRoot.onFocusout"
-  >
+  <Primitive v-bind="normalizeAttrs(rovingFocusGroupRoot.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

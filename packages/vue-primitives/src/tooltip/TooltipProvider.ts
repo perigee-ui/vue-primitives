@@ -1,3 +1,4 @@
+import type { PrimitiveDefaultProps } from '../shared/index.ts'
 import { isClient, tryOnScopeDispose } from '@vueuse/core'
 import { type Ref, shallowRef } from 'vue'
 import { createContext, type MutableRefObject, useRef } from '../hooks/index.ts'
@@ -19,6 +20,10 @@ export interface TooltipProviderProps {
    */
   disableHoverableContent?: boolean
 }
+
+export const DEFAULT_TOOLTIP_PROVIDER_PROPS = {
+  disableHoverableContent: undefined,
+} satisfies PrimitiveDefaultProps<TooltipProviderProps>
 
 export interface TooltipProviderContext {
   isOpenDelayed: Ref<boolean>
@@ -62,7 +67,7 @@ export function useTooltipProvider({
     },
     isPointerInTransitRef,
     onPointerInTransitChange(inTransit: boolean) {
-      isPointerInTransitRef.current = inTransit
+      isPointerInTransitRef.value = inTransit
     },
     disableHoverableContent,
   })

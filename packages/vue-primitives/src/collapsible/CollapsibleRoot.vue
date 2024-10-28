@@ -1,38 +1,29 @@
 <script setup lang="ts">
-import { useControllableState, useId } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { type CollapsibleRootEmits, type CollapsibleRootProps, provideCollapsibleContext } from './CollapsibleRoot.ts'
-import { getState } from './utils.ts'
+import { convertPropsToHookProps, type EmitsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { type CollapsibleRootEmits, type CollapsibleRootProps, DEFAULT_COLLAPSIBLE_ROOT_PROPS, useCollapsibleRoot } from './CollapsibleRoot.ts'
 
 defineOptions({
   name: 'CollapsibleRoot',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<CollapsibleRootProps>(), {
-  open: undefined,
-  defaultOpen: false,
-})
+const props = withDefaults(defineProps<CollapsibleRootProps>(), DEFAULT_COLLAPSIBLE_ROOT_PROPS)
 const emit = defineEmits<CollapsibleRootEmits>()
 
-const open = useControllableState(props, 'open', v => emit('update:open', v), props.defaultOpen)
-
-provideCollapsibleContext({
-  contentId: useId(),
-  disabled() {
-    return props.disabled
-  },
-  open,
-  onOpenToggle() {
-    open.value = !open.value
-  },
-})
+const collapsibleRoot = useCollapsibleRoot(convertPropsToHookProps(
+  props,
+  ['disabled', 'open'],
+  (): Required<EmitsToHookProps<CollapsibleRootEmits>> => ({
+    onUpdateOpen(value) {
+      emit('update:open', value)
+    },
+  }),
+))
 </script>
 
 <template>
-  <Primitive
-    :data-state="getState(open)"
-    :data-disabled="disabled ? '' : undefined"
-  >
+  <Primitive v-bind="normalizeAttrs(collapsibleRoot.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

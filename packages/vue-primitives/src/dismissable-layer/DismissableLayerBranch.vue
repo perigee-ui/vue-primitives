@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
-import { useForwardElement, useRef } from '../hooks/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { context } from './DismissableLayer.ts'
+import { normalizeAttrs } from '../shared/mergeProps.ts'
+import { useDismissableLayerBranch } from './DismissableLayerBranch.ts'
 
 defineOptions({
   name: 'DismissableLayerBranch',
+  inheritAttrs: false,
 })
 
-const elRef = useRef<HTMLElement>()
-const forwardElement = useForwardElement(elRef)
-
-onMounted(() => {
-  context.branches.add(elRef.current!)
-})
-
-onBeforeUnmount(() => {
-  context.branches.delete(elRef.current!)
-})
+const dismissableLayerBranch = useDismissableLayerBranch()
 </script>
 
 <template>
-  <Primitive :ref="forwardElement">
+  <Primitive v-bind="normalizeAttrs(dismissableLayerBranch.attrs([$attrs]))">
     <slot />
   </Primitive>
 </template>

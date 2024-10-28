@@ -1,49 +1,20 @@
 <script setup lang="ts">
-import type { ToolbarToggleItemEmits, ToolbarToggleItemProps } from './ToolbarToggleItem.ts'
-import { DATA_COLLECTION_ITEM } from '../collection/index.ts'
-import { useComposedElements } from '../hooks/index.ts'
-import { useRovingFocusGroupItem } from '../roving-focus/index.ts'
-import { ToggleGroupItem } from '../toggle-group/index.ts'
+import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_TOOLBAR_TOGGLE_ITEM_PROPS, type ToolbarToggleItemProps, useToolbarToggleItem } from './ToolbarToggleItem.ts'
 
 defineOptions({
   name: 'ToolbarToggleItem',
-})
-defineProps<ToolbarToggleItemProps>()
-
-const emit = defineEmits<ToolbarToggleItemEmits>()
-
-const rovingFocusGroupItem = useRovingFocusGroupItem({}, {
-  onMousedown(event) {
-    emit('mousedown', event)
-  },
-  onKeydown(event) {
-    emit('keydown', event)
-  },
-  onFocus(event) {
-    emit('focus', event)
-  },
+  inheritAttrs: false,
 })
 
-const forwardElement = useComposedElements((v) => {
-  rovingFocusGroupItem.useCollectionItem(v, rovingFocusGroupItem.itemData, rovingFocusGroupItem.collectionKey)
-})
+const props = withDefaults(defineProps<ToolbarToggleItemProps>(), DEFAULT_TOOLBAR_TOGGLE_ITEM_PROPS)
+
+const toolbarToggleItem = useToolbarToggleItem(convertPropsToHookProps(props, ['value', 'disabled']))
 </script>
 
 <template>
-  <ToggleGroupItem
-    :ref="forwardElement"
-    :[DATA_COLLECTION_ITEM]="true"
-
-    :tabindex="rovingFocusGroupItem.tabindex()"
-    :data-orientation="rovingFocusGroupItem.orientation()"
-
-    :value="value"
-    type="button"
-
-    @mousedown="rovingFocusGroupItem.onMousedown"
-    @focus="rovingFocusGroupItem.onFocus"
-    @keydown="rovingFocusGroupItem.onKeydown"
-  >
+  <Primitive v-bind="normalizeAttrs(toolbarToggleItem.attrs([$attrs, { as }]))">
     <slot />
-  </ToggleGroupItem>
+  </Primitive>
 </template>

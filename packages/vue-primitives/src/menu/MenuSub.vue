@@ -1,61 +1,25 @@
 <script setup lang="ts">
-import { onWatcherCleanup, shallowRef, watchEffect } from 'vue'
-import { useId, useRef } from '../hooks/index.ts'
-import { type Measurable, providePopperContext } from '../popper/index.ts'
-import { provideMenuContext, useMenuContext } from './MenuRoot.ts'
-import { type MenuSubEmits, type MenuSubProps, provideMenuSubContext } from './MenuSub.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { DEFAULT_MENU_SUB_PROPS, type MenuSubEmits, type MenuSubProps, useMenuSub } from './MenuSub.ts'
 
 defineOptions({
   name: 'MenuSub',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MenuSubProps>(), {
-  open: false,
-})
+const props = withDefaults(defineProps<MenuSubProps>(), DEFAULT_MENU_SUB_PROPS)
 const emit = defineEmits<MenuSubEmits>()
 
-const parentMenuContext = useMenuContext('MenuSub')
-const trigger = useRef<HTMLDivElement>()
-
-// Prevent the parent menu from reopening with open submenus.
-watchEffect(() => {
-  if (parentMenuContext.open() === false)
-    emit('update:open', false)
-
-  onWatcherCleanup(() => {
-    emit('update:open', false)
-  })
-})
-
-provideMenuContext({
-  open() {
-    return props.open
-  },
-  onOpenChange(open) {
-    emit('update:open', open)
-  },
-})
-
-provideMenuSubContext({
-  contentId: useId(),
-  triggerId: useId(),
-  trigger,
-  onTriggerChange(el) {
-    trigger.current = el
-  },
-})
-
-// COMP::PopperRoot
-
-const anchor = shallowRef<Measurable>()
-
-providePopperContext({
-  content: shallowRef(),
-  anchor,
-  onAnchorChange(newAnchor) {
-    anchor.value = newAnchor
-  },
-})
+useMenuSub(convertPropsToHookProps(
+  props,
+  ['open'],
+  (): Required<EmitsToHookProps<MenuSubEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

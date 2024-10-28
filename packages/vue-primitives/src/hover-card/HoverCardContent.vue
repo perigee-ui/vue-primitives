@@ -1,40 +1,19 @@
 <script setup lang="ts">
-import type { HoverCardContentEmits, HoverCardContentProps } from './HoverCardContent'
-import { usePopperContext } from '../popper/index.ts'
-import { usePresence } from '../presence/usePresence.ts'
-import { composeEventHandlers } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { DEFAULT_HOVER_CARD_CONTENT_PROPS, type HoverCardContentProps, useHoverCardConten } from './HoverCardContent.ts'
 import HoverCardContentImpl from './HoverCardContentImpl.vue'
-import { useHoverCardContext } from './HoverCardRoot.ts'
-import { excludeTouch } from './utils.ts'
 
 defineOptions({
   name: 'HoverCardContent',
 })
 
-const props = defineProps<HoverCardContentProps>()
-const emit = defineEmits<HoverCardContentEmits>()
+const props = withDefaults(defineProps<HoverCardContentProps>(), DEFAULT_HOVER_CARD_CONTENT_PROPS)
 
-const context = useHoverCardContext('HoverCardContent')
-const popperContext = usePopperContext('HoverCardContent')
-
-const isPresent = usePresence(popperContext.content, () => props.forceMount || context.open.value)
-
-const onPointerenter = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointerenter', event)
-}, excludeTouch(context.onOpen))
-
-const onPointerleave = composeEventHandlers<PointerEvent>((event) => {
-  emit('pointerleave', event)
-}, excludeTouch(context.onClose))
+const hoverCardConten = useHoverCardConten(convertPropsToHookProps(props))
 </script>
 
 <template>
-  <HoverCardContentImpl
-    v-if="isPresent"
-    :data-state="context.open.value ? 'open' : 'closed'"
-    @pointerenter="onPointerenter"
-    @pointerleave="onPointerleave"
-  >
+  <HoverCardContentImpl v-if="hoverCardConten.isPresent.value">
     <slot />
   </HoverCardContentImpl>
 </template>

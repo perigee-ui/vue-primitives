@@ -1,34 +1,22 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { isIndeterminate } from '../checkbox/utils.ts'
-import { useForwardElement } from '../hooks/index.ts'
-import { usePresence } from '../presence/index.ts'
 import { Primitive } from '../primitive/index.ts'
-import { type MenuItemIndicatorProps, useItemIndicatorContext } from './MenuItemIndicator.ts'
-import { getCheckedState } from './utils.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_MENU_ITEM_INDICATOR_PROPS, type MenuItemIndicatorProps, useMenuItemIndicator } from './MenuItemIndicator.ts'
 
 defineOptions({
   name: 'MenuItemIndicator',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MenuItemIndicatorProps>(), {
-  as: 'span',
-})
+const props = withDefaults(defineProps<MenuItemIndicatorProps>(), DEFAULT_MENU_ITEM_INDICATOR_PROPS)
 
-const indicatorContext = useItemIndicatorContext('MenuItemIndicator')
-
-const $el = shallowRef<HTMLElement>()
-const forwardElement = useForwardElement($el)
-
-const isPresent = usePresence($el, () => props.forceMount || isIndeterminate(indicatorContext.checked()) || indicatorContext.checked() === true)
+const indicatorContext = useMenuItemIndicator(convertPropsToHookProps(props))
 </script>
 
 <template>
   <Primitive
-    v-if="isPresent"
-    :ref="forwardElement"
-    :as="as"
-    :data-state="getCheckedState(indicatorContext.checked())"
+    v-if="indicatorContext.isPresent.value"
+    v-bind="normalizeAttrs(indicatorContext.attrs([$attrs, { as }]))"
   >
     <slot />
   </Primitive>

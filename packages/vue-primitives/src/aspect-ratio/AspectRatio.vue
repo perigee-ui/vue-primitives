@@ -1,39 +1,21 @@
 <script setup lang="ts">
-import type { AspectRatioProps } from './AspectRatio.ts'
 import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { type AspectRatioProps, DEFAULT_ASPECT_RATIO_PROPS, useAspectRatio } from './AspectRatio.ts'
 
 defineOptions({
   name: 'AspectRatio',
   inheritAttrs: false,
 })
 
-withDefaults(defineProps<AspectRatioProps>(), {
-  ratio: 1,
-})
+const props = withDefaults(defineProps<AspectRatioProps>(), DEFAULT_ASPECT_RATIO_PROPS)
+
+const aspectRatio = useAspectRatio(convertPropsToHookProps(props, ['ratio']))
 </script>
 
 <template>
-  <div
-    :style="{
-      // ensures inner element is contained
-      position: 'relative',
-      // ensures padding bottom trick maths works
-      width: '100%',
-      paddingBottom: `${100 / ratio}%`,
-    }"
-    data-radix-aspect-ratio-wrapper=""
-  >
-    <Primitive
-      v-bind="$attrs"
-      :style="{
-        // ensures children expand in ratio
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      }"
-    >
+  <div v-bind="aspectRatio.wrapperAttrs()">
+    <Primitive v-bind="normalizeAttrs(aspectRatio.attrs([$attrs]))">
       <slot />
     </Primitive>
   </div>

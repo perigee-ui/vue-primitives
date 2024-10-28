@@ -1,8 +1,12 @@
-import type { DismissableLayerEmits } from '../dismissable-layer/index.ts'
-import type { MenuContentImplEmits } from '../menu/MenuContentImpl.ts'
+import type { PrimitiveDefaultProps } from '../shared/index.ts'
+import { type MenuContentProps, useMenuContent, type UseMenuContentProps } from '../menu/index.ts'
 
-// eslint-disable-next-line ts/consistent-type-definitions
-export type DropdownMenuContentEmits = {
-  closeAutoFocus: MenuContentImplEmits['closeAutoFocus']
-  interactOutside: DismissableLayerEmits['interactOutside']
-}
+export interface DropdownMenuContentProps extends MenuContentProps {}
+
+export const DEFAULT_DROPDOWN_MENU_CONTENT_PROPS = {
+  forceMount: undefined,
+} satisfies PrimitiveDefaultProps<DropdownMenuContentProps>
+
+export interface UseDropdownMenuContentProps extends UseMenuContentProps {}
+
+export const useDropdownMenuContent = useMenuContent

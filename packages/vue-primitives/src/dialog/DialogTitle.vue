@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import type { DialogTitleProps } from './DialogTitle.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useDialogContext } from './DialogRoot.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_DIALOG_TITLE_PROPS, type DialogTitleProps, useDialogTitle } from './DialogTitle.ts'
 
 defineOptions({
   name: 'DialogTitle',
 })
 
-withDefaults(defineProps<DialogTitleProps>(), {
-  as: 'h2',
-})
+withDefaults(defineProps<DialogTitleProps>(), DEFAULT_DIALOG_TITLE_PROPS)
 
-const context = useDialogContext('DialogTitle')
+const dialogTitle = useDialogTitle()
 </script>
 
 <template>
-  <Primitive :id="context.titleId" :as="as">
+  <Primitive v-bind="normalizeAttrs(dialogTitle.attrs([$attrs, { as }]))">
     <slot />
   </Primitive>
 </template>

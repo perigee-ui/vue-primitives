@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import type { SliderTrackProps } from './SliderTrack.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useSliderContext } from './SliderRoot.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_SLIDER_TRACK_PROPS, type SliderTrackProps, useSliderTrack } from './SliderTrack.ts'
 
 defineOptions({
   name: 'SliderTrack',
+  inheritAttrs: false,
 })
 
-withDefaults(defineProps<SliderTrackProps>(), {
-  as: 'span',
-})
+withDefaults(defineProps<SliderTrackProps>(), DEFAULT_SLIDER_TRACK_PROPS)
 
-const context = useSliderContext('SliderTrack')
+const sliderTrack = useSliderTrack()
 </script>
 
 <template>
-  <Primitive
-    :as="as"
-    :data-disabled="context.disabled() ? '' : undefined"
-    :data-orientation="context.orientation()"
-  >
+  <Primitive v-bind="normalizeAttrs(sliderTrack.attrs([$attrs, { as }]))">
     <slot />
   </Primitive>
 </template>

@@ -1,33 +1,20 @@
 <script setup lang="ts">
-import type { PopoverCloseEmits, PopoverCloseProps } from './PopoverClose.ts'
 import { Primitive } from '../primitive/index.ts'
-import { composeEventHandlers } from '../shared/index.ts'
-import { usePopoverContext } from './PopoverRoot.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_POPOVER_CLOSE_PROPS, type PopoverCloseProps, usePopoverClose } from './PopoverClose.ts'
 
 defineOptions({
   name: 'PopoverClose',
+  inheritAttrs: false,
 })
 
-withDefaults(defineProps<PopoverCloseProps>(), {
-  as: 'button',
-})
-const emit = defineEmits<PopoverCloseEmits>()
+withDefaults(defineProps<PopoverCloseProps>(), DEFAULT_POPOVER_CLOSE_PROPS)
 
-const context = usePopoverContext('PopoverClose')
-
-const onClick = composeEventHandlers<MouseEvent>((event) => {
-  emit('click', event)
-}, () => {
-  context.onOpenChange(false)
-})
+const popoverClose = usePopoverClose()
 </script>
 
 <template>
-  <Primitive
-    :as="as"
-    type="button"
-    @click="onClick"
-  >
+  <Primitive v-bind="normalizeAttrs(popoverClose.attrs([$attrs, { as }]))">
     <slot />
   </Primitive>
 </template>

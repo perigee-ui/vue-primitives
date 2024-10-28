@@ -1,64 +1,25 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
-import { useDirection } from '../direction/index.ts'
-import { provideMenuContext, provideMenuRootContext, useIsUsingKeyboard } from '../menu/index.ts'
-import { type Measurable, providePopperContext } from '../popper/index.ts'
-import { type ContextMenuRootEmits, type ContextMenuRootProps, provideContextMenuContext } from './ContextMenuRoot.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
+import { type ContextMenuRootEmits, type ContextMenuRootProps, DEFAULT_CONTEXT_MENU_ROOT_PROPS, useContextMenuRoot } from './ContextMenuRoot.ts'
 
 defineOptions({
   name: 'ContextMenuRoot',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<ContextMenuRootProps>(), {
-  modal: true,
-})
+const props = withDefaults(defineProps<ContextMenuRootProps>(), DEFAULT_CONTEXT_MENU_ROOT_PROPS)
 const emit = defineEmits<ContextMenuRootEmits>()
 
-const open = shallowRef(false)
-
-function onOpenChange(v: boolean) {
-  open.value = v
-  emit('update:open', v)
-}
-
-provideContextMenuContext({
-  open,
-  onOpenChange,
-  modal: props.modal,
-})
-
-// COMP::MenuRoot
-
-const isUsingKeyboardRef = useIsUsingKeyboard()
-const direction = useDirection(() => props.dir)
-
-provideMenuContext({
-  open() {
-    return open.value
-  },
-  onOpenChange,
-})
-
-provideMenuRootContext({
-  onClose() {
-    onOpenChange(false)
-  },
-  isUsingKeyboardRef,
-  dir: direction,
-  modal: props.modal,
-})
-
-// COMP::PopperRoot
-
-const anchor = shallowRef<Measurable>()
-
-providePopperContext({
-  content: shallowRef(),
-  anchor,
-  onAnchorChange(newAnchor) {
-    anchor.value = newAnchor
-  },
-})
+useContextMenuRoot(convertPropsToHookProps(
+  props,
+  ['dir'],
+  (): Required<EmitsToHookProps<ContextMenuRootEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

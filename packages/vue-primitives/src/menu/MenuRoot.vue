@@ -1,59 +1,31 @@
 <script setup lang="ts">
-import type { Measurable } from '../popper/index.ts'
-import { shallowRef } from 'vue'
-import { useDirection } from '../direction/Direction.ts'
-import { providePopperContext } from '../popper/index.ts'
+import type { EmitsToHookProps } from '../shared/index.ts'
+import { convertPropsToHookProps } from '../shared/index.ts'
 import {
+  DEFAULT_MENU_ROOT_PROPS,
   type MenuRootEmits,
   type MenuRootProps,
-  provideMenuContext,
-  provideMenuRootContext,
-  useIsUsingKeyboard,
+  useMenuRoot,
 } from './MenuRoot.ts'
 
 defineOptions({
   name: 'MenuRoot',
+  inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<MenuRootProps>(), {
-  open: false,
-  modal: true,
-})
+const props = withDefaults(defineProps<MenuRootProps>(), DEFAULT_MENU_ROOT_PROPS)
 
 const emit = defineEmits<MenuRootEmits>()
 
-const isUsingKeyboardRef = useIsUsingKeyboard()
-const direction = useDirection(() => props.dir)
-
-provideMenuContext({
-  open() {
-    return props.open
-  },
-  onOpenChange(open) {
-    emit('update:open', open)
-  },
-})
-
-provideMenuRootContext({
-  onClose() {
-    emit('update:open', false)
-  },
-  isUsingKeyboardRef,
-  dir: direction,
-  modal: props.modal,
-})
-
-// COMP::PopperRoot
-
-const anchor = shallowRef<Measurable>()
-
-providePopperContext({
-  content: shallowRef(),
-  anchor,
-  onAnchorChange(newAnchor) {
-    anchor.value = newAnchor
-  },
-})
+useMenuRoot(convertPropsToHookProps(
+  props,
+  ['open', 'dir'],
+  (): Required<EmitsToHookProps<MenuRootEmits>> => ({
+    onUpdateOpen(open) {
+      emit('update:open', open)
+    },
+  }),
+))
 </script>
 
 <template>

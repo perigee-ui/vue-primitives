@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { DialogDescriptionProps } from './DialogDescription.ts'
 import { Primitive } from '../primitive/index.ts'
-import { useDialogContext } from './DialogRoot.ts'
+import { normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_DIALOG_DESCRIPTION_PROPS, type DialogDescriptionProps, useDialogDescription } from './DialogDescription.ts'
 
 defineOptions({
   name: 'DialogDescription',
+  inheritAttrs: false,
 })
 
-withDefaults(defineProps<DialogDescriptionProps>(), {
-  as: 'p',
-})
+withDefaults(defineProps<DialogDescriptionProps>(), DEFAULT_DIALOG_DESCRIPTION_PROPS)
 
-const context = useDialogContext('DialogDescription')
+const dialogDescription = useDialogDescription()
 </script>
 
 <template>
-  <Primitive :id="context.descriptionId" :as="as">
+  <Primitive v-bind="normalizeAttrs(dialogDescription.attrs([$attrs, { as }]))">
     <slot />
   </Primitive>
 </template>

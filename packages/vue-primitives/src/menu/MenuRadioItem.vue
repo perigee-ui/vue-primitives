@@ -1,39 +1,30 @@
 <script setup lang="ts">
-import type { MenuRadioItemProps } from './MenuRadioItem.ts'
-import { computed } from 'vue'
-import MenuItem from './MenuItem.vue'
-import { provideItemIndicatorContext } from './MenuItemIndicator.ts'
-import { useRadioGroupContext } from './MenuRadioGroup.ts'
-import { getCheckedState } from './utils.ts'
+import { Primitive } from '../primitive/index.ts'
+import { convertPropsToHookProps, type EmitsToHookProps, normalizeAttrs } from '../shared/index.ts'
+import { DEFAULT_MENU_RADIO_ITEM_PROPS, type MenuRadioItemEmits, type MenuRadioItemProps, useMenuRadioItem } from './MenuRadioItem.ts'
 
 defineOptions({
   name: 'MenuRadioItem',
+  inheritAttrs: false,
 })
 
-const props = defineProps<MenuRadioItemProps>()
+const props = withDefaults(defineProps<MenuRadioItemProps>(), DEFAULT_MENU_RADIO_ITEM_PROPS)
 
-const context = useRadioGroupContext('MenuRadioItem')
+const emit = defineEmits<MenuRadioItemEmits>()
 
-const checked = computed(() => props.value === context.value())
-
-function onSelects() {
-  context.onValueChange(props.value)
-}
-
-provideItemIndicatorContext({
-  checked() {
-    return checked.value
-  },
-})
+const menuRadioItem = useMenuRadioItem(convertPropsToHookProps(
+  props,
+  ['disabled'],
+  (): Required<EmitsToHookProps<MenuRadioItemEmits>> => ({
+    onSelect(event) {
+      emit('select', event)
+    },
+  }),
+))
 </script>
 
 <template>
-  <MenuItem
-    role="menuitemradio"
-    :aria-checked="checked"
-    :data-state="getCheckedState(checked)"
-    @select="onSelects"
-  >
+  <Primitive v-bind="normalizeAttrs(menuRadioItem.attrs([$attrs]))">
     <slot />
-  </MenuItem>
+  </Primitive>
 </template>

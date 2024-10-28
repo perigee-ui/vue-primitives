@@ -1,4 +1,5 @@
 export { composeEventHandlers } from './composeEventHandlers.ts'
+export { convertPropsToHookProps } from './convertPropsToHookProps.ts'
 export { focusFirst } from './focusFirst.ts'
 export {
   arrayify,
@@ -11,6 +12,19 @@ export {
   roundValue,
   wrapArray,
 } from './general.ts'
+export { getElFromTemplateRef } from './getElFromTemplateRef.ts'
 export { getRawChildren } from './getRawChildren.ts'
 export { isPointInPolygon, type Point, type Polygon } from './isPointInPolygon.ts'
-export { type ConvertEmitsToUseEmits } from './typeUtils.ts'
+export { type IAttrsData, mergePrimitiveAttrs, normalizeAttrs } from './mergeProps.ts'
+export {
+  type EmitsToHookProps,
+  type LooseRequired,
+  type OptionalKeys,
+  type PickOptionalRecord,
+  type PrimitiveDefaultProps,
+  type PrimitiveElAttrs,
+  type RadixPrimitiveGetAttrs,
+  type RadixPrimitiveReturns,
+  type RefOrRefObject,
+  type VNodeRef,
+} from './typeUtils.ts'
